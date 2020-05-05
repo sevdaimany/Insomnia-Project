@@ -1,4 +1,5 @@
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -11,8 +12,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.event.*;
 
@@ -42,8 +45,7 @@ public class Gui {
 
         JMenuItem Exit = new JMenuItem("Exit");
         Exit.setMnemonic(KeyEvent.VK_E);
-        Exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
-        ActionEvent.CTRL_MASK));
+        Exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
         // add menu items to menu
         menuApplication.add(options);
         menuApplication.add(Exit);
@@ -66,81 +68,133 @@ public class Gui {
 
         frame.setJMenuBar(mb);
 
-    
+        //panel1
         JPanel panel1 = new JPanel(new BorderLayout(0, 0));
         JPanel panel12 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-    
-        String comboboxChoices[] = {"GET","DELETE","POST","PUT","PATCH"};
+        String comboboxChoices[] = { "GET", "DELETE", "POST", "PUT", "PATCH" };
         JComboBox comboBox = new JComboBox(comboboxChoices);
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
-        int addressWidth  = URLAddress.getPreferredSize().width + 100;
+        int addressWidth = URLAddress.getPreferredSize().width + 100;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
-        URLAddress.setPreferredSize(new Dimension(addressWidth,addressHeight));
+        URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
 
         JButton sendButton = new JButton("Send");
         panel12.add(comboBox);
         panel12.add(URLAddress);
         panel12.add(sendButton);
 
-
         JTabbedPane tabbedPane = new JTabbedPane();
-        JPanel p1 = new JPanel();
+        JPanel p1 = new JPanel(new FlowLayout());
         JPanel p2 = new JPanel(new FlowLayout());
         JPanel p3 = new JPanel();
         JPanel p4 = new JPanel();
 
-      
         tabbedPane.add("Body", p1);
         tabbedPane.add("Header", p2);
         tabbedPane.add("Query", p3);
         tabbedPane.add("Auth", p4);
 
-        //header
-        JPanel panelHeader = new JPanel(new GridLayout(1,4,0,0));
+        // header
+        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 0, 0));
         JTextField key = new JTextField("new Header");
         JTextField value = new JTextField("new value");
         int keyWidth = key.getPreferredSize().width + 50;
         int keyHeight = key.getPreferredSize().height;
-        key.setPreferredSize(new Dimension(keyWidth,keyHeight));
+        key.setPreferredSize(new Dimension(keyWidth, keyHeight));
         int valueWidth = value.getPreferredSize().width + 50;
         int valueHeight = value.getPreferredSize().height;
-        value.setPreferredSize(new Dimension(valueWidth,valueHeight));
-        JCheckBox c1 = new JCheckBox(); 
+        value.setPreferredSize(new Dimension(valueWidth, valueHeight));
+        JCheckBox c1 = new JCheckBox();
         ImageIcon recycleBin = new ImageIcon("trash.png");
         JButton recycle = new JButton(recycleBin);
         int recycleWidth = recycle.getPreferredSize().width - 1000;
-        int recycleHeight = recycle.getPreferredSize().height-4;
-        recycle.setPreferredSize(new Dimension(recycleWidth,recycleHeight));
+        int recycleHeight = recycle.getPreferredSize().height - 4;
+        recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
         panelHeader.add(key);
         panelHeader.add(value);
         panelHeader.add(c1);
         panelHeader.add(recycle);
-       
+
         JButton newHeader = new JButton("+  NEW");
 
         p2.add(panelHeader);
         p2.add(newHeader);
 
+        // body
 
-       
-        
-        panel1.add(panel12,BorderLayout.NORTH);
-        panel1.add(tabbedPane,BorderLayout.CENTER);
+        String choices[] = { "Form Data", "JSON" };
+         JComboBox comboBox2 = new JComboBox(choices);
+         comboBox2.setPreferredSize(new Dimension(500,30));
+         p1.add(comboBox2);
 
-        JPanel panel2 = new JPanel();
-        JLabel insomniaLable= new JLabel("Insomnia");
-        insomniaLable.setFont(new Font("Verdana",Font.PLAIN,25));
-        insomniaLable.setBackground(new Color(100,0,200));
+        panel1.add(panel12, BorderLayout.NORTH);
+        panel1.add(tabbedPane, BorderLayout.CENTER);
+
+
+        //panel2
+        JPanel panel2 = new JPanel(new BorderLayout(0, 0));
+        JLabel insomniaLable = new JLabel("Insomnia");
+        insomniaLable.setFont(new Font("Verdana", Font.PLAIN, 25));
+        insomniaLable.setBackground(new Color(100, 0, 200));
         insomniaLable.setForeground(Color.WHITE);
         insomniaLable.setOpaque(true);
-        insomniaLable.setPreferredSize(new Dimension(250 ,60));
+        insomniaLable.setPreferredSize(new Dimension(250, 60));
         insomniaLable.setHorizontalAlignment(SwingConstants.CENTER);
-        panel2.add(insomniaLable);
+        panel2.add(insomniaLable, BorderLayout.NORTH);
+        GridBagConstraints gbc = new GridBagConstraints();
+        JPanel panel22 = new JPanel();
+        panel22.setLayout(new GridBagLayout());
+
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.01;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JTextField filter = new JTextField("Filter");
+        panel22.add(filter, gbc);
+        filter.setPreferredSize(new Dimension(200, 20));
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weighty = 0.01;
+        gbc.weightx = 0.5;
+
+        JMenuBar mb2 = new JMenuBar();
+        JMenu menu2 = new JMenu("  +");
+        JMenuItem newRequest = new JMenuItem("New Request");
+        JMenuItem newFolder = new JMenuItem("New Folder");
+        menu2.add(newRequest);
+        menu2.add(newFolder);
+        mb2.add(menu2);
+        panel22.add(mb2, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
+        gbc.weighty = 0.01;
+        gbc.fill = GridBagConstraints.BOTH;
+        // gbc.gridwidth = GridBagConstraints.REMAINDER;
+        DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
+        DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
+        requests.add(folder);
+        requests.add(folder2);
+        JTree jt = new JTree(requests);
+        panel22.add(jt, gbc);
+
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        panel22.add(new JLabel(" "), gbc);
+        panel2.add(panel22, BorderLayout.CENTER);
+
+        //panel3
         JPanel panel3 = new JPanel();
         panel.add(panel1, BorderLayout.CENTER);
-        panel.add(panel2,BorderLayout.WEST);
-        panel.add(panel3,BorderLayout.EAST);
+        panel.add(panel2, BorderLayout.WEST);
+        panel.add(panel3, BorderLayout.EAST);
 
     }
 
