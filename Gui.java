@@ -1,7 +1,10 @@
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -9,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import java.awt.event.*;
 
@@ -82,7 +86,7 @@ public class Gui {
 
         JTabbedPane tabbedPane = new JTabbedPane();
         JPanel p1 = new JPanel();
-        JPanel p2 = new JPanel();
+        JPanel p2 = new JPanel(new FlowLayout());
         JPanel p3 = new JPanel();
         JPanel p4 = new JPanel();
 
@@ -92,13 +96,51 @@ public class Gui {
         tabbedPane.add("Query", p3);
         tabbedPane.add("Auth", p4);
 
+        //header
+        JPanel panelHeader = new JPanel(new GridLayout(1,4,0,0));
+        JTextField key = new JTextField("new Header");
+        JTextField value = new JTextField("new value");
+        int keyWidth = key.getPreferredSize().width + 50;
+        int keyHeight = key.getPreferredSize().height;
+        key.setPreferredSize(new Dimension(keyWidth,keyHeight));
+        int valueWidth = value.getPreferredSize().width + 50;
+        int valueHeight = value.getPreferredSize().height;
+        value.setPreferredSize(new Dimension(valueWidth,valueHeight));
+        JCheckBox c1 = new JCheckBox(); 
+        ImageIcon recycleBin = new ImageIcon("trash.png");
+        JButton recycle = new JButton(recycleBin);
+        int recycleWidth = recycle.getPreferredSize().width - 1000;
+        int recycleHeight = recycle.getPreferredSize().height-4;
+        recycle.setPreferredSize(new Dimension(recycleWidth,recycleHeight));
+        panelHeader.add(key);
+        panelHeader.add(value);
+        panelHeader.add(c1);
+        panelHeader.add(recycle);
+       
+        JButton newHeader = new JButton("+  NEW");
+
+        p2.add(panelHeader);
+        p2.add(newHeader);
+
+
        
         
         panel1.add(panel12,BorderLayout.NORTH);
         panel1.add(tabbedPane,BorderLayout.CENTER);
 
-
+        JPanel panel2 = new JPanel();
+        JLabel insomniaLable= new JLabel("Insomnia");
+        insomniaLable.setFont(new Font("Verdana",Font.PLAIN,25));
+        insomniaLable.setBackground(new Color(100,0,200));
+        insomniaLable.setForeground(Color.WHITE);
+        insomniaLable.setOpaque(true);
+        insomniaLable.setPreferredSize(new Dimension(250 ,60));
+        insomniaLable.setHorizontalAlignment(SwingConstants.CENTER);
+        panel2.add(insomniaLable);
+        JPanel panel3 = new JPanel();
         panel.add(panel1, BorderLayout.CENTER);
+        panel.add(panel2,BorderLayout.WEST);
+        panel.add(panel3,BorderLayout.EAST);
 
     }
 
