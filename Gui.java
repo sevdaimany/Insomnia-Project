@@ -71,6 +71,7 @@ public class Gui {
         //panel1
         JPanel panel1 = new JPanel(new BorderLayout(0, 0));
         JPanel panel12 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panel12.setBackground(Color.WHITE);
 
         String comboboxChoices[] = { "GET", "DELETE", "POST", "PUT", "PATCH" };
         JComboBox comboBox = new JComboBox(comboboxChoices);
@@ -85,10 +86,17 @@ public class Gui {
         panel12.add(sendButton);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        JPanel p1 = new JPanel(new FlowLayout());
+        JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT,3,3));
+        p1.setBackground(Color.DARK_GRAY);
+
         JPanel p2 = new JPanel(new FlowLayout());
+        p2.setBackground(Color.DARK_GRAY);
+
         JPanel p3 = new JPanel();
+        p3.setBackground(Color.DARK_GRAY);
+
         JPanel p4 = new JPanel();
+        p4.setBackground(Color.DARK_GRAY);
 
         tabbedPane.add("Body", p1);
         tabbedPane.add("Header", p2);
@@ -182,6 +190,7 @@ public class Gui {
         requests.add(folder);
         requests.add(folder2);
         JTree jt = new JTree(requests);
+        jt.setBackground(Color.DARK_GRAY);
         panel22.add(jt, gbc);
 
         gbc.weightx = 1;
@@ -191,7 +200,38 @@ public class Gui {
         panel2.add(panel22, BorderLayout.CENTER);
 
         //panel3
-        JPanel panel3 = new JPanel();
+        JPanel panel3 = new JPanel(new BorderLayout(0, 0));
+        JPanel panel32 = new JPanel(new FlowLayout(FlowLayout.LEFT, 60, 8));
+        panel32.setBackground(Color.WHITE);
+        JLabel label1 = new JLabel("200 OK");
+        label1.setBackground(Color.GREEN);
+        JLabel label2 = new JLabel("6.60s");
+        JLabel label3 = new JLabel("15.2KB");
+        panel32.add(label1);
+        panel32.add(label2);
+        panel32.add(label3);
+
+
+        JTabbedPane tabbedPane2 = new JTabbedPane();
+       
+        JPanel p5 = new JPanel(new FlowLayout(FlowLayout.LEFT,3,3));
+        p5.setBackground(Color.DARK_GRAY);
+        String choices2[] = { "Raw","Preview", "JSON" };
+        JComboBox comboBox3 = new JComboBox(choices2);
+        comboBox3.setPreferredSize(new Dimension(500,30));
+        p5.add(comboBox3);
+
+
+        JPanel p6 = new JPanel(new FlowLayout());
+        p6.setBackground(Color.DARK_GRAY);
+
+        tabbedPane2.add("Message Body", p5);
+        tabbedPane2.add("Header", p6);
+    
+
+        panel3.add(panel32,BorderLayout.NORTH);
+        panel3.add(tabbedPane2,BorderLayout.CENTER);
+
         panel.add(panel1, BorderLayout.CENTER);
         panel.add(panel2, BorderLayout.WEST);
         panel.add(panel3, BorderLayout.EAST);
