@@ -1,6 +1,5 @@
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -20,7 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.plaf.metal.MetalComboBoxButton;
+
 
 import java.awt.event.*;
 
@@ -31,6 +30,7 @@ public class Gui {
     private JFrame frame;
 
     public Gui() {
+        Layout layout = new Layout();
 
         frame = new JFrame("Insomnia - My Request");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,7 +123,7 @@ public class Gui {
         tabbedPane.add("Auth", p4);
 
         // header
-        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
+       /* JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
         panelHeader.setBackground(Color.DARK_GRAY);
         JTextField key = new JTextField("new Header");
         key.setBackground(Color.GRAY);
@@ -178,6 +178,8 @@ public class Gui {
         gbc2.weightx = 1;
         gbc2.weighty = 1;
         p2.add(new JLabel(" "), gbc2);
+        */
+       layout.creatPanel(p2,0);
 
         // body
 
@@ -189,7 +191,7 @@ public class Gui {
         p1.add(comboBox2);
 
         //query
-        JPanel panelQuery = new JPanel(new GridLayout(1, 4, 10, 5));
+       /* JPanel panelQuery = new JPanel(new GridLayout(1, 4, 10, 5));
         panelQuery.setBackground(Color.DARK_GRAY);
         JTextField keyQuery = new JTextField("new Header");
         keyQuery.setBackground(Color.GRAY);
@@ -235,6 +237,8 @@ public class Gui {
         gbc3.weightx = 1;
         gbc3.weighty = 1;
         p3.add(new JLabel(" "), gbc3);
+        */
+       layout.creatPanel(p3,0);
 
 
          // Auth
@@ -323,15 +327,19 @@ public class Gui {
 
         JTabbedPane tabbedPane2 = new JTabbedPane();
 
+        //messsage body
         JPanel p5 = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
         p5.setBackground(Color.DARK_GRAY);
         String choices2[] = { "Raw", "Preview", "JSON" };
         JComboBox comboBox3 = new JComboBox(choices2);
         comboBox3.setPreferredSize(new Dimension(500, 30));
         p5.add(comboBox3);
+        
+        //header
 
         JPanel p6 = new JPanel(new FlowLayout());
         p6.setBackground(Color.DARK_GRAY);
+        layout.creatPanel(p6, 1);
 
         tabbedPane2.add("Message Body", p5);
         tabbedPane2.add("Header", p6);
