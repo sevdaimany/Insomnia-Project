@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.plaf.metal.MetalComboBoxButton;
 
 import java.awt.event.*;
 
@@ -80,11 +81,24 @@ public class Gui {
 
         String comboboxChoices[] = { "GET", "DELETE", "POST", "PUT", "PATCH" };
         JComboBox comboBox = new JComboBox(comboboxChoices);
+        Border border2 = BorderFactory.createLineBorder(Color.WHITE);
+        comboBox.setBorder(border2);
+        comboBox.setBackground(Color.WHITE);
+        comboBox.setForeground(Color.GRAY);
+
+     
+        
+
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
         int addressWidth = URLAddress.getPreferredSize().width + 430;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
+        URLAddress.setBorder(border2);
+        
         JButton sendButton = new JButton("Send");
+        sendButton.setBorder(border2);
+        sendButton.setBackground(Color.WHITE);
+        sendButton.setForeground(Color.GRAY);
 
         panel12.add(comboBox);
         panel12.add(URLAddress);
@@ -97,7 +111,7 @@ public class Gui {
         JPanel p2 = new JPanel(new GridBagLayout());
         p2.setBackground(Color.DARK_GRAY);
 
-        JPanel p3 = new JPanel();
+        JPanel p3 = new JPanel(new GridBagLayout());
         p3.setBackground(Color.DARK_GRAY);
 
         JPanel p4 = new JPanel();
@@ -112,14 +126,14 @@ public class Gui {
         JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
         panelHeader.setBackground(Color.DARK_GRAY);
         JTextField key = new JTextField("new Header");
-        key.setBackground(Color.DARK_GRAY);
-        key.setForeground(Color.GRAY);
+        key.setBackground(Color.GRAY);
+        key.setForeground(Color.WHITE);
         Border border = BorderFactory.createLineBorder(Color.GRAY);
         key.setBorder(border);
         JTextField value = new JTextField("new value");
         value.setBorder(border);
-        value.setBackground(Color.DARK_GRAY);
-        value.setForeground(Color.GRAY);
+        value.setBackground(Color.GRAY);
+        value.setForeground(Color.WHITE);
         int keyWidth = key.getPreferredSize().width + 50;
         int keyHeight = key.getPreferredSize().height + 10;
         key.setPreferredSize(new Dimension(keyWidth, keyHeight));
@@ -170,7 +184,58 @@ public class Gui {
         String choices[] = { "Form Data", "JSON" };
         JComboBox comboBox2 = new JComboBox(choices);
         comboBox2.setPreferredSize(new Dimension(760, 30));
+        comboBox2.setBackground(Color.GRAY);
+        comboBox2.setForeground(Color.white);
         p1.add(comboBox2);
+
+        //query
+        JPanel panelQuery = new JPanel(new GridLayout(1, 4, 10, 5));
+        panelQuery.setBackground(Color.DARK_GRAY);
+        JTextField keyQuery = new JTextField("new Header");
+        keyQuery.setBackground(Color.GRAY);
+        keyQuery.setForeground(Color.WHITE);
+        keyQuery.setBorder(border);
+        JTextField valueQuery = new JTextField("new value");
+        valueQuery.setBorder(border);
+        valueQuery.setBackground(Color.GRAY);
+        valueQuery.setForeground(Color.WHITE);
+        keyQuery.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        valueQuery.setPreferredSize(new Dimension(valueWidth, valueHeight));
+        JCheckBox cQuery = new JCheckBox();
+        cQuery.setBackground(Color.DARK_GRAY);
+        cQuery.setBorder(border);
+        JButton recycleQuery = new JButton(recycleBin);
+        recycleQuery.setBackground(Color.DARK_GRAY);
+        recycleQuery.setBorder(border);
+        recycleQuery.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+        panelQuery.add(keyQuery);
+        panelQuery.add(valueQuery);
+        panelQuery.add(cQuery);
+        panelQuery.add(recycleQuery);
+
+
+        JButton newQuery = new JButton("+  NEW");
+        newQuery.setForeground(Color.WHITE);
+        newQuery.setBackground(new Color(90,80,160));
+        GridBagConstraints gbc3 = new GridBagConstraints();
+        gbc3.gridx = 0;
+        gbc3.gridy = 0;
+        gbc3.fill = GridBagConstraints.HORIZONTAL;
+        gbc3.insets = new Insets(3,2,2,2);
+        p3.add(newQuery, gbc3);
+
+        gbc3.gridx = 0;
+        gbc3.gridy = 2;
+        gbc3.fill = GridBagConstraints.HORIZONTAL;
+        gbc3.insets = new Insets(10,10,10,10);
+        p3.add(panelQuery, gbc3);
+
+        gbc3.gridx = 0;
+        gbc3.gridy = 3;
+        gbc3.weightx = 1;
+        gbc3.weighty = 1;
+        p3.add(new JLabel(" "), gbc3);
+
 
         panel1.add(panel12, BorderLayout.NORTH);
         panel1.add(tabbedPane, BorderLayout.CENTER);
@@ -218,7 +283,7 @@ public class Gui {
         gbc.gridwidth = 3;
         gbc.weighty = 0.01;
         gbc.fill = GridBagConstraints.BOTH;
-        // gbc.gridwidth = GridBagConstraints.REMAINDER;
+    
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
         DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
         DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
@@ -272,7 +337,9 @@ public class Gui {
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
-        // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+       //  UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
         Gui g = new Gui();
-    }
+        for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+        System.out.println(info.getClassName())
+;    }
 }
