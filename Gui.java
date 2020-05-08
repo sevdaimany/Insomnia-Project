@@ -1,4 +1,5 @@
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,6 +16,9 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.event.*;
@@ -26,6 +30,7 @@ public class Gui {
     private JFrame frame;
 
     public Gui() {
+
         frame = new JFrame("Insomnia - My Request");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(760, 825));
@@ -68,7 +73,7 @@ public class Gui {
 
         frame.setJMenuBar(mb);
 
-        //panel1
+        // panel1
         JPanel panel1 = new JPanel(new BorderLayout(0, 0));
         JPanel panel12 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         panel12.setBackground(Color.WHITE);
@@ -76,20 +81,20 @@ public class Gui {
         String comboboxChoices[] = { "GET", "DELETE", "POST", "PUT", "PATCH" };
         JComboBox comboBox = new JComboBox(comboboxChoices);
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
-        int addressWidth = URLAddress.getPreferredSize().width + 100;
+        int addressWidth = URLAddress.getPreferredSize().width + 430;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
-
         JButton sendButton = new JButton("Send");
+
         panel12.add(comboBox);
         panel12.add(URLAddress);
         panel12.add(sendButton);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT,3,3));
+        JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
         p1.setBackground(Color.DARK_GRAY);
 
-        JPanel p2 = new JPanel(new FlowLayout());
+        JPanel p2 = new JPanel(new GridBagLayout());
         p2.setBackground(Color.DARK_GRAY);
 
         JPanel p3 = new JPanel();
@@ -104,18 +109,30 @@ public class Gui {
         tabbedPane.add("Auth", p4);
 
         // header
-        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 0, 0));
+        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
+        panelHeader.setBackground(Color.DARK_GRAY);
         JTextField key = new JTextField("new Header");
+        key.setBackground(Color.DARK_GRAY);
+        key.setForeground(Color.GRAY);
+        Border border = BorderFactory.createLineBorder(Color.GRAY);
+        key.setBorder(border);
         JTextField value = new JTextField("new value");
+        value.setBorder(border);
+        value.setBackground(Color.DARK_GRAY);
+        value.setForeground(Color.GRAY);
         int keyWidth = key.getPreferredSize().width + 50;
-        int keyHeight = key.getPreferredSize().height;
+        int keyHeight = key.getPreferredSize().height + 10;
         key.setPreferredSize(new Dimension(keyWidth, keyHeight));
         int valueWidth = value.getPreferredSize().width + 50;
-        int valueHeight = value.getPreferredSize().height;
+        int valueHeight = value.getPreferredSize().height + 10;
         value.setPreferredSize(new Dimension(valueWidth, valueHeight));
         JCheckBox c1 = new JCheckBox();
-        ImageIcon recycleBin = new ImageIcon("trash.png");
+        c1.setBackground(Color.DARK_GRAY);
+        c1.setBorder(border);
+        ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
         JButton recycle = new JButton(recycleBin);
+        recycle.setBackground(Color.DARK_GRAY);
+        recycle.setBorder(border);
         int recycleWidth = recycle.getPreferredSize().width - 1000;
         int recycleHeight = recycle.getPreferredSize().height - 4;
         recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
@@ -124,23 +141,41 @@ public class Gui {
         panelHeader.add(c1);
         panelHeader.add(recycle);
 
-        JButton newHeader = new JButton("+  NEW");
+    
 
-        p2.add(panelHeader);
-        p2.add(newHeader);
+        JButton newHeader = new JButton("+  NEW");
+        newHeader.setForeground(Color.WHITE);
+        newHeader.setBackground(new Color(90,80,160));
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.gridx = 0;
+        gbc2.gridy = 0;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        gbc2.insets = new Insets(3,2,2,2);
+        p2.add(newHeader, gbc2);
+
+        gbc2.gridx = 0;
+        gbc2.gridy = 2;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        gbc2.insets = new Insets(10,10,10,10);
+        p2.add(panelHeader, gbc2);
+
+        gbc2.gridx = 0;
+        gbc2.gridy = 3;
+        gbc2.weightx = 1;
+        gbc2.weighty = 1;
+        p2.add(new JLabel(" "), gbc2);
 
         // body
 
         String choices[] = { "Form Data", "JSON" };
-         JComboBox comboBox2 = new JComboBox(choices);
-         comboBox2.setPreferredSize(new Dimension(500,30));
-         p1.add(comboBox2);
+        JComboBox comboBox2 = new JComboBox(choices);
+        comboBox2.setPreferredSize(new Dimension(760, 30));
+        p1.add(comboBox2);
 
         panel1.add(panel12, BorderLayout.NORTH);
         panel1.add(tabbedPane, BorderLayout.CENTER);
 
-
-        //panel2
+        // panel2
         JPanel panel2 = new JPanel(new BorderLayout(0, 0));
         JLabel insomniaLable = new JLabel("Insomnia");
         insomniaLable.setFont(new Font("Verdana", Font.PLAIN, 25));
@@ -199,7 +234,7 @@ public class Gui {
         panel22.add(new JLabel(" "), gbc);
         panel2.add(panel22, BorderLayout.CENTER);
 
-        //panel3
+        // panel3
         JPanel panel3 = new JPanel(new BorderLayout(0, 0));
         JPanel panel32 = new JPanel(new FlowLayout(FlowLayout.LEFT, 60, 8));
         panel32.setBackground(Color.WHITE);
@@ -211,26 +246,23 @@ public class Gui {
         panel32.add(label2);
         panel32.add(label3);
 
-
         JTabbedPane tabbedPane2 = new JTabbedPane();
-       
-        JPanel p5 = new JPanel(new FlowLayout(FlowLayout.LEFT,3,3));
-        p5.setBackground(Color.DARK_GRAY);
-        String choices2[] = { "Raw","Preview", "JSON" };
-        JComboBox comboBox3 = new JComboBox(choices2);
-        comboBox3.setPreferredSize(new Dimension(500,30));
-        p5.add(comboBox3);
 
+        JPanel p5 = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+        p5.setBackground(Color.DARK_GRAY);
+        String choices2[] = { "Raw", "Preview", "JSON" };
+        JComboBox comboBox3 = new JComboBox(choices2);
+        comboBox3.setPreferredSize(new Dimension(500, 30));
+        p5.add(comboBox3);
 
         JPanel p6 = new JPanel(new FlowLayout());
         p6.setBackground(Color.DARK_GRAY);
 
         tabbedPane2.add("Message Body", p5);
         tabbedPane2.add("Header", p6);
-    
 
-        panel3.add(panel32,BorderLayout.NORTH);
-        panel3.add(tabbedPane2,BorderLayout.CENTER);
+        panel3.add(panel32, BorderLayout.NORTH);
+        panel3.add(tabbedPane2, BorderLayout.CENTER);
 
         panel.add(panel1, BorderLayout.CENTER);
         panel.add(panel2, BorderLayout.WEST);
@@ -238,7 +270,9 @@ public class Gui {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
+            InstantiationException, IllegalAccessException {
+        // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
         Gui g = new Gui();
     }
 }
