@@ -237,6 +237,16 @@ public class Gui {
         p3.add(new JLabel(" "), gbc3);
 
 
+         // Auth
+
+         String choicesAuth[] = { "Bearer"};
+         JComboBox comboBoxAuth = new JComboBox(choicesAuth);
+         comboBoxAuth.setPreferredSize(new Dimension(760, 30));
+         comboBoxAuth.setBackground(Color.GRAY);
+         comboBoxAuth.setForeground(Color.white);
+         p4.add(comboBoxAuth);
+
+
         panel1.add(panel12, BorderLayout.NORTH);
         panel1.add(tabbedPane, BorderLayout.CENTER);
 
