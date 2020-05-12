@@ -72,6 +72,8 @@ public class Gui {
 
 
         options.addActionListener(new ActionListener(){
+
+            @Override
             public void actionPerformed(ActionEvent e){
                   //create option Dialog
         JDialog optionDialog = new JDialog(frame,"Options",false);
@@ -143,16 +145,30 @@ public class Gui {
         JMenuItem about = new JMenuItem("About");
         about.setMnemonic(KeyEvent.VK_B);
         about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, ActionEvent.ALT_MASK));
+
+        //add actionlistener for about
+        about.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                JOptionPane aboutOptionPane = new JOptionPane("About");
+                aboutOptionPane.showMessageDialog(frame,"Hi i'm sevda!\nInsomnia started as a project of mine in 2020.\nMy email : sevdaimany@gmail.com\nMy student number : 9831010 ","About", JOptionPane.INFORMATION_MESSAGE);
+                    
+            }
+        });
+
         
 
-      /*  JOptionPane aboutOptionPane = new JOptionPane("About");
-        aboutOptionPane.setBorder(new EmptyBorder(5,5,5,5));
-        aboutOptionPane.showMessageDialog(frame,"Hi i'm sevda!\nInsomnia started as a project of mine in 2020.\nMy email : sevdaimany@gmail.com\nMy student number : 9831010 ","About", JOptionPane.INFORMATION_MESSAGE);
-    */   
         
         JMenuItem help = new JMenuItem("Help");
         help.setMnemonic(KeyEvent.VK_H);
         help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, ActionEvent.ALT_MASK));
+        help.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                JOptionPane helpOptionPane = new JOptionPane("Help");
+                helpOptionPane.showMessageDialog(frame,"Show app options    Alt+O\n\nExit    Alt+E\n\ntoggle full screen    Ctrl+\\ \n\ntoggle sidebar    Ctrl+/\n\nAbout    Alt+F2\n\nKeyBoard Shortcuts    Alt+F1\n\nCreate Requests    Ctrl+N\n\nCreate Folder    Ctrl+Shift+N\n" , "Help",JOptionPane.NO_OPTION);
+            }
+        });
 
 
         // add components
@@ -190,6 +206,8 @@ public class Gui {
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
+       
+
 
         // add components
         panelCenter_North.add(comboBox);
@@ -402,7 +420,9 @@ public class Gui {
         JMenuBar mb2 = new JMenuBar();
         JMenu menu2 = new JMenu("  +");
         JMenuItem newRequest = new JMenuItem("New Request");
+        newRequest.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
         JMenuItem newFolder = new JMenuItem("New Folder");
+        newFolder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.SHIFT_MASK+ActionEvent.CTRL_MASK));
         menu2.add(newRequest);
         menu2.add(newFolder);
         mb2.add(menu2);
