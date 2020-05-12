@@ -186,7 +186,7 @@ public class Gui {
         JPanel panelCenter = new JPanel(new BorderLayout(0, 0));
 
         // create center_up panel
-        JPanel panelCenter_North = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JPanel panelCenter_North = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
         panelCenter_North.setBackground(Color.WHITE);
 
         String comboboxChoices[] = { "GET", "DELETE", "POST", "PUT", "PATCH" };
@@ -197,7 +197,7 @@ public class Gui {
         comboBox.setForeground(Color.GRAY);
 
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
-        int addressWidth = URLAddress.getPreferredSize().width + 430;
+        int addressWidth = URLAddress.getPreferredSize().width + 410;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
@@ -207,12 +207,17 @@ public class Gui {
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
        
-
+        JButton saveButton = new JButton("Save");
+        saveButton.setBorder(border2);
+        saveButton.setBackground(Color.WHITE);
+        saveButton.setForeground(Color.GRAY);
+       
 
         // add components
         panelCenter_North.add(comboBox);
         panelCenter_North.add(URLAddress);
         panelCenter_North.add(sendButton);
+        panelCenter_North.add(saveButton);
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
