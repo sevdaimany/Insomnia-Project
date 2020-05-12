@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -13,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -57,32 +59,36 @@ public class Gui {
 
         // options
         JMenuItem options = new JMenuItem("Options");
-        JOptionPane optionpJOptionPane = new JOptionPane("Options");
-        optionpJOptionPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
-        optionpJOptionPane.setSize(300, 200);
-        optionpJOptionPane.setVisible(true);
-        optionpJOptionPane.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+        JDialog optionDialog = new JDialog(frame,"Options",false);
+        optionDialog.setVisible(true);
+        optionDialog.setBounds(530, 280, 300, 210);
+        optionDialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         JCheckBox followRedirectCheckBox = new JCheckBox(" follow redirect ");
-        followRedirectCheckBox.setPreferredSize(new Dimension(230, 30));
+        followRedirectCheckBox.setPreferredSize(new Dimension(250, 30));
 
-        JRadioButton exiRadioButton = new JRadioButton(" Exit ");
+        JRadioButton exiRadioButton = new JRadioButton(" Exit ",true);
         JRadioButton hideRadioButton = new JRadioButton(" Hide on system tray ");
         ButtonGroup exiButtonGroup = new ButtonGroup();
         exiButtonGroup.add(exiRadioButton);
         exiButtonGroup.add(hideRadioButton);
 
         JRadioButton lightTheme = new JRadioButton("light theme");
-        JRadioButton darkTheme = new JRadioButton("dark theme");
+        JRadioButton darkTheme = new JRadioButton("dark theme",true);
         ButtonGroup theme = new ButtonGroup();
         theme.add(lightTheme);
         theme.add(darkTheme);
 
-        optionpJOptionPane.add(followRedirectCheckBox);
-        optionpJOptionPane.add(exiRadioButton);
-        optionpJOptionPane.add(hideRadioButton);
-        optionpJOptionPane.add(lightTheme);
-        optionpJOptionPane.add(darkTheme);
+        JButton saveButton = new JButton("Save");
+        saveButton.setPreferredSize(new Dimension(100,25));
+
+        optionDialog.add(followRedirectCheckBox);
+        optionDialog.add(exiRadioButton);
+        optionDialog.add(hideRadioButton);
+        optionDialog.add(lightTheme);
+        optionDialog.add(darkTheme);
+        optionDialog.add(saveButton);
 
         // Exit
         JMenuItem Exit = new JMenuItem("Exit");
@@ -246,7 +252,7 @@ public class Gui {
 
         // panel body
 
-        String choices[] = { "Form Data", "JSON" };
+        String choices[] = { "Form Data", "JSON" ,"Binary Data"};
         JComboBox comboBox2 = new JComboBox(choices);
         comboBox2.setPreferredSize(new Dimension(760, 30));
         comboBox2.setBackground(Color.GRAY);
@@ -369,6 +375,7 @@ public class Gui {
         requests.add(folder2);
         JTree jt = new JTree(requests);
         jt.setBackground(Color.DARK_GRAY);
+
 
         gbc.gridx = 0;
         gbc.gridy = 0;
