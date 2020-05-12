@@ -14,12 +14,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
-
 
 import java.awt.event.*;
 
@@ -86,15 +87,12 @@ public class Gui {
         comboBox.setBackground(Color.WHITE);
         comboBox.setForeground(Color.GRAY);
 
-     
-        
-
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
         int addressWidth = URLAddress.getPreferredSize().width + 430;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
-        
+
         JButton sendButton = new JButton("Send");
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
@@ -123,7 +121,7 @@ public class Gui {
         tabbedPane.add("Auth", p4);
 
         // header
-       /* JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
+        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
         panelHeader.setBackground(Color.DARK_GRAY);
         JTextField key = new JTextField("new Header");
         key.setBackground(Color.GRAY);
@@ -155,22 +153,20 @@ public class Gui {
         panelHeader.add(c1);
         panelHeader.add(recycle);
 
-    
-
         JButton newHeader = new JButton("+  NEW");
         newHeader.setForeground(Color.WHITE);
-        newHeader.setBackground(new Color(90,80,160));
+        newHeader.setBackground(new Color(90, 80, 160));
         GridBagConstraints gbc2 = new GridBagConstraints();
         gbc2.gridx = 0;
         gbc2.gridy = 0;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        gbc2.insets = new Insets(3,2,2,2);
+        gbc2.insets = new Insets(3, 2, 2, 2);
         p2.add(newHeader, gbc2);
 
         gbc2.gridx = 0;
         gbc2.gridy = 2;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        gbc2.insets = new Insets(10,10,10,10);
+        gbc2.insets = new Insets(10, 10, 10, 10);
         p2.add(panelHeader, gbc2);
 
         gbc2.gridx = 0;
@@ -178,8 +174,6 @@ public class Gui {
         gbc2.weightx = 1;
         gbc2.weighty = 1;
         p2.add(new JLabel(" "), gbc2);
-        */
-       layout.creatPanel(p2,0);
 
         // body
 
@@ -190,8 +184,8 @@ public class Gui {
         comboBox2.setForeground(Color.white);
         p1.add(comboBox2);
 
-        //query
-       /* JPanel panelQuery = new JPanel(new GridLayout(1, 4, 10, 5));
+        // query
+        JPanel panelQuery = new JPanel(new GridLayout(1, 4, 10, 5));
         panelQuery.setBackground(Color.DARK_GRAY);
         JTextField keyQuery = new JTextField("new Header");
         keyQuery.setBackground(Color.GRAY);
@@ -215,21 +209,20 @@ public class Gui {
         panelQuery.add(cQuery);
         panelQuery.add(recycleQuery);
 
-
         JButton newQuery = new JButton("+  NEW");
         newQuery.setForeground(Color.WHITE);
-        newQuery.setBackground(new Color(90,80,160));
+        newQuery.setBackground(new Color(90, 80, 160));
         GridBagConstraints gbc3 = new GridBagConstraints();
         gbc3.gridx = 0;
         gbc3.gridy = 0;
         gbc3.fill = GridBagConstraints.HORIZONTAL;
-        gbc3.insets = new Insets(3,2,2,2);
+        gbc3.insets = new Insets(3, 2, 2, 2);
         p3.add(newQuery, gbc3);
 
         gbc3.gridx = 0;
         gbc3.gridy = 2;
         gbc3.fill = GridBagConstraints.HORIZONTAL;
-        gbc3.insets = new Insets(10,10,10,10);
+        gbc3.insets = new Insets(10, 10, 10, 10);
         p3.add(panelQuery, gbc3);
 
         gbc3.gridx = 0;
@@ -237,19 +230,15 @@ public class Gui {
         gbc3.weightx = 1;
         gbc3.weighty = 1;
         p3.add(new JLabel(" "), gbc3);
-        */
-       layout.creatPanel(p3,0);
 
+        // Auth
 
-         // Auth
-
-         String choicesAuth[] = { "Bearer"};
-         JComboBox comboBoxAuth = new JComboBox(choicesAuth);
-         comboBoxAuth.setPreferredSize(new Dimension(760, 30));
-         comboBoxAuth.setBackground(Color.GRAY);
-         comboBoxAuth.setForeground(Color.white);
-         p4.add(comboBoxAuth);
-
+        String choicesAuth[] = { "Bearer" };
+        JComboBox comboBoxAuth = new JComboBox(choicesAuth);
+        comboBoxAuth.setPreferredSize(new Dimension(760, 30));
+        comboBoxAuth.setBackground(Color.GRAY);
+        comboBoxAuth.setForeground(Color.WHITE);
+        p4.add(comboBoxAuth);
 
         panel1.add(panel12, BorderLayout.NORTH);
         panel1.add(tabbedPane, BorderLayout.CENTER);
@@ -267,6 +256,7 @@ public class Gui {
         GridBagConstraints gbc = new GridBagConstraints();
         JPanel panel22 = new JPanel();
         panel22.setLayout(new GridBagLayout());
+        panel22.setBackground(Color.DARK_GRAY);
 
         gbc.weightx = 0.5;
         gbc.weighty = 0.01;
@@ -277,6 +267,8 @@ public class Gui {
         JTextField filter = new JTextField("Filter");
         panel22.add(filter, gbc);
         filter.setPreferredSize(new Dimension(200, 20));
+        filter.setBackground(Color.GRAY);
+        filter.setForeground(Color.WHITE);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -297,7 +289,7 @@ public class Gui {
         gbc.gridwidth = 3;
         gbc.weighty = 0.01;
         gbc.fill = GridBagConstraints.BOTH;
-    
+
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
         DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
         DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
@@ -318,7 +310,7 @@ public class Gui {
         JPanel panel32 = new JPanel(new FlowLayout(FlowLayout.LEFT, 60, 8));
         panel32.setBackground(Color.WHITE);
         JLabel label1 = new JLabel("200 OK");
-        label1.setBackground(Color.GREEN);
+        label1.setForeground(new Color(50, 200, 180));
         JLabel label2 = new JLabel("6.60s");
         JLabel label3 = new JLabel("15.2KB");
         panel32.add(label1);
@@ -327,20 +319,53 @@ public class Gui {
 
         JTabbedPane tabbedPane2 = new JTabbedPane();
 
-        //messsage body
+        // messsage body
         JPanel p5 = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
         p5.setBackground(Color.DARK_GRAY);
         String choices2[] = { "Raw", "Preview", "JSON" };
         JComboBox comboBox3 = new JComboBox(choices2);
+        comboBox3.setBackground(Color.GRAY);
+        comboBox3.setForeground(Color.WHITE);
+
         comboBox3.setPreferredSize(new Dimension(500, 30));
         p5.add(comboBox3);
-        
-        //header
+
+        // header
 
         JPanel p6 = new JPanel(new FlowLayout());
         p6.setBackground(Color.DARK_GRAY);
-        layout.creatPanel(p6, 1);
 
+        JPanel panel6 = new JPanel(new GridLayout(1, 4, 10, 5));
+        panel6.setBackground(Color.DARK_GRAY);
+        JTextField key6 = new JTextField("new Header");
+        key6.setBackground(Color.GRAY);
+        key6.setForeground(Color.WHITE);
+        key6.setBorder(border);
+        JTextField value6 = new JTextField("new value");
+        value6.setBorder(border);
+        value6.setBackground(Color.GRAY);
+        value6.setForeground(Color.WHITE);
+        key6.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        value6.setPreferredSize(new Dimension(valueWidth, valueHeight));
+      
+        panel6.add(key6);
+        panel6.add(value6);
+
+        GridBagConstraints gbc4 = new GridBagConstraints();
+
+        gbc4.gridx = 0;
+        gbc4.gridy = 0;
+        gbc4.insets = new Insets(50, 50, 50, 50);
+
+        p6.add(panel6, gbc4);
+
+        JButton newButton = new JButton("Copy to Clipboard");
+        newButton.setForeground(Color.WHITE);
+        newButton.setBackground(new Color(90, 80, 160));
+        gbc4.gridx = 0;
+        gbc4.gridy = 1;
+        gbc4.insets = new Insets(50, 50, 50, 50);
+        p6.add(newButton, gbc4);
         tabbedPane2.add("Message Body", p5);
         tabbedPane2.add("Header", p6);
 
@@ -355,9 +380,10 @@ public class Gui {
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
-       //  UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+        
         Gui g = new Gui();
-        for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-        System.out.println(info.getClassName())
-;    }
+       
+      
+
+    }
 }
