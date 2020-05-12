@@ -65,8 +65,12 @@ public class Gui {
 
         // options
         JMenuItem options = new JMenuItem("Options");
+
+
         options.setMnemonic(KeyEvent.VK_O);
         options.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+
+
         options.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                   //create option Dialog
@@ -107,6 +111,9 @@ public class Gui {
 
         // Exit
         JMenuItem Exit = new JMenuItem("Exit");
+          
+        Exit.setMnemonic(KeyEvent.VK_E);
+        Exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
 
         // add menu items to menu
         menuApplication.add(options);
@@ -116,8 +123,14 @@ public class Gui {
         // create view menu
 
         JMenu menuView = new JMenu("View");
+        menuView.setMnemonic(KeyEvent.VK_V);
+
         JMenuItem toggleFullScreen = new JMenuItem("Toggle Full Screen");
+        toggleFullScreen.setMnemonic(KeyEvent.VK_F11);
+        toggleFullScreen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SLASH, ActionEvent.CTRL_MASK));
         JMenuItem toggleSidebar = new JMenuItem("Toggle Sidebar");
+        toggleSidebar.setMnemonic(KeyEvent.VK_F12);
+        toggleSidebar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ActionEvent.CTRL_MASK));
 
         // add components
         menuView.add(toggleFullScreen);
@@ -125,8 +138,12 @@ public class Gui {
 
         // create help menu
         JMenu menuHelp = new JMenu("Help");
+        menuHelp.setMnemonic(KeyEvent.VK_H);
 
         JMenuItem about = new JMenuItem("About");
+        about.setMnemonic(KeyEvent.VK_B);
+        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, ActionEvent.ALT_MASK));
+        
 
       /*  JOptionPane aboutOptionPane = new JOptionPane("About");
         aboutOptionPane.setBorder(new EmptyBorder(5,5,5,5));
@@ -134,6 +151,9 @@ public class Gui {
     */   
         
         JMenuItem help = new JMenuItem("Help");
+        help.setMnemonic(KeyEvent.VK_H);
+        help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, ActionEvent.ALT_MASK));
+
 
         // add components
         menuHelp.add(about);
