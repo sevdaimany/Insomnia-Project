@@ -16,11 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import java.awt.*;
@@ -60,8 +63,9 @@ public class Gui {
         // options
         JMenuItem options = new JMenuItem("Options");
 
+        //create option Dialog
         JDialog optionDialog = new JDialog(frame,"Options",false);
-        optionDialog.setVisible(true);
+       // optionDialog.setVisible(true);
         optionDialog.setBounds(530, 280, 300, 210);
         optionDialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
@@ -109,10 +113,15 @@ public class Gui {
         menuView.add(toggleSidebar);
 
         // create help menu
-
-        
         JMenu menuHelp = new JMenu("Help");
+
         JMenuItem about = new JMenuItem("About");
+
+        JOptionPane aboutOptionPane = new JOptionPane("About");
+        aboutOptionPane.setBorder(new EmptyBorder(5,5,5,5));
+        aboutOptionPane.showMessageDialog(frame,"Hi i'm sevda!\nInsomnia started as a project of mine in 2020.\nMy email : sevdaimany@gmail.com\nMy student number : 9831010 ","About", JOptionPane.INFORMATION_MESSAGE);
+        aboutOptionPane.setVisible(false);
+        
         JMenuItem help = new JMenuItem("Help");
 
         // add components
@@ -375,7 +384,6 @@ public class Gui {
         requests.add(folder2);
         JTree jt = new JTree(requests);
         jt.setBackground(Color.DARK_GRAY);
-
 
         gbc.gridx = 0;
         gbc.gridy = 0;
