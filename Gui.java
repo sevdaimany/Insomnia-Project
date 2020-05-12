@@ -234,7 +234,7 @@ public class Gui {
         panelQueryCenter.setBackground(Color.DARK_GRAY);
 
         // create Auth panel
-        JPanel panelAuth = new JPanel();
+        JPanel panelAuth = new JPanel(new GridBagLayout());
         panelAuth.setBackground(Color.DARK_GRAY);
 
         // add panels to tapeddpane
@@ -385,13 +385,77 @@ public class Gui {
         panelQueryCenter.add(new JLabel(" "), gbc3);
 
         // panel Auth
-
         String choicesAuth[] = { "Bearer" };
         JComboBox comboBoxAuth = new JComboBox(choicesAuth);
         comboBoxAuth.setPreferredSize(new Dimension(760, 30));
         comboBoxAuth.setBackground(Color.GRAY);
         comboBoxAuth.setForeground(Color.WHITE);
-        panelAuth.add(comboBoxAuth);
+
+        JLabel token = new JLabel("Token"); 
+        token.setForeground(Color.GRAY);
+        JTextField tokenTextField = new JTextField();
+        tokenTextField.setPreferredSize(new Dimension(180,30));
+        tokenTextField.setBackground(Color.GRAY);
+        JLabel prefix = new JLabel("Prefix");
+        prefix.setForeground(Color.GRAY);
+
+        JTextField prefixTextFeilField = new JTextField();
+        prefixTextFeilField.setPreferredSize(new Dimension(180,30));
+        prefixTextFeilField.setBackground(Color.GRAY);
+
+       
+
+        JRadioButton enableButton = new JRadioButton("Enable");
+        enableButton.setBackground(Color.DARK_GRAY);
+
+       // panelAuth.add(comboBoxAuth);
+
+       GridBagConstraints gbc7 = new GridBagConstraints();
+       gbc7.gridx = 0 ;
+       gbc7.gridy = 0;
+       gbc7.fill = GridBagConstraints.HORIZONTAL;
+       gbc7.insets = new Insets(10, 20, 20, 10);
+       gbc7.gridwidth = 2;
+       panelAuth.add(comboBoxAuth,gbc7);
+       gbc7.gridwidth = 1;
+
+       gbc7.gridx = 0;
+       gbc7.gridy = 3;
+       gbc7.insets = new Insets(10, 20,20, 10);
+       panelAuth.add(token,gbc7);
+
+       gbc7.gridx = 1;
+       gbc7.gridy = 3;
+       gbc7.weightx = 1;
+       gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(tokenTextField,gbc7);
+
+    
+        gbc7.gridx = 0;
+        gbc7.gridy = 6;
+       gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(prefix,gbc7);
+ 
+        gbc7.gridx = 1;
+        gbc7.gridy = 6;
+       gbc7.weightx = 1;
+       gbc7.insets = new Insets(10, 20, 20, 10);
+         panelAuth.add(prefixTextFeilField,gbc7);
+         
+         gbc7.gridx= 0 ;
+         gbc7.gridy = 8;
+       gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(enableButton,gbc7);
+
+        gbc7.gridx= 0;
+         gbc7.gridy =9;
+        gbc7.weightx = 1;
+        gbc7.weighty = 1;
+        panelAuth.add(new JLabel(" "), gbc7);
+
+
+
+       
 
         panelCenter.add(panelCenter_North, BorderLayout.NORTH);
         panelCenter.add(tabbedPane, BorderLayout.CENTER);
