@@ -20,11 +20,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.event.*;
 
 import java.awt.*;
 
@@ -57,42 +59,51 @@ public class Gui {
 
         // create Application menu
         JMenu menuApplication = new JMenu("Application");
+        menuApplication.setMnemonic(KeyEvent.VK_A);
 
         // create menuitems
 
         // options
         JMenuItem options = new JMenuItem("Options");
-
-        //create option Dialog
+        options.setMnemonic(KeyEvent.VK_O);
+        options.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+        options.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                  //create option Dialog
         JDialog optionDialog = new JDialog(frame,"Options",false);
-       // optionDialog.setVisible(true);
-        optionDialog.setBounds(530, 280, 300, 210);
-        optionDialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+         optionDialog.setVisible(true);
+         optionDialog.setBounds(530, 280, 300, 210);
+         optionDialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+ 
+         JCheckBox followRedirectCheckBox = new JCheckBox(" follow redirect ");
+         followRedirectCheckBox.setPreferredSize(new Dimension(250, 30));
+ 
+         JRadioButton exiRadioButton = new JRadioButton(" Exit ",true);
+         JRadioButton hideRadioButton = new JRadioButton(" Hide on system tray ");
+         ButtonGroup exiButtonGroup = new ButtonGroup();
+         exiButtonGroup.add(exiRadioButton);
+         exiButtonGroup.add(hideRadioButton);
+ 
+         JRadioButton lightTheme = new JRadioButton("light theme");
+         JRadioButton darkTheme = new JRadioButton("dark theme",true);
+         ButtonGroup theme = new ButtonGroup();
+         theme.add(lightTheme);
+         theme.add(darkTheme);
+ 
+         JButton saveButton = new JButton("Save");
+         saveButton.setPreferredSize(new Dimension(100,25));
+ 
+         optionDialog.add(followRedirectCheckBox);
+         optionDialog.add(exiRadioButton);
+         optionDialog.add(hideRadioButton);
+         optionDialog.add(lightTheme);
+         optionDialog.add(darkTheme);
+         optionDialog.add(saveButton);
+            }
+        });
+      
 
-        JCheckBox followRedirectCheckBox = new JCheckBox(" follow redirect ");
-        followRedirectCheckBox.setPreferredSize(new Dimension(250, 30));
-
-        JRadioButton exiRadioButton = new JRadioButton(" Exit ",true);
-        JRadioButton hideRadioButton = new JRadioButton(" Hide on system tray ");
-        ButtonGroup exiButtonGroup = new ButtonGroup();
-        exiButtonGroup.add(exiRadioButton);
-        exiButtonGroup.add(hideRadioButton);
-
-        JRadioButton lightTheme = new JRadioButton("light theme");
-        JRadioButton darkTheme = new JRadioButton("dark theme",true);
-        ButtonGroup theme = new ButtonGroup();
-        theme.add(lightTheme);
-        theme.add(darkTheme);
-
-        JButton saveButton = new JButton("Save");
-        saveButton.setPreferredSize(new Dimension(100,25));
-
-        optionDialog.add(followRedirectCheckBox);
-        optionDialog.add(exiRadioButton);
-        optionDialog.add(hideRadioButton);
-        optionDialog.add(lightTheme);
-        optionDialog.add(darkTheme);
-        optionDialog.add(saveButton);
+      
 
         // Exit
         JMenuItem Exit = new JMenuItem("Exit");
@@ -117,10 +128,10 @@ public class Gui {
 
         JMenuItem about = new JMenuItem("About");
 
-        JOptionPane aboutOptionPane = new JOptionPane("About");
+      /*  JOptionPane aboutOptionPane = new JOptionPane("About");
         aboutOptionPane.setBorder(new EmptyBorder(5,5,5,5));
         aboutOptionPane.showMessageDialog(frame,"Hi i'm sevda!\nInsomnia started as a project of mine in 2020.\nMy email : sevdaimany@gmail.com\nMy student number : 9831010 ","About", JOptionPane.INFORMATION_MESSAGE);
-        aboutOptionPane.setVisible(false);
+    */   
         
         JMenuItem help = new JMenuItem("Help");
 
