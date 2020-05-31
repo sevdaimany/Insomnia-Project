@@ -56,6 +56,15 @@ public class Request {
         
     }
 
+    public static void requestHeaders(HashMap<String, String> headers, HttpURLConnection connection){
+
+        for (String key : headers.keySet()) {
+
+        connection.setRequestProperty(key,headers.get(key));
+        }
+
+    }
+
     public static void sendGet() throws IOException {
 
         URL url = new URL("https://www.google.com/");
