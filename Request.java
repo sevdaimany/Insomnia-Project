@@ -7,33 +7,8 @@ import java.util.Map;
 
 public class Request {
 
-    public static void sendGet() throws IOException {
-
-        URL url = new URL("https://www.google.com/");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-
-        // connection.setDoOutput(true);
-        // Map<String, String> parameters = new HashMap<>();
-        // parameters.put("param1", "val");
-        // DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        // out.writeBytes(getParamsString(parameters));
-        // out.flush();
-        // out.close();
-
-        connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-        connection.setConnectTimeout(5000);
-
-        int status = connection.getResponseCode();
-
-        if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM) {
-            System.out.println("REDIRECT");
-            String location = connection.getHeaderField("Location");
-            URL newUrl = new URL(location);
-            connection = (HttpURLConnection) newUrl.openConnection();
-        }
-
-        if (status == HttpURLConnection.HTTP_OK) { // success
+    public static void printResponseBody(HttpURLConnection connection) throws IOException {
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
@@ -41,6 +16,14 @@ public class Request {
                 content.append(inputLine);
             }
             in.close();
+            System.out.println(content.toString());
+        } else {
+            System.out.println("GET request not worked");
+        }
+    }
+
+    public static void printResponseHeaders(HttpURLConnection connection) throws IOException {
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("RESPNCE");
             // print result
             long date = connection.getDate();
@@ -67,9 +50,38 @@ public class Request {
             // }
             // }
             System.out.println("\n");
-            System.out.println(content.toString());
-        } else {
+
+        } else
+
+        {
             System.out.println("GET request not worked");
+        }
+    }
+
+    public static void sendGet() throws IOException {
+
+        URL url = new URL("https://www.google.com/");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        // connection.setDoOutput(true);
+        // Map<String, String> parameters = new HashMap<>();
+        // parameters.put("param1", "val");
+        // DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+        // out.writeBytes(getParamsString(parameters));
+        // out.flush();
+        // out.close();
+
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+        connection.setConnectTimeout(5000);
+
+        int status = connection.getResponseCode();
+
+        if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM) {
+            System.out.println("REDIRECT");
+            String location = connection.getHeaderField("Location");
+            URL newUrl = new URL(location);
+            connection = (HttpURLConnection) newUrl.openConnection();
         }
 
     }
