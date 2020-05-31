@@ -18,7 +18,7 @@ public class Request {
             in.close();
             System.out.println(content.toString());
         } else {
-            System.out.println("GET request not worked");
+            System.out.println("request not worked");
         }
     }
 
@@ -29,6 +29,7 @@ public class Request {
             long date = connection.getDate();
             long expiration = connection.getExpiration();
             long lastModified = connection.getLastModified();
+            System.out.println("Request Method: "+connection.getRequestMethod());
             System.out.println("Response Code: " + connection.getResponseCode());
             System.out.println("Response Message: " + connection.getResponseMessage());
             System.out.println("Content Type: " + connection.getContentType());
@@ -37,24 +38,12 @@ public class Request {
             System.out.println("Date: " + new Date(date));
             System.out.println("Expiration: " + new Date(expiration));
             System.out.println("Last Modified: " + new Date(lastModified));
-
-            // Map<String, List<String>> map = connection.getHeaderFields();
-
-            // for (String key : map.keySet()) {
-            // System.out.println(key + ":");
-
-            // List<String> values = map.get(key);
-
-            // for (String aValue : values) {
-            // System.out.println("\t" + aValue);
-            // }
-            // }
             System.out.println("\n");
 
         } else
 
         {
-            System.out.println("GET request not worked");
+            System.out.println("request not worked");
         }
     }
 
@@ -63,15 +52,6 @@ public class Request {
         URL url = new URL("https://www.google.com/");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-
-        // connection.setDoOutput(true);
-        // Map<String, String> parameters = new HashMap<>();
-        // parameters.put("param1", "val");
-        // DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        // out.writeBytes(getParamsString(parameters));
-        // out.flush();
-        // out.close();
-
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");
         connection.setConnectTimeout(5000);
 
@@ -87,6 +67,19 @@ public class Request {
     }
 
     public static void sendPost() throws IOException {
+        URL url = new URL("http://apapi.haditabatabaei.ir/tests/post/formdata");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+
+        connection.setDoOutput(true);
+        DataOutputStream dos = new DataOutputStream(connection.getOutputStream());
+        dos.writeChars("param1=value1&param2=value2");
+        dos.flush();
+        dos.close();
+        printResponseHeaders(connection);
+        printResponseBody(connection);
+
+        connection.setConnectTimeout(5000);
 
     }
 
@@ -130,14 +123,11 @@ public class Request {
         bufferedOutputStream.close();
     }
 
-    public static void uploadBinary() {
+    public static void uploadBinary(String Url,String file, HttpURLConnection connection ) {
         try {
-            URL url = new URL("http://apapi.haditabatabaei.ir/tests/post/binary");
-            File haditabatabaei = new File("haditabatabaei.txt");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/octet-stream");
+            URL url = new URL(Url);
+            File haditabatabaei = new File(file);
+            
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(connection.getOutputStream());
             BufferedInputStream fileInputStream = new BufferedInputStream(new FileInputStream(haditabatabaei));
             bufferedOutputStream.write(fileInputStream.readAllBytes());
@@ -156,7 +146,7 @@ public class Request {
         HashMap<String, String> fooBody = new HashMap<>();
         fooBody.put("name", "hadi");
         fooBody.put("lastName", "tabatabaei");
-        // fooBody.put("file", "pic2.png");
+        fooBody.put("file", "pic2.png");
         fooBody.put("file2", "result.png");
         try {
             URL url = new URL("http://apapi.haditabatabaei.ir/tests/post/formdata");
@@ -179,6 +169,6 @@ public class Request {
     public static void main(String[] args) throws IOException {
         // uploadBinary();
         // formData();
-        sendGet();
+        sendPost();
     }
 }
