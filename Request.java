@@ -22,24 +22,12 @@ public class Request {
         }
     }
 
+   
     public static void printResponseHeaders(HttpURLConnection connection) throws IOException {
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println("RESPNCE");
             // print result
-            // long date = connection.getDate();
-            // long expiration = connection.getExpiration();
-            // long lastModified = connection.getLastModified();
              System.out.println("Request Method: "+connection.getRequestMethod());
-            // System.out.println("Response Code: " + connection.getResponseCode());
-            // System.out.println("Response Message: " + connection.getResponseMessage());
-            // System.out.println("Content Type: " + connection.getContentType());
-            // System.out.println("Content Encoding: " + connection.getContentEncoding());
-            // System.out.println("Content Length: " + connection.getContentLength());
-            // System.out.println("Date: " + new Date(date));
-            // System.out.println("Expiration: " + new Date(expiration));
-            // System.out.println("Last Modified: " + new Date(lastModified));
-            // System.out.println("\n");
-
            Map<String, List<String>> map = connection.getHeaderFields();
 
             for (String key : map.keySet()) {
@@ -60,6 +48,14 @@ public class Request {
         }
     }
 
+    public static void redirect( HttpURLConnection connection) throws IOException{
+            System.out.println("REDIRECT");
+            String location = connection.getHeaderField("Location");
+            URL newUrl = new URL(location);
+            connection = (HttpURLConnection) newUrl.openConnection();
+        
+    }
+
     public static void sendGet() throws IOException {
 
         URL url = new URL("https://www.google.com/");
@@ -67,22 +63,19 @@ public class Request {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");
         connection.setConnectTimeout(5000);
-
         int status = connection.getResponseCode();
 
-        if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM) {
-            System.out.println("REDIRECT");
-            String location = connection.getHeaderField("Location");
-            URL newUrl = new URL(location);
-            connection = (HttpURLConnection) newUrl.openConnection();
+        if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM){
+            redirect(connection);
         }
 
     }
 
-    public static void sendPost() throws IOException {
+    public static void sendPostPutDelete(String Method) throws IOException {
         URL url = new URL("http://apapi.haditabatabaei.ir/tests/post/formdata");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
+        connection.setRequestMethod(Method);
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0");
         connection.setDoOutput(true);
         printResponseHeaders(connection);
         printResponseBody(connection);
