@@ -3,9 +3,11 @@ import java.net.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import javax.net.ssl.*;
 
-public class Request {
+public class Request implements Serializable {
     private String urlString;
     private URL url;
     private transient HttpURLConnection connection;
@@ -18,10 +20,13 @@ public class Request {
     private final boolean o_saveResponseBody;
     private final String o_fileName;
     private final boolean s_saveReguest;
+    private final boolean h_requestsHeaders;
+    private final boolean d_formdataMesssageBody;
 
     public Request(String urlString, String method, HashMap<String, String> body,
             HashMap<String, String> requestsHeaders, String file, boolean i_showResponseHeaders, boolean f_redirect,
-            boolean o_saveResponseBody, String o_fileName, boolean s_saveReguest) {
+            boolean o_saveResponseBody, String o_fileName, boolean s_saveReguest, boolean h_requestsHeaders,
+            boolean d_formdataMesssageBody) {
         this.urlString = urlString;
         Method = method;
         this.body = body;
@@ -32,6 +37,8 @@ public class Request {
         this.o_saveResponseBody = o_saveResponseBody;
         this.o_fileName = o_fileName;
         this.s_saveReguest = s_saveReguest;
+        this.h_requestsHeaders = h_requestsHeaders;
+        this.d_formdataMesssageBody = d_formdataMesssageBody;
 
     }
 
@@ -65,14 +72,6 @@ public class Request {
 
     public void setFile(String file) {
         this.file = file;
-    }
-
-    public HttpURLConnection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(HttpURLConnection connection) {
-        this.connection = connection;
     }
 
     public boolean isI_showResponseHeaders() {
@@ -113,18 +112,43 @@ public class Request {
             return;
         }
 
+        sendMethod();
+
     }
 
     public void printResponseBody() throws IOException {
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
+
+            File fileSaveResponseBody = null;
+            BufferedWriter writer = null;
+
+            if (o_saveResponseBody) {
+                File dir = new File("D:\\java\\project2\\responseBody");
+                writer = new BufferedWriter(new FileWriter(fileSaveResponseBody));
+
+                if (o_fileName == null || o_fileName.isEmpty()) {
+                    String name = Integer.toString(new Random().nextInt(1000000000)) + ".insomnia";
+                    fileSaveResponseBody = new File(dir, name);
+                }
+                 else {
+                    fileSaveResponseBody = new File(dir, o_fileName + ".insomnia");
+                }
+            }
+
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
+
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
+                if(o_saveResponseBody)
+                writer.write(inputLine);
             }
+
             in.close();
             System.out.println(content.toString());
+            if(o_saveResponseBody)
+            writer.close();
         } else {
             System.out.println("request not worked");
         }
@@ -155,14 +179,6 @@ public class Request {
         }
     }
 
-    public void redirect(HttpURLConnection connection) throws IOException {
-        System.out.println("REDIRECT");
-        String location = connection.getHeaderField("Location");
-        URL newUrl = new URL(location);
-        connection = (HttpURLConnection) newUrl.openConnection();
-
-    }
-
     public void requestHeaders() {
 
         for (String key : requestsHeaders.keySet()) {
@@ -172,25 +188,36 @@ public class Request {
 
     }
 
-    public void sendGet() throws IOException {
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("User-Agent", "insomnia/7.1.1");
-        connection.setConnectTimeout(5000);
-        int status = connection.getResponseCode();
+    // public void sendGet() throws IOException {
+    // connection.setRequestMethod(Method);
+    // connection.setRequestProperty("User-Agent", "insomnia/7.1.1");
+    // connection.setConnectTimeout(5000);
+    // if (isI_showResponseHeaders())
+    // printResponseHeaders();
 
-        if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM) {
-            redirect(connection);
-        }
+    // printResponseBody();
+    // }
 
-    }
-
-    public void sendPostPutDelete() throws IOException {
+    public void sendMethod() throws IOException {
         connection.setRequestMethod(Method);
         connection.setRequestProperty("User-Agent", " insomnia/7.1.1");
-        connection.setDoOutput(true);
-        printResponseHeaders();
-        printResponseBody();
         connection.setConnectTimeout(5000);
+
+        if (!Method.equals("GET")) {
+            connection.setDoOutput(true);
+            if (d_formdataMesssageBody) {
+                formData();
+            }
+        }
+
+        if (h_requestsHeaders) {
+            requestHeaders();
+        }
+
+        if (i_showResponseHeaders)
+            printResponseHeaders();
+
+        printResponseBody();
 
     }
 
@@ -202,7 +229,7 @@ public class Request {
                         + (new File(body.get(key))).getName() + "\"\r\nContent-Type: Auto\r\n\r\n").getBytes());
                 try {
                     BufferedInputStream tempBufferedInputStream = new BufferedInputStream(
-                            new FileInputStream(new File(getBody().get(key))));
+                            new FileInputStream(new File(body.get(key))));
                     byte[] filesBytes = tempBufferedInputStream.readAllBytes();
                     bufferedOutputStream.write(filesBytes);
                     bufferedOutputStream.write("\r\n".getBytes());
@@ -245,8 +272,6 @@ public class Request {
             bufferOutFormData(boundary, request);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
             System.out.println(new String(bufferedInputStream.readAllBytes()));
-            // System.out.println(connection.getResponseCode());
-            // System.out.println(connection.getHeaderFields());
         } catch (Exception e) {
 
         }
