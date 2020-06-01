@@ -21,4 +21,12 @@ public class Jurl {
         saveRequest.save(request, saveRequestFile);
     }
 
+    public void showList(){
+        File Directory = new File("./requests");
+        File[] filesList = Directory.listFiles();
+        for(int i = 0 ; i < filesList.length ; i++){
+            System.out.println((i+1)+": "+filesList[i].getName());
+        }
+    }
+
 }
