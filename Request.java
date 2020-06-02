@@ -18,15 +18,13 @@ public class Request implements Serializable {
     private final boolean f_redirect;
     private final boolean o_saveResponseBody;
     private final String o_fileName;
-    private final boolean s_saveReguest;
-    private final String o_saveRequestDirectoryName;
     private final boolean h_requestsHeaders;
     private final boolean d_formdataMesssageBody;
 
     public Request(String urlString, String method, HashMap<String, String> body,
             HashMap<String, String> requestsHeaders, String file, boolean i_showResponseHeaders, boolean f_redirect,
-            boolean o_saveResponseBody, String o_fileName, boolean s_saveReguest, boolean h_requestsHeaders,
-            boolean d_formdataMesssageBody, String o_saveRequestDirectoryName) {
+            boolean o_saveResponseBody, String o_fileName, boolean h_requestsHeaders,
+            boolean d_formdataMesssageBody) {
         this.urlString = urlString;
         Method = method;
         this.body = body;
@@ -36,10 +34,9 @@ public class Request implements Serializable {
         this.f_redirect = f_redirect;
         this.o_saveResponseBody = o_saveResponseBody;
         this.o_fileName = o_fileName;
-        this.s_saveReguest = s_saveReguest;
         this.h_requestsHeaders = h_requestsHeaders;
         this.d_formdataMesssageBody = d_formdataMesssageBody;
-        this.o_saveRequestDirectoryName = o_saveRequestDirectoryName;
+
 
     }
 
@@ -91,9 +88,8 @@ public class Request implements Serializable {
         return o_fileName;
     }
 
-    public boolean isS_saveReguest() {
-        return s_saveReguest;
-    }
+   
+
 
     public void run() throws IOException {
 
@@ -121,7 +117,6 @@ public class Request implements Serializable {
             BufferedWriter writer = null;
 
             if (o_saveResponseBody) {
-                writer = new BufferedWriter(new FileWriter(fileSaveResponseBody));
 
                 if (o_fileName == null || o_fileName.isEmpty()) {
                     String name = Integer.toString(new Random().nextInt(1000000000)) + ".insomnia";
@@ -137,6 +132,10 @@ public class Request implements Serializable {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
+
+            if (o_saveResponseBody) 
+                writer = new BufferedWriter(new FileWriter(fileSaveResponseBody));
+
 
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
