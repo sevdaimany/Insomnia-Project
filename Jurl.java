@@ -1,18 +1,196 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 
 public class Jurl {
 
     public static void main(String[] args) {
 
+        String urlString;
+        boolean i_showResponseHeaders = false;
+        String Method = "GET";
+        boolean f_redirect = false;
+        boolean o_saveResponseBody = false;
+        String o_fileName = null;
+        HashMap<String, String> headersHashMap = null;
+        boolean h_requestsHeaders = false;
+        boolean d_formdataMesssageBody = false;
+        HashMap<String, String> body = null;
+
+        ArrayList<String> input = new ArrayList<>();
+        ArrayList<String> argInput = new ArrayList<>();
+        argInput.add("--method");
+        argInput.add("--headers");
+        argInput.add("-i");
+        argInput.add("--help");
+        argInput.add("-f");
+        argInput.add("--output");
+        argInput.add("--save");
+        argInput.add("--data");
+        argInput.add("--json");
+        argInput.add("--upload");
+
+        for (int i = 0; i < args.length; i++) {
+            input.add(args[i]);
+        }
+
+        urlString = input.get(0);
+
+        if (input.contains("-i"))
+            i_showResponseHeaders = true;
+
+        if (input.contains("--method")) {
+            int index = input.indexOf("--method");
+            if (index + 1 < input.size()) {
+                String methodName = input.get(index + 1);
+                if (methodName.equals("GET") || methodName.equals("POST") || methodName.equals("PUT")
+                        || methodName.equals("DELETE")) {
+                    Method = methodName;
+                } else {
+                    System.out.println("Invalid method name.");
+                    return;
+                }
+            } else {
+                System.out.println("method name is not entered.");
+                return;
+            }
+        }
+
+        if (input.contains("-f"))
+            f_redirect = true;
+
+        if (input.contains("list")) {
+            int index = input.indexOf("list");
+            if (index + 1 < input.size()) {
+                if (argInput.contains(input.get(index + 1))) {
+                    showList();
+                } else {
+                    String folderName = input.get(index + 1);
+                    try {
+                        showRequestsInList(folderName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else {
+                showList();
+            }
+        }
+
+        if (input.contains("--output")) {
+            int index = input.indexOf("--output");
+            o_saveResponseBody = true;
+            if (index + 1 < input.size()) {
+                if (!argInput.contains(input.get(index + 1))) {
+                    o_fileName = input.get(index + 1);
+                }
+            }
+
+        }
+
+        if (input.contains("--headers")) {
+            int index = input.indexOf("--headers");
+
+            if (index + 1 < input.size()) {
+                if (argInput.contains(input.get(index + 1))) {
+                    System.out.println("headers are not given.");
+                    return;
+                } else {
+                    headersHashMap = new HashMap<>();
+                    String headers = input.get(index + 1);
+                    headers = headers.substring(1, headers.length() - 1);
+                    String[] keyValue = headers.split(";");
+                    for (int i = 0; i < keyValue.length; i++) {
+                        String[] seprateKeyValue = keyValue[i].split(":");
+                        if (seprateKeyValue.length != 2) {
+                            System.out.println("invalid header.");
+                            return;
+                        } else {
+                            headersHashMap.put(seprateKeyValue[0], seprateKeyValue[1]);
+                        }
+                    }
+                    h_requestsHeaders = true;
+
+                }
+            } else {
+                System.out.println("headers are not given");
+                return;
+            }
+        }
+
+        if (input.contains("--data")) {
+            int index = input.indexOf("--data");
+
+            if (index + 1 < input.size()) {
+
+                if (argInput.contains(input.get(index + 1))) {
+                    System.out.println("form data is not given.");
+                    return;
+                } else {
+                    body = new HashMap<>();
+                    String formdatas = input.get(index + 1);
+                    formdatas = formdatas.substring(1, formdatas.length() - 1);
+                    String[] keyValue = formdatas.split("&");
+                    for (int i = 0; i < keyValue.length; i++) {
+                        String[] seprateKeyValue = keyValue[i].split("=");
+                        if (seprateKeyValue.length != 2) {
+                            System.out.println("invalid form data.");
+                            return;
+                        } else {
+                            body.put(seprateKeyValue[0], seprateKeyValue[1]);
+                        }
+                    }
+                    d_formdataMesssageBody = true;
+
+                }
+            } else {
+                System.out.println("form data is not given.");
+                return;
+            }
+        }
+        String file = null;
+        Request request = new Request(urlString, Method, body, headersHashMap, file, i_showResponseHeaders, f_redirect,
+                o_saveResponseBody, o_fileName, h_requestsHeaders, d_formdataMesssageBody);
+
+        if (input.contains("--save")) {
+            int index = input.indexOf("--save");
+
+            if (index + 1 < input.size()) {
+
+                if (argInput.contains(input.get(index + 1))) {
+                    System.out.println("Please enter a folder name to save.");
+                    return;
+                } else {
+                    String nameDirectory = input.get(index + 1);
+                    try {
+                        saveRequest(request, nameDirectory);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            try {
+                request.run();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Please enter a folder name to save.");
+            return;
+
+        }
+
+        }
     }
 
-    public void saveRequest(Request request, String nameDirectory) throws IOException {
+    public static void saveRequest(Request request, String nameDirectory) throws IOException {
 
         File saveRequestDirectory = new File("./requests/" + nameDirectory);
         saveRequestDirectory.mkdir();
@@ -25,7 +203,7 @@ public class Jurl {
         saveRequest.save(request, saveRequestFile);
     }
 
-    public void showList() {
+    public static void showList() {
         File Directory = new File("./requests");
         File[] filesList = Directory.listFiles();
         for (int i = 0; i < filesList.length; i++) {
@@ -33,19 +211,22 @@ public class Jurl {
         }
     }
 
-    public void showRequestsInList(String nameDirectory) throws Exception {
+    public static void showRequestsInList(String nameDirectory) throws Exception {
         File nameFile = new File("./requests/" + nameDirectory);
         if (nameFile.exists()) {
-            ObjectInputStream in =null;
+            ObjectInputStream in = null;
             File[] requestList = nameFile.listFiles();
             for (int i = 0; i < requestList.length; i++) {
 
                 in = new ObjectInputStream(new FileInputStream(requestList[i]));
-                Request request = (Request)in.readObject();
-                System.out.println((i + 1) + ". url: " +request.getUrl()+" | method: "+request.getMethod() + ((request.getRequestsHeaders().size() == 0)?"":(" | headers : "+ request.getRequestsHeaders().toString()) ) +((request.getBody().size() == 0)?"":(" | formData : "+ request.getBody().toString()) ) ); 
+                Request request = (Request) in.readObject();
+                System.out.println((i + 1) + ". url: " + request.getUrl() + " | method: " + request.getMethod()
+                        + ((request.getRequestsHeaders().size() == 0) ? ""
+                                : (" | headers : " + request.getRequestsHeaders().toString()))
+                        + ((request.getBody().size() == 0) ? "" : (" | formData : " + request.getBody().toString())));
 
             }
-            in .close();
+            in.close();
 
         }
     }
