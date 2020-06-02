@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.net.ssl.*;
 
 public class Request implements Serializable {
@@ -20,13 +19,14 @@ public class Request implements Serializable {
     private final boolean o_saveResponseBody;
     private final String o_fileName;
     private final boolean s_saveReguest;
+    private final String o_saveRequestDirectoryName;
     private final boolean h_requestsHeaders;
     private final boolean d_formdataMesssageBody;
 
     public Request(String urlString, String method, HashMap<String, String> body,
             HashMap<String, String> requestsHeaders, String file, boolean i_showResponseHeaders, boolean f_redirect,
             boolean o_saveResponseBody, String o_fileName, boolean s_saveReguest, boolean h_requestsHeaders,
-            boolean d_formdataMesssageBody) {
+            boolean d_formdataMesssageBody, String o_saveRequestDirectoryName) {
         this.urlString = urlString;
         Method = method;
         this.body = body;
@@ -39,6 +39,7 @@ public class Request implements Serializable {
         this.s_saveReguest = s_saveReguest;
         this.h_requestsHeaders = h_requestsHeaders;
         this.d_formdataMesssageBody = d_formdataMesssageBody;
+        this.o_saveRequestDirectoryName = o_saveRequestDirectoryName;
 
     }
 
@@ -96,23 +97,20 @@ public class Request implements Serializable {
 
     public void run() throws IOException {
 
-        if (isF_redirect()) {
-            String location = connection.getHeaderField("Location");
-            url = new URL(location);
-        } else {
-            url = new URL(urlString);
-        }
-
-        if (url.getProtocol().equals("http")) {
-            connection = (HttpURLConnection) url.openConnection();
-        } else if (url.getProtocol().equals("https")) {
-            connection = (HttpsURLConnection) url.openConnection();
-        } else {
-            System.err.println("Unsupported protocol");
-            return;
-        }
-
+        url = new URL(urlString);
+        connection = (HttpURLConnection) url.openConnection();
         sendMethod();
+
+        if (isF_redirect()) {
+            while (connection.getResponseCode() > 299 && connection.getResponseCode() < 400) {
+                String location = connection.getHeaderField("Location");
+                url = new URL(location);
+                connection = (HttpURLConnection) url.openConnection();
+                sendMethod();
+
+            }
+
+        }
 
     }
 
@@ -123,15 +121,16 @@ public class Request implements Serializable {
             BufferedWriter writer = null;
 
             if (o_saveResponseBody) {
-                File dir = new File("D:\\java\\project2\\responseBody");
                 writer = new BufferedWriter(new FileWriter(fileSaveResponseBody));
 
                 if (o_fileName == null || o_fileName.isEmpty()) {
                     String name = Integer.toString(new Random().nextInt(1000000000)) + ".insomnia";
-                    fileSaveResponseBody = new File(dir, name);
-                }
-                 else {
-                    fileSaveResponseBody = new File(dir, o_fileName + ".insomnia");
+                    fileSaveResponseBody = new File("./responseBody/" + name);
+                    fileSaveResponseBody.createNewFile();
+
+                } else {
+                    fileSaveResponseBody = new File("./responseBody/" + o_fileName + ".insomnia");
+                    fileSaveResponseBody.createNewFile();
                 }
             }
 
@@ -141,14 +140,14 @@ public class Request implements Serializable {
 
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
-                if(o_saveResponseBody)
-                writer.write(inputLine);
+                if (o_saveResponseBody)
+                    writer.write(inputLine);
             }
 
             in.close();
             System.out.println(content.toString());
-            if(o_saveResponseBody)
-            writer.close();
+            if (o_saveResponseBody)
+                writer.close();
         } else {
             System.out.println("request not worked");
         }
@@ -236,6 +235,7 @@ public class Request implements Serializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             } else {
                 bufferedOutputStream.write(("Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n").getBytes());
                 bufferedOutputStream.write((body.get(key) + "\r\n").getBytes());
