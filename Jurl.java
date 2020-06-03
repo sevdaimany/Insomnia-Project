@@ -4,7 +4,6 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Scanner;
 import java.io.FileInputStream;
 
 public class Jurl {
@@ -67,19 +66,19 @@ public class Jurl {
         if (input.contains("list")) {
             int index = input.indexOf("list");
             if (index + 1 < input.size()) {
-                if (argInput.contains(input.get(index + 1))) {
-                    showList();
-                } else {
-                    String folderName = input.get(index + 1);
-                    try {
-                        showRequestsInList(folderName);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
+                String folderName = input.get(index + 1);
+                try {
+                    showRequestsInList(folderName);
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return;
                 }
+
             } else {
                 showList();
+                return;
             }
         }
 
@@ -91,7 +90,6 @@ public class Jurl {
                     o_fileName = input.get(index + 1);
                 }
             }
-
         }
 
         if (input.contains("--headers")) {
@@ -104,7 +102,7 @@ public class Jurl {
                 } else {
                     headersHashMap = new HashMap<>();
                     String headers = input.get(index + 1);
-                    headers = headers.substring(1, headers.length() - 1);
+                    // headers = headers.substring(1, headers.length() - 1);
                     String[] keyValue = headers.split(";");
                     for (int i = 0; i < keyValue.length; i++) {
                         String[] seprateKeyValue = keyValue[i].split(":");
@@ -135,7 +133,7 @@ public class Jurl {
                 } else {
                     body = new HashMap<>();
                     String formdatas = input.get(index + 1);
-                    formdatas = formdatas.substring(1, formdatas.length() - 1);
+                    // formdatas = formdatas.substring(1, formdatas.length() - 1);
                     String[] keyValue = formdatas.split("&");
                     for (int i = 0; i < keyValue.length; i++) {
                         String[] seprateKeyValue = keyValue[i].split("=");
@@ -175,19 +173,20 @@ public class Jurl {
                     }
                 }
 
+            } else {
+                System.out.println("Please enter a folder name to save.");
+                return;
 
-            try {
-                request.run();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        } else {
-            System.out.println("Please enter a folder name to save.");
-            return;
 
         }
 
+        try {
+            request.run();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     public static void saveRequest(Request request, String nameDirectory) throws IOException {
@@ -220,10 +219,11 @@ public class Jurl {
 
                 in = new ObjectInputStream(new FileInputStream(requestList[i]));
                 Request request = (Request) in.readObject();
-                System.out.println((i + 1) + ". url: " + request.getUrl() + " | method: " + request.getMethod()
-                        + ((request.getRequestsHeaders().size() == 0) ? ""
+                System.out.println((i + 1) + ". url: " + request.getUrlString() + " | method: " + request.getMethod()
+                        + ((!request.isH_requestsHeaders()) ? ""
                                 : (" | headers : " + request.getRequestsHeaders().toString()))
-                        + ((request.getBody().size() == 0) ? "" : (" | formData : " + request.getBody().toString())));
+                        + ((!request.isD_formdataMesssageBody()) ? ""
+                                : (" | formData : " + request.getBody().toString())));
 
             }
             in.close();
