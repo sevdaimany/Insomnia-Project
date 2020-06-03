@@ -209,8 +209,10 @@ public class Jurl {
                     }
                     try {
                         fireRequest(requestNum, nameDirectory);
+                        return;
                     } catch (Exception e) {
                         e.printStackTrace();
+                        return;
                     }
                 } else {
                     System.out.println("request number is not entered");
@@ -226,6 +228,8 @@ public class Jurl {
             request.run();
         } catch (IOException e) {
             e.printStackTrace();
+
+            
         }
 
     }
@@ -278,6 +282,7 @@ public class Jurl {
             ObjectInputStream in = null;
             File[] requestList = nameFile.listFiles();
             for (int i = 0; i < requestNum.size(); i++) {
+                System.out.println("\nRequest"+requestNum.get(i)+":\n");
                 in = new ObjectInputStream(new FileInputStream(requestList[requestNum.get(i) -1]));
                 Request request = (Request) in.readObject();
                 try {
