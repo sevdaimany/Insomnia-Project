@@ -152,20 +152,18 @@ public class Jurl {
             }
         }
 
-        if(input.contains("--upload")){
+        if (input.contains("--upload")) {
             int index = input.indexOf("--upload");
-            if(index+1 < input.size()){
-                if(argInput.contains(input.get(index +1))){
+            if (index + 1 < input.size()) {
+                if (argInput.contains(input.get(index + 1))) {
                     System.out.println("file address is not entered.");
                     return;
-                }
-                else{
+                } else {
                     d_formdataMesssageBody = true;
                     body.put("file", input.get(index + 1));
                 }
 
-            }
-            else{
+            } else {
                 System.out.println("file address is not entered.");
                 return;
             }
@@ -200,22 +198,25 @@ public class Jurl {
 
         }
 
-        if(input.contains("fire")){
+        if (input.contains("fire")) {
             int index = input.indexOf("fire");
-            if(index + 1 < input.size()){
-                if(index + 2 <input.size()){ 
-                String nameDirectory = input.get(index +1);
-                ArrayList<Integer> requestNum = new ArrayList<>();
-                for(int i = index + 2 ; i < input.size() ; i++){
-                    requestNum.add(Integer.parseInt(input.get(i)));
+            if (index + 1 < input.size()) {
+                if (index + 2 < input.size()) {
+                    String nameDirectory = input.get(index + 1);
+                    ArrayList<Integer> requestNum = new ArrayList<>();
+                    for (int i = index + 2; i < input.size(); i++) {
+                        requestNum.add(Integer.parseInt(input.get(i)));
+                    }
+                    try {
+                        fireRequest(requestNum, nameDirectory);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("request number is not entered");
+                    return;
                 }
-            }
-            else{
-                System.out.println("request number is not entered");
-                return;
-            }
-            }
-            else{
+            } else {
                 System.out.println("folder name is not entered");
                 return;
             }
@@ -271,21 +272,20 @@ public class Jurl {
         }
     }
 
-    public void fireRequest(ArrayList<Integer> requestNum, String nameDirectory)throws Exception{
+    public static void fireRequest(ArrayList<Integer> requestNum, String nameDirectory) throws Exception {
         File nameFile = new File("./requests/" + nameDirectory);
-        if(nameFile.exists()){
+        if (nameFile.exists()) {
             ObjectInputStream in = null;
             File[] requestList = nameFile.listFiles();
-            for (int i = 0 ; i < requestNum.size() ; i++){
-                in = new ObjectInputStream(new FileInputStream(requestList[requestNum.get(i)]));
+            for (int i = 0; i < requestNum.size(); i++) {
+                in = new ObjectInputStream(new FileInputStream(requestList[requestNum.get(i) -1]));
                 Request request = (Request) in.readObject();
                 try {
                     request.run();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-        
-                
+
             }
 
         }
