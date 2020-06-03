@@ -19,7 +19,7 @@ public class Jurl {
         HashMap<String, String> headersHashMap = null;
         boolean h_requestsHeaders = false;
         boolean d_formdataMesssageBody = false;
-        HashMap<String, String> body = null;
+        HashMap<String, String> body = new HashMap<>();
 
         ArrayList<String> input = new ArrayList<>();
         ArrayList<String> argInput = new ArrayList<>();
@@ -131,7 +131,6 @@ public class Jurl {
                     System.out.println("form data is not given.");
                     return;
                 } else {
-                    body = new HashMap<>();
                     String formdatas = input.get(index + 1);
                     // formdatas = formdatas.substring(1, formdatas.length() - 1);
                     String[] keyValue = formdatas.split("&");
@@ -151,6 +150,26 @@ public class Jurl {
                 System.out.println("form data is not given.");
                 return;
             }
+        }
+
+        if(input.contains("--upload")){
+            int index = input.indexOf("--upload");
+            if(index+1 < input.size()){
+                if(argInput.contains(input.get(index +1))){
+                    System.out.println("file address is not entered.");
+                    return;
+                }
+                else{
+                    d_formdataMesssageBody = true;
+                    body.put("file", input.get(index + 1));
+                }
+
+            }
+            else{
+                System.out.println("file address is not entered.");
+                return;
+            }
+
         }
         String file = null;
         Request request = new Request(urlString, Method, body, headersHashMap, file, i_showResponseHeaders, f_redirect,
