@@ -200,6 +200,27 @@ public class Jurl {
 
         }
 
+        if(input.contains("fire")){
+            int index = input.indexOf("fire");
+            if(index + 1 < input.size()){
+                if(index + 2 <input.size()){ 
+                String nameDirectory = input.get(index +1);
+                ArrayList<Integer> requestNum = new ArrayList<>();
+                for(int i = index + 2 ; i < input.size() ; i++){
+                    requestNum.add(Integer.parseInt(input.get(i)));
+                }
+            }
+            else{
+                System.out.println("request number is not entered");
+                return;
+            }
+            }
+            else{
+                System.out.println("folder name is not entered");
+                return;
+            }
+        }
+
         try {
             request.run();
         } catch (IOException e) {
@@ -248,6 +269,27 @@ public class Jurl {
             in.close();
 
         }
+    }
+
+    public void fireRequest(ArrayList<Integer> requestNum, String nameDirectory)throws Exception{
+        File nameFile = new File("./requests/" + nameDirectory);
+        if(nameFile.exists()){
+            ObjectInputStream in = null;
+            File[] requestList = nameFile.listFiles();
+            for (int i = 0 ; i < requestNum.size() ; i++){
+                in = new ObjectInputStream(new FileInputStream(requestList[requestNum.get(i)]));
+                Request request = (Request) in.readObject();
+                try {
+                    request.run();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        
+                
+            }
+
+        }
+
     }
 
 }
