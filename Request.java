@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import javax.net.ssl.*;
 
 public class Request implements Serializable {
     private String urlString;
@@ -23,8 +22,7 @@ public class Request implements Serializable {
 
     public Request(String urlString, String method, HashMap<String, String> body,
             HashMap<String, String> requestsHeaders, String file, boolean i_showResponseHeaders, boolean f_redirect,
-            boolean o_saveResponseBody, String o_fileName, boolean h_requestsHeaders,
-            boolean d_formdataMesssageBody) {
+            boolean o_saveResponseBody, String o_fileName, boolean h_requestsHeaders, boolean d_formdataMesssageBody) {
         this.urlString = urlString;
         Method = method;
         this.body = body;
@@ -36,7 +34,6 @@ public class Request implements Serializable {
         this.o_fileName = o_fileName;
         this.h_requestsHeaders = h_requestsHeaders;
         this.d_formdataMesssageBody = d_formdataMesssageBody;
-
 
     }
 
@@ -88,10 +85,24 @@ public class Request implements Serializable {
         return o_fileName;
     }
 
-   
+    public boolean isH_requestsHeaders() {
+        return h_requestsHeaders;
+    }
+
+    public boolean isD_formdataMesssageBody() {
+        return d_formdataMesssageBody;
+    }
+
+    public String getUrlString() {
+        return urlString;
+    }
 
 
     public void run() throws IOException {
+        String protocolString = urlString.substring(0, 4);
+        if (!protocolString.equals("http")) {
+            urlString = "http://" + urlString;
+        }
 
         url = new URL(urlString);
         connection = (HttpURLConnection) url.openConnection();
@@ -111,7 +122,7 @@ public class Request implements Serializable {
     }
 
     public void printResponseBody() throws IOException {
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
+       // if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
 
             File fileSaveResponseBody = null;
             BufferedWriter writer = null;
@@ -133,9 +144,8 @@ public class Request implements Serializable {
             String inputLine;
             StringBuffer content = new StringBuffer();
 
-            if (o_saveResponseBody) 
+            if (o_saveResponseBody)
                 writer = new BufferedWriter(new FileWriter(fileSaveResponseBody));
-
 
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
@@ -145,21 +155,23 @@ public class Request implements Serializable {
 
             in.close();
             System.out.println(content.toString());
+            System.out.println("\n");
             if (o_saveResponseBody)
                 writer.close();
-        } else {
-            System.out.println("request not worked");
-        }
+        // } else {
+        //     System.out.println("request not worked");
+        // }
     }
 
     public void printResponseHeaders() throws IOException {
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            System.out.println("RESPONCE");
+       // if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            System.out.println("\n");
             // print result
             System.out.println("Request Method: " + connection.getRequestMethod());
             Map<String, List<String>> map = connection.getHeaderFields();
 
             for (String key : map.keySet()) {
+                //if(!key.equals("null"))
                 System.out.print(key + ": ");
 
                 List<String> values = map.get(key);
@@ -170,11 +182,11 @@ public class Request implements Serializable {
             }
             System.out.println("\n");
 
-        } else
+        // } else
 
-        {
-            System.out.println("request not worked");
-        }
+        // {
+        //     System.out.println("request not worked");
+        // }
     }
 
     public void requestHeaders() {
@@ -216,8 +228,8 @@ public class Request implements Serializable {
             printResponseHeaders();
 
         printResponseBody();
-
     }
+
 
     public void bufferOutFormData(String boundary, BufferedOutputStream bufferedOutputStream) throws IOException {
         for (String key : body.keySet()) {
@@ -287,4 +299,6 @@ public class Request implements Serializable {
         // sendPost();
     }
 
+   
+ 
 }
