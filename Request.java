@@ -324,16 +324,30 @@ public class Request implements Serializable {
         }
     }
 
-    public void formData() {
+    public void formData() throws IOException{
         BufferedWriter GuiWriter = null;
-        File GuiResponseBody = null;
+        File GuiFormData = null;
+
+        if (Gui) {
+            GuiFormData = new File("./GuiFormData.txt");
+            GuiFormData.createNewFile();
+
+            GuiWriter = new BufferedWriter(new FileWriter(GuiFormData));
+        }
+
         try {
             String boundary = System.currentTimeMillis() + "";
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             BufferedOutputStream request = new BufferedOutputStream(connection.getOutputStream());
             bufferOutFormData(boundary, request);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
+            if(Gui){
+                GuiWriter.write(new String(bufferedInputStream.readAllBytes()));
+            }
+            else{ 
             System.out.println(new String(bufferedInputStream.readAllBytes()));
+            }
+            GuiWriter.close();
         } catch (Exception e) {
 
         }
