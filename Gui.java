@@ -40,7 +40,7 @@ public class Gui {
 
     private JFrame frame;
     String[] argsMain = new String[30];
-    int i = 0;
+    int i = 1;
 
 
     public Gui() {
@@ -210,9 +210,7 @@ public class Gui {
         URLAddress.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                argsMain[i] = URLAddress.getText();
-                System.out.println(argsMain[i]);
-                i++;
+                argsMain[0] = URLAddress.getText();
             }
         });
 
