@@ -39,7 +39,8 @@ import java.awt.*;
 public class Gui {
 
     private JFrame frame;
-    String[] argsMain = null;
+    String[] argsMain = new String[30];
+    int i = 0;
 
 
     public Gui() {
@@ -191,13 +192,29 @@ public class Gui {
         comboBox.setBorder(border2);
         comboBox.setBackground(Color.WHITE);
         comboBox.setForeground(Color.GRAY);
-        
+        comboBox.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                argsMain[i] = "--method";
+                i++;
+                argsMain[i] = (String)comboBox.getSelectedItem();
+                i++;
+            }
+        });
 
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
         int addressWidth = URLAddress.getPreferredSize().width + 410;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
+        URLAddress.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                argsMain[i] = URLAddress.getText();
+                System.out.println(argsMain[i]);
+                i++;
+            }
+        });
 
         JButton sendButton = new JButton("Send");
         sendButton.setBorder(border2);
@@ -603,7 +620,7 @@ public class Gui {
 
         Gui g = new Gui();
         Jurl jurl = new Jurl();
-        jurl.main(argsMain);
+       // jurl.main(argsMain);
 
     }
 }
