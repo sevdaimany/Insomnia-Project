@@ -39,11 +39,12 @@ import java.awt.*;
 public class Gui {
 
     private JFrame frame;
-    String[] argsMain = new String[30];
-    int i = 1;
-
+    String[] argsMain;
+    int i;
 
     public Gui() {
+        argsMain = new String[30];
+        i = 1;
 
         // create frame
         frame = new JFrame("Insomnia - My Request");
@@ -192,12 +193,12 @@ public class Gui {
         comboBox.setBorder(border2);
         comboBox.setBackground(Color.WHITE);
         comboBox.setForeground(Color.GRAY);
-        comboBox.addActionListener(new ActionListener(){
+        comboBox.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 argsMain[i] = "--method";
                 i++;
-                argsMain[i] = (String)comboBox.getSelectedItem();
+                argsMain[i] = (String) comboBox.getSelectedItem();
                 i++;
             }
         });
@@ -207,9 +208,9 @@ public class Gui {
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
-        URLAddress.addActionListener(new ActionListener(){
+        URLAddress.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 argsMain[0] = URLAddress.getText();
             }
         });
@@ -218,6 +219,14 @@ public class Gui {
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+               Jurl.main(argsMain);
+
+            }
+        });
 
         JButton saveButton = new JButton("Save");
         saveButton.setBorder(border2);
@@ -617,8 +626,6 @@ public class Gui {
             InstantiationException, IllegalAccessException {
 
         Gui g = new Gui();
-        Jurl jurl = new Jurl();
-       // jurl.main(argsMain);
 
     }
 }
