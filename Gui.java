@@ -39,16 +39,17 @@ import java.awt.*;
 public class Gui {
 
     private JFrame frame;
+    String[] argsMain = null;
+
 
     public Gui() {
-        
+
         // create frame
         frame = new JFrame("Insomnia - My Request");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(760, 825));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-      
 
         JPanel mainPanel = new JPanel(new BorderLayout(2, 2));
         frame.setContentPane(mainPanel);
@@ -66,54 +67,49 @@ public class Gui {
         // options
         JMenuItem options = new JMenuItem("Options");
 
-
         options.setMnemonic(KeyEvent.VK_O);
         options.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
 
-
-        options.addActionListener(new ActionListener(){
+        options.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e){
-                  //create option Dialog
-        JDialog optionDialog = new JDialog(frame,"Options",false);
-         optionDialog.setVisible(true);
-         optionDialog.setBounds(530, 280, 300, 210);
-         optionDialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
- 
-         JCheckBox followRedirectCheckBox = new JCheckBox(" follow redirect ");
-         followRedirectCheckBox.setPreferredSize(new Dimension(250, 30));
- 
-         JRadioButton exiRadioButton = new JRadioButton(" Exit ",true);
-         JRadioButton hideRadioButton = new JRadioButton(" Hide on system tray ");
-         ButtonGroup exiButtonGroup = new ButtonGroup();
-         exiButtonGroup.add(exiRadioButton);
-         exiButtonGroup.add(hideRadioButton);
- 
-         JRadioButton lightTheme = new JRadioButton("light theme");
-         JRadioButton darkTheme = new JRadioButton("dark theme",true);
-         ButtonGroup theme = new ButtonGroup();
-         theme.add(lightTheme);
-         theme.add(darkTheme);
- 
-         JButton saveButton = new JButton("Save");
-         saveButton.setPreferredSize(new Dimension(100,25));
- 
-         optionDialog.add(followRedirectCheckBox);
-         optionDialog.add(exiRadioButton);
-         optionDialog.add(hideRadioButton);
-         optionDialog.add(lightTheme);
-         optionDialog.add(darkTheme);
-         optionDialog.add(saveButton);
+            public void actionPerformed(ActionEvent e) {
+                // create option Dialog
+                JDialog optionDialog = new JDialog(frame, "Options", false);
+                optionDialog.setVisible(true);
+                optionDialog.setBounds(530, 280, 300, 210);
+                optionDialog.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+                JCheckBox followRedirectCheckBox = new JCheckBox(" follow redirect ");
+                followRedirectCheckBox.setPreferredSize(new Dimension(250, 30));
+
+                JRadioButton exiRadioButton = new JRadioButton(" Exit ", true);
+                JRadioButton hideRadioButton = new JRadioButton(" Hide on system tray ");
+                ButtonGroup exiButtonGroup = new ButtonGroup();
+                exiButtonGroup.add(exiRadioButton);
+                exiButtonGroup.add(hideRadioButton);
+
+                JRadioButton lightTheme = new JRadioButton("light theme");
+                JRadioButton darkTheme = new JRadioButton("dark theme", true);
+                ButtonGroup theme = new ButtonGroup();
+                theme.add(lightTheme);
+                theme.add(darkTheme);
+
+                JButton saveButton = new JButton("Save");
+                saveButton.setPreferredSize(new Dimension(100, 25));
+
+                optionDialog.add(followRedirectCheckBox);
+                optionDialog.add(exiRadioButton);
+                optionDialog.add(hideRadioButton);
+                optionDialog.add(lightTheme);
+                optionDialog.add(darkTheme);
+                optionDialog.add(saveButton);
             }
         });
-      
-
-      
 
         // Exit
         JMenuItem Exit = new JMenuItem("Exit");
-          
+
         Exit.setMnemonic(KeyEvent.VK_E);
         Exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
 
@@ -146,30 +142,30 @@ public class Gui {
         about.setMnemonic(KeyEvent.VK_B);
         about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, ActionEvent.ALT_MASK));
 
-        //add actionlistener for about
-        about.addActionListener(new ActionListener(){
+        // add actionlistener for about
+        about.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 JOptionPane aboutOptionPane = new JOptionPane("About");
-                aboutOptionPane.showMessageDialog(frame,"Hi i'm sevda!\nInsomnia started as a project of mine in 2020.\nMy email : sevdaimany@gmail.com\nMy student number : 9831010 ","About", JOptionPane.INFORMATION_MESSAGE);
-                    
+                aboutOptionPane.showMessageDialog(frame,
+                        "Hi i'm sevda!\nInsomnia started as a project of mine in 2020.\nMy email : sevdaimany@gmail.com\nMy student number : 9831010 ",
+                        "About", JOptionPane.INFORMATION_MESSAGE);
+
             }
         });
 
-        
-
-        
         JMenuItem help = new JMenuItem("Help");
         help.setMnemonic(KeyEvent.VK_H);
         help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, ActionEvent.ALT_MASK));
-        help.addActionListener(new ActionListener(){
+        help.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 JOptionPane helpOptionPane = new JOptionPane("Help");
-                helpOptionPane.showMessageDialog(frame,"Show app options    Alt+O\n\nExit    Alt+E\n\ntoggle full screen    Ctrl+\\ \n\ntoggle sidebar    Ctrl+/\n\nAbout    Alt+F2\n\nKeyBoard Shortcuts    Alt+F1\n\nCreate Requests    Ctrl+N\n\nCreate Folder    Ctrl+Shift+N\n" , "Help",JOptionPane.NO_OPTION);
+                helpOptionPane.showMessageDialog(frame,
+                        "Show app options    Alt+O\n\nExit    Alt+E\n\ntoggle full screen    Ctrl+\\ \n\ntoggle sidebar    Ctrl+/\n\nAbout    Alt+F2\n\nKeyBoard Shortcuts    Alt+F1\n\nCreate Requests    Ctrl+N\n\nCreate Folder    Ctrl+Shift+N\n",
+                        "Help", JOptionPane.NO_OPTION);
             }
         });
-
 
         // add components
         menuHelp.add(about);
@@ -182,7 +178,7 @@ public class Gui {
 
         frame.setJMenuBar(menuBar);
 
-                                                                                    // <<<<<<<<<<<< create center panel >>>>>>>>>>>>>>>
+        // <<<<<<<<<<<< create center panel >>>>>>>>>>>>>>>
         JPanel panelCenter = new JPanel(new BorderLayout(0, 0));
 
         // create center_up panel
@@ -195,6 +191,7 @@ public class Gui {
         comboBox.setBorder(border2);
         comboBox.setBackground(Color.WHITE);
         comboBox.setForeground(Color.GRAY);
+        
 
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
         int addressWidth = URLAddress.getPreferredSize().width + 410;
@@ -206,12 +203,11 @@ public class Gui {
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
-       
+
         JButton saveButton = new JButton("Save");
         saveButton.setBorder(border2);
         saveButton.setBackground(Color.WHITE);
         saveButton.setForeground(Color.GRAY);
-       
 
         // add components
         panelCenter_North.add(comboBox);
@@ -315,7 +311,7 @@ public class Gui {
 
         // panel body
 
-        String choices[] = { "Form Data", "JSON" ,"Binary Data"};
+        String choices[] = { "Form Data", "JSON", "Binary Data" };
         JComboBox comboBox2 = new JComboBox(choices);
         comboBox2.setPreferredSize(new Dimension(760, 30));
         comboBox2.setBackground(Color.GRAY);
@@ -391,76 +387,67 @@ public class Gui {
         comboBoxAuth.setBackground(Color.GRAY);
         comboBoxAuth.setForeground(Color.WHITE);
 
-        JLabel token = new JLabel("Token"); 
+        JLabel token = new JLabel("Token");
         token.setForeground(Color.GRAY);
         JTextField tokenTextField = new JTextField();
-        tokenTextField.setPreferredSize(new Dimension(180,30));
+        tokenTextField.setPreferredSize(new Dimension(180, 30));
         tokenTextField.setBackground(Color.GRAY);
         JLabel prefix = new JLabel("Prefix");
         prefix.setForeground(Color.GRAY);
 
         JTextField prefixTextFeilField = new JTextField();
-        prefixTextFeilField.setPreferredSize(new Dimension(180,30));
+        prefixTextFeilField.setPreferredSize(new Dimension(180, 30));
         prefixTextFeilField.setBackground(Color.GRAY);
-
-       
 
         JRadioButton enableButton = new JRadioButton("Enable");
         enableButton.setBackground(Color.DARK_GRAY);
 
-       // panelAuth.add(comboBoxAuth);
+        GridBagConstraints gbc7 = new GridBagConstraints();
+        gbc7.gridx = 0;
+        gbc7.gridy = 0;
+        gbc7.fill = GridBagConstraints.HORIZONTAL;
+        gbc7.insets = new Insets(10, 20, 20, 10);
+        gbc7.gridwidth = 2;
+        panelAuth.add(comboBoxAuth, gbc7);
+        gbc7.gridwidth = 1;
 
-       GridBagConstraints gbc7 = new GridBagConstraints();
-       gbc7.gridx = 0 ;
-       gbc7.gridy = 0;
-       gbc7.fill = GridBagConstraints.HORIZONTAL;
-       gbc7.insets = new Insets(10, 20, 20, 10);
-       gbc7.gridwidth = 2;
-       panelAuth.add(comboBoxAuth,gbc7);
-       gbc7.gridwidth = 1;
+        gbc7.gridx = 0;
+        gbc7.gridy = 3;
+        gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(token, gbc7);
 
-       gbc7.gridx = 0;
-       gbc7.gridy = 3;
-       gbc7.insets = new Insets(10, 20,20, 10);
-       panelAuth.add(token,gbc7);
+        gbc7.gridx = 1;
+        gbc7.gridy = 3;
+        gbc7.weightx = 1;
+        gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(tokenTextField, gbc7);
 
-       gbc7.gridx = 1;
-       gbc7.gridy = 3;
-       gbc7.weightx = 1;
-       gbc7.insets = new Insets(10, 20, 20, 10);
-        panelAuth.add(tokenTextField,gbc7);
-
-    
         gbc7.gridx = 0;
         gbc7.gridy = 6;
-       gbc7.insets = new Insets(10, 20, 20, 10);
-        panelAuth.add(prefix,gbc7);
- 
+        gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(prefix, gbc7);
+
         gbc7.gridx = 1;
         gbc7.gridy = 6;
-       gbc7.weightx = 1;
-       gbc7.insets = new Insets(10, 20, 20, 10);
-         panelAuth.add(prefixTextFeilField,gbc7);
-         
-         gbc7.gridx= 0 ;
-         gbc7.gridy = 8;
-       gbc7.insets = new Insets(10, 20, 20, 10);
-        panelAuth.add(enableButton,gbc7);
+        gbc7.weightx = 1;
+        gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(prefixTextFeilField, gbc7);
 
-        gbc7.gridx= 0;
-         gbc7.gridy =9;
+        gbc7.gridx = 0;
+        gbc7.gridy = 8;
+        gbc7.insets = new Insets(10, 20, 20, 10);
+        panelAuth.add(enableButton, gbc7);
+
+        gbc7.gridx = 0;
+        gbc7.gridy = 9;
         gbc7.weightx = 1;
         gbc7.weighty = 1;
         panelAuth.add(new JLabel(" "), gbc7);
 
-
-
-       
-
         panelCenter.add(panelCenter_North, BorderLayout.NORTH);
         panelCenter.add(tabbedPane, BorderLayout.CENTER);
 
-        //                                                               <<<<<<<<<<<<<<<<< create west panel >>>>>>>>>>>>>>>>>>>>>>
+        // <<<<<<<<<<<<<<<<< create west panel >>>>>>>>>>>>>>>>>>>>>>
         JPanel panelWest = new JPanel(new BorderLayout(0, 0));
 
         // create insomnia lable
@@ -478,25 +465,24 @@ public class Gui {
         GridBagConstraints gbc = new GridBagConstraints();
         panelWest_Center.setBackground(Color.DARK_GRAY);
 
-
-       //create filter text field
+        // create filter text field
         JTextField filter = new JTextField("Filter");
         filter.setPreferredSize(new Dimension(200, 20));
         filter.setBackground(Color.GRAY);
         filter.setForeground(Color.WHITE);
 
-        //create menubar
+        // create menubar
         JMenuBar mb2 = new JMenuBar();
         JMenu menu2 = new JMenu("  +");
         JMenuItem newRequest = new JMenuItem("New Request");
-        newRequest.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
+        newRequest.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         JMenuItem newFolder = new JMenuItem("New Folder");
-        newFolder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.SHIFT_MASK+ActionEvent.CTRL_MASK));
+        newFolder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
         menu2.add(newRequest);
         menu2.add(newFolder);
         mb2.add(menu2);
 
-        //create jTree
+        // create jTree
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
         DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
         DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
@@ -509,13 +495,12 @@ public class Gui {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelWest_Center.add(filter, gbc);
-       
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         panelWest_Center.add(mb2, gbc);
-
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -529,11 +514,10 @@ public class Gui {
         panelWest.add(insomniaLable, BorderLayout.NORTH);
         panelWest.add(panelWest_Center, BorderLayout.CENTER);
 
-                                                                        // <<<<<<<<<<<<<<<<< create East panel >>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // <<<<<<<<<<<<<<<<< create East panel >>>>>>>>>>>>>>>>>>>>>>>>>>>
         JPanel panelEast = new JPanel(new BorderLayout(0, 0));
 
-
-        //create panel east north
+        // create panel east north
         JPanel panelEast_North = new JPanel(new FlowLayout(FlowLayout.LEFT, 60, 8));
         panelEast_North.setBackground(Color.WHITE);
         JLabel label1 = new JLabel("200 OK");
@@ -541,16 +525,13 @@ public class Gui {
         JLabel label2 = new JLabel("6.60s");
         JLabel label3 = new JLabel("15.2KB");
 
-        //add lables
+        // add lables
         panelEast_North.add(label1);
         panelEast_North.add(label2);
         panelEast_North.add(label3);
 
-
-        //crate panel east center
+        // crate panel east center
         JTabbedPane tabbedPane2 = new JTabbedPane();
-
-
 
         // messsage body
         JPanel panelMessageBody = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
@@ -563,8 +544,6 @@ public class Gui {
         comboBox3.setPreferredSize(new Dimension(500, 30));
         panelMessageBody.add(comboBox3);
 
-
-
         // header
         JPanel panelHeaderEast = new JPanel(new FlowLayout());
         panelHeaderEast.setBackground(Color.DARK_GRAY);
@@ -572,13 +551,13 @@ public class Gui {
         JPanel panelHeader1 = new JPanel(new GridLayout(1, 4, 10, 5));
         panelHeader1.setBackground(Color.DARK_GRAY);
 
-        //create key 
+        // create key
         JTextField key2 = new JTextField("new Header");
         key2.setBackground(Color.GRAY);
         key2.setForeground(Color.WHITE);
         key2.setBorder(border);
 
-        //create value
+        // create value
         JTextField value2 = new JTextField("new value");
         value2.setBorder(border);
         value2.setBackground(Color.GRAY);
@@ -586,17 +565,14 @@ public class Gui {
         key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
         value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
-        //add components to header panel
+        // add components to header panel
         panelHeader1.add(key2);
         panelHeader1.add(value2);
 
-
-        //create copy to clipboard button
+        // create copy to clipboard button
         JButton newButton = new JButton("Copy to Clipboard");
         newButton.setForeground(Color.WHITE);
         newButton.setBackground(new Color(90, 80, 160));
-
-
 
         GridBagConstraints gbc4 = new GridBagConstraints();
 
@@ -605,13 +581,11 @@ public class Gui {
         gbc4.insets = new Insets(50, 50, 50, 50);
         panelHeaderEast.add(panelHeader1, gbc4);
 
-      
         gbc4.gridx = 0;
         gbc4.gridy = 1;
         gbc4.insets = new Insets(50, 50, 50, 50);
         panelHeaderEast.add(newButton, gbc4);
 
-    
         tabbedPane2.add("Message Body", panelMessageBody);
         tabbedPane2.add("Header", panelHeaderEast);
 
@@ -628,6 +602,8 @@ public class Gui {
             InstantiationException, IllegalAccessException {
 
         Gui g = new Gui();
+        Jurl jurl = new Jurl();
+        jurl.main(argsMain);
 
     }
 }
