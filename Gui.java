@@ -208,12 +208,6 @@ public class Gui {
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
-        URLAddress.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                argsMain[0] = URLAddress.getText();
-            }
-        });
 
         JButton sendButton = new JButton("Send");
         sendButton.setBorder(border2);
@@ -222,8 +216,8 @@ public class Gui {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-               Jurl.main(argsMain);
+                argsMain[0] = URLAddress.getText();
+                Jurl.main(argsMain);
 
             }
         });
