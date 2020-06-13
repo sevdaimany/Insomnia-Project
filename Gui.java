@@ -49,7 +49,8 @@ import java.awt.*;
 public class Gui {
 
     private JFrame frame;
-    String[] argsMain;
+     String[] argsMain;
+    ArrayList<String> argsArrayList;
     int i;
     ArrayList<String> headerRequestArrayList;
     ArrayList<String> formDataRequestArrayList;
@@ -60,9 +61,9 @@ public class Gui {
     boolean chooseFileBoolean = false;
 
     public Gui() {
-        argsMain = new String[30];
         headerRequestArrayList = new ArrayList<>();
         formDataRequestArrayList = new ArrayList<>();
+        argsArrayList = new ArrayList<>();
 
         i = 1;
 
@@ -213,13 +214,21 @@ public class Gui {
         comboBox.setBorder(border2);
         comboBox.setBackground(Color.WHITE);
         comboBox.setForeground(Color.GRAY);
+        int indext = 1;
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                argsMain[i] = "--method";
-                i++;
-                argsMain[i] = (String) comboBox.getSelectedItem();
-                i++;
+                // argsMain[i] = "--method";
+                // i++;
+                // argsMain[i] = (String) comboBox.getSelectedItem();
+                // i++;
+                if (argsArrayList.contains("--method")) {
+                    int index = argsArrayList.indexOf("--method");
+                    argsArrayList.add(index + 1, (String) comboBox.getSelectedItem());
+                } else {
+                    argsArrayList.add("--method");
+                    argsArrayList.add((String) comboBox.getSelectedItem());
+                }
             }
         });
 
@@ -426,14 +435,21 @@ public class Gui {
                 int result = fileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    argsMain[i] = "--binary";
-                    indexBinary = i;
-                    i++;
-                    argsMain[i] = selectedFile.getAbsolutePath();
-                    i++;
+                    // argsMain[i] = "--binary";
+                    // indexBinary = i;
+                    // i++;
+                    // argsMain[i] = selectedFile.getAbsolutePath();
+                    // i++;
                     BinaryPath.setEditable(false);
                     BinaryPath.setText(selectedFile.getAbsolutePath());
                     chooseFileBoolean = true;
+                    if (argsArrayList.contains("--binary")) {
+                        int index = argsArrayList.indexOf("--binary");
+                        argsArrayList.add(index + 1, selectedFile.getAbsolutePath());
+                    } else {
+                        argsArrayList.add("--binary");
+                        argsArrayList.add(selectedFile.getAbsolutePath());
+                    }
                 }
 
             }
@@ -447,8 +463,13 @@ public class Gui {
         resetFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (chooseFileBoolean) {
-                    argsMain[indexBinary] = "";
-                    argsMain[indexBinary + 1] = "";
+                    // argsMain[indexBinary] = "";
+                    // argsMain[indexBinary + 1] = "";
+                    if (argsArrayList.contains("--binary")) {
+                        int index = argsArrayList.indexOf("--binary");
+                        argsArrayList.remove(index);
+                        argsArrayList.remove(index + 1);
+                    }
                     BinaryPath.setText("No file selected");
                 }
             }
@@ -783,35 +804,60 @@ public class Gui {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                argsMain[0] = URLAddress.getText();
-                argsMain[i] = "Gui";
-                i++;
+                // argsMain[0] = URLAddress.getText();
+                // argsMain[i] = "Gui";
+                // i++;
+                if (argsArrayList.contains("URL")) {
+                    int index = argsArrayList.indexOf("URL");
+                    argsArrayList.add(index + 1, URLAddress.getText());
+
+                } else {
+                    argsArrayList.add("URL");
+                    argsArrayList.add(URLAddress.getText());
+                }
+                argsArrayList.add("Gui");
 
                 if (headerRequestArrayList.size() > 0) {
                     // headerRequestArrayList.add("\"");
-                    argsMain[i] = "--headers";
-                    i++;
+                    // argsMain[i] = "--headers";
+                    // i++;
 
-                    argsMain[i] = convertToString(headerRequestArrayList);
-                    System.out.println(convertToString(headerRequestArrayList));
-                    i++;
+                    // argsMain[i] = convertToString(headerRequestArrayList);
+                    // System.out.println(convertToString(headerRequestArrayList));
+                    // i++;
+                    if (argsArrayList.contains("--headers")) {
+                        int index = argsArrayList.indexOf("--headers");
+                        argsArrayList.add(index + 1, convertToString(headerRequestArrayList));
+                    } else {
+                        argsArrayList.add("--headers");
+                        argsArrayList.add(convertToString(headerRequestArrayList));
+                    }
                 }
 
                 if (formDataRequestArrayList.size() > 0) {
-                    argsMain[i] = "--data";
-                    i++;
+                    // argsMain[i] = "--data";
+                    // i++;
 
-                    argsMain[i] = convertToString(formDataRequestArrayList);
-                    i++;
+                    // argsMain[i] = convertToString(formDataRequestArrayList);
+                    // i++;
+                    if (argsArrayList.contains("--data")) {
+                        int index = argsArrayList.indexOf("--data");
+                        argsArrayList.add(index + 1, convertToString(formDataRequestArrayList));
+                    } else {
+                        argsArrayList.add("--data");
+                        argsArrayList.add(convertToString(formDataRequestArrayList));
+                    }
                 }
 
+              
+
+                argsMain = convertToArray(argsArrayList);
                 Jurl.main(argsMain);
                 // File errorFile = new File("GuiError.txt");
                 int lengthFile = 0;
                 try {
                     BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiError.txt"));
                     lengthFile = in2.readAllBytes().length;
-                    System.out.println(lengthFile);
                 } catch (IOException exc) {
                 }
 
@@ -820,6 +866,7 @@ public class Gui {
                     JTextArea raw = new JTextArea();
                     raw.setEditable(false);
                     JScrollPane scrollPane = new JScrollPane(raw);
+                    raw.setLineWrap(true);
 
                     raw.setPreferredSize(new Dimension(2000, 800));
                     scrollPane.setPreferredSize(new Dimension(499, 679));
@@ -1084,6 +1131,22 @@ public class Gui {
         }
         return output.toString();
 
+    }
+
+    public String[] convertToArray(ArrayList<String> arrayList) {
+        int index = 1;
+        String[] args = new String[arrayList.size() -1];
+        for (int u = 0 ; u < arrayList.size() ; u++) {
+            if (arrayList.get(u).equals("URL")) {
+                int indexArrayList = arrayList.indexOf("URL");
+                args[0] = arrayList.get(indexArrayList + 1);
+                u++;
+            }else{
+                args[index] = arrayList.get(u);
+                index++;
+            }
+        }
+        return args;
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
