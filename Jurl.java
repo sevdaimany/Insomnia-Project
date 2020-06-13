@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 
 public class Jurl {
 
-    
     public static void main(String[] args) {
 
         String urlString;
@@ -43,10 +42,8 @@ public class Jurl {
 
         urlString = input.get(0);
 
-        if(input.contains("Gui"))
-        Gui = true;
-
-        
+        if (input.contains("Gui"))
+            Gui = true;
 
         if (input.contains("-i"))
             i_showResponseHeaders = true;
@@ -120,7 +117,7 @@ public class Jurl {
                             return;
                         } else {
                             headersHashMap.put(seprateKeyValue[0], seprateKeyValue[1]);
-                           System.out.println(seprateKeyValue[0]);
+                            System.out.println(seprateKeyValue[0]);
                             System.out.println(seprateKeyValue[1]);
                         }
                     }
@@ -181,29 +178,31 @@ public class Jurl {
 
         }
         String file = null;
-        if(input.contains("--binary")){
-            if(input.contains("--method")){
-                if(input.contains("Get")){
+        if (input.contains("--binary")) {
+            if (input.contains("--method")) {
+                if (!input.contains("Get")) {
+                    if (input.contains("--data") || input.contains("--upload")) {
+                        System.out.println("cant not send formdata with binary file");
+                        return;
+                    }
 
                     int index = input.indexOf("--binary");
-                    if(index + 1 < input.size()){
-                        file = input.get(index+1);
+                    if (index + 1 < input.size()) {
+                        file = input.get(index + 1);
                     }
-                }
-                else{
+                } else {
                     System.out.println("Wrong method.");
                     return;
                 }
-            }
-
-            if(input.contains("--data") || input.contains("--upload")){
-                System.out.println("cant not send formdata with binary file");
+            } else {
+                System.out.println("Wrong method.");
                 return;
             }
+
         }
 
         Request request = new Request(urlString, Method, body, headersHashMap, file, i_showResponseHeaders, f_redirect,
-                o_saveResponseBody, o_fileName, h_requestsHeaders, d_formdataMesssageBody,Gui);
+                o_saveResponseBody, o_fileName, h_requestsHeaders, d_formdataMesssageBody, Gui);
 
         if (input.contains("--save")) {
             int index = input.indexOf("--save");
@@ -261,7 +260,6 @@ public class Jurl {
         } catch (IOException e) {
             e.printStackTrace();
 
-            
         }
 
     }
@@ -314,8 +312,8 @@ public class Jurl {
             ObjectInputStream in = null;
             File[] requestList = nameFile.listFiles();
             for (int i = 0; i < requestNum.size(); i++) {
-                System.out.println("\nRequest"+requestNum.get(i)+":\n");
-                in = new ObjectInputStream(new FileInputStream(requestList[requestNum.get(i) -1]));
+                System.out.println("\nRequest" + requestNum.get(i) + ":\n");
+                in = new ObjectInputStream(new FileInputStream(requestList[requestNum.get(i) - 1]));
                 Request request = (Request) in.readObject();
                 try {
                     request.run();
@@ -329,7 +327,4 @@ public class Jurl {
 
     }
 
-
-    
-  
 }
