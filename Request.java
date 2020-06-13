@@ -103,6 +103,7 @@ public class Request implements Serializable {
 
     public void run() throws IOException {
 
+        urlString.trim();
         String protocolString = urlString.substring(0, 4);
         if (!protocolString.equals("http")) {
             urlString = "http://" + urlString;
@@ -112,7 +113,7 @@ public class Request implements Serializable {
         connection = (HttpURLConnection) url.openConnection();
         sendMethod();
 
-        if (isF_redirect()) {
+        if (isF_redirect() || Gui) {
             while (connection.getResponseCode() > 299 && connection.getResponseCode() < 400) {
                 String location = connection.getHeaderField("Location");
                 url = new URL(location);
@@ -201,12 +202,11 @@ public class Request implements Serializable {
             GuiResponseBody.createNewFile();
         }
 
-        InputStream inputStream = null;
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            inputStream = connection.getInputStream();
-        } else {
+        
+        InputStream inputStream = connection.getInputStream();
+        if(inputStream == null)
             inputStream = connection.getErrorStream();
-        }
+        
 
         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -266,20 +266,17 @@ public class Request implements Serializable {
         BufferedWriter GuiWriter = null;
 
         if (Gui) {
-            GuiResponseHeaders = new File("./GuiResponseHeaders.txt");
+            GuiResponseHeaders = new File("GuiResponseHeaders.txt");
             GuiResponseHeaders.createNewFile();
-
             GuiWriter = new BufferedWriter(new FileWriter(GuiResponseHeaders));
         }
 
-        if (Gui) {
-            GuiWriter.write("\n\n");
-        } else
+        if (!Gui)
             System.out.println("\n");
 
         // print result
         if (Gui) {
-            GuiWriter.write("Request Method: " + connection.getRequestMethod() + "\n");
+            GuiWriter.write("&Request Method&" + connection.getRequestMethod());
         } else {
             System.out.println("Request Method: " + connection.getRequestMethod());
         }
@@ -289,7 +286,7 @@ public class Request implements Serializable {
         for (String key : map.keySet()) {
             // if(!key.equals("null"))
             if (Gui) {
-                GuiWriter.write(key + ": ");
+                GuiWriter.write("&"+key + "&");
             } else {
                 System.out.print(key + ": ");
             }
@@ -298,7 +295,7 @@ public class Request implements Serializable {
 
             for (String aValue : values) {
                 if (Gui) {
-                    GuiWriter.write("\t" + aValue + "\n");
+                    GuiWriter.write( aValue );
                 } else {
                     System.out.println("\t" + aValue);
                 }
@@ -306,7 +303,6 @@ public class Request implements Serializable {
 
         }
         if (Gui) {
-            GuiWriter.write("\n\n");
             GuiWriter.close();
         } else {
             System.out.println("\n");
@@ -351,7 +347,7 @@ public class Request implements Serializable {
             requestHeaders();
         }
 
-        if (i_showResponseHeaders)
+        if (i_showResponseHeaders || Gui)
             printResponseHeaders();
 
         printResponseBody();
@@ -400,28 +396,28 @@ public class Request implements Serializable {
     }
 
     public void formData() throws IOException {
-        BufferedWriter GuiWriter = null;
-        File GuiFormData = null;
+        // BufferedWriter GuiWriter = null;
+        // File GuiFormData = null;
 
-        if (Gui) {
-            GuiFormData = new File("./GuiFormData.txt");
-            GuiFormData.createNewFile();
+        // if (Gui) {
+        //     GuiFormData = new File("GuiFormData.txt");
+        //     GuiFormData.createNewFile();
 
-            GuiWriter = new BufferedWriter(new FileWriter(GuiFormData));
-        }
-
+        //     GuiWriter = new BufferedWriter(new FileWriter(GuiFormData));
+        // }
+        
+        // if (Gui) {
+        //     GuiWriter.write(new String(bufferedInputStream.readAllBytes()));
+        // } else {
+        //     System.out.println(new String(bufferedInputStream.readAllBytes()));
+        // }
+        // GuiWriter.close();
         try {
             String boundary = System.currentTimeMillis() + "";
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             BufferedOutputStream request = new BufferedOutputStream(connection.getOutputStream());
             bufferOutFormData(boundary, request);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
-            if (Gui) {
-                GuiWriter.write(new String(bufferedInputStream.readAllBytes()));
-            } else {
-                System.out.println(new String(bufferedInputStream.readAllBytes()));
-            }
-            GuiWriter.close();
         } catch (Exception e) {
 
         }
