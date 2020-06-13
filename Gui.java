@@ -49,7 +49,7 @@ import java.awt.*;
 public class Gui {
 
     private JFrame frame;
-     String[] argsMain;
+    String[] argsMain;
     ArrayList<String> argsArrayList;
     int i;
     ArrayList<String> headerRequestArrayList;
@@ -785,8 +785,8 @@ public class Gui {
         JPanel panelHeaderEast = new JPanel(new BorderLayout(3, 3));
         panelHeaderEast.setBackground(Color.DARK_GRAY);
 
-        JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
-        panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+        // JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+        // panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
 
         GridBagConstraints gbc4 = new GridBagConstraints();
         // System.out.print("hiiiiiiiiiiiiiiiiii");
@@ -799,8 +799,8 @@ public class Gui {
         newButton.setForeground(Color.WHITE);
         newButton.setBackground(new Color(90, 80, 160));
         panelHeaderEast.add(newButton, BorderLayout.NORTH);
-        panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
-
+        // panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -849,8 +849,6 @@ public class Gui {
                     }
                 }
 
-              
-
                 argsMain = convertToArray(argsArrayList);
                 Jurl.main(argsMain);
                 // File errorFile = new File("GuiError.txt");
@@ -887,9 +885,18 @@ public class Gui {
                     panelMessageBodyRaw.repaint();
                     panelMessageBodyRaw.revalidate();
 
+
+
+
+                    JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+                    panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+                    panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+
+
                 } else {
 
-                    panelHeaderGridBagLayout.removeAll();
+                    JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+                    // panelHeaderGridBagLayout.removeAll();
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     String[] headerStrings = headerStringArray();
                     int jHeaderResponse = 0;
@@ -914,6 +921,8 @@ public class Gui {
                     gbc4.insets = new Insets(50, 50, 50, 50);
                     JLabel labelHeaderResponse = new JLabel(" ");
                     panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+                    panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+
                     panelHeaderGridBagLayout.revalidate();
                     panelHeaderGridBagLayout.repaint();
 
@@ -1135,13 +1144,13 @@ public class Gui {
 
     public String[] convertToArray(ArrayList<String> arrayList) {
         int index = 1;
-        String[] args = new String[arrayList.size() -1];
-        for (int u = 0 ; u < arrayList.size() ; u++) {
+        String[] args = new String[arrayList.size() - 1];
+        for (int u = 0; u < arrayList.size(); u++) {
             if (arrayList.get(u).equals("URL")) {
                 int indexArrayList = arrayList.indexOf("URL");
                 args[0] = arrayList.get(indexArrayList + 1);
                 u++;
-            }else{
+            } else {
                 args[index] = arrayList.get(u);
                 index++;
             }
