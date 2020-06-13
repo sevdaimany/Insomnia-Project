@@ -201,7 +201,14 @@ public class Request implements Serializable {
             GuiResponseBody.createNewFile();
         }
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        InputStream inputStream = null;
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            inputStream = connection.getInputStream();
+        } else {
+            inputStream = connection.getErrorStream();
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
         String inputLine;
         StringBuffer content = new StringBuffer();
@@ -336,9 +343,8 @@ public class Request implements Serializable {
             if (d_formdataMesssageBody) {
                 formData();
             }
-        }
-        if(Method.equals("GET")){
-            uploadBinary();
+            if (file != null)
+                uploadBinary();
         }
 
         if (h_requestsHeaders) {
@@ -385,8 +391,18 @@ public class Request implements Serializable {
             BufferedInputStream fileInputStream = new BufferedInputStream(new FileInputStream(haditabatabaei));
             bufferedOutputStream.write(fileInputStream.readAllBytes());
             bufferedOutputStream.flush();
+            if(bufferedOutputStream != null)
             bufferedOutputStream.close();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
+
+        InputStream inputStream = null;
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                inputStream = connection.getInputStream();
+            }
+            else{
+                inputStream = connection.getErrorStream();
+            }
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+    
             System.out.println(new String(bufferedInputStream.readAllBytes()));
             System.out.println(connection.getResponseCode());
             System.out.println(connection.getHeaderFields());
