@@ -809,10 +809,87 @@ public class Gui {
         });
 
         // header
-        JPanel panelHeaderEast = new JPanel(new FlowLayout());
+
+        JPanel panelHeaderEast = new JPanel(new BorderLayout(3,3));
         panelHeaderEast.setBackground(Color.DARK_GRAY);
 
-        JPanel panelHeader1 = new JPanel(new GridLayout(1, 4, 10, 5));
+        // JPanel panelHeader1 = new JPanel(new FlowLayout());
+        // panelHeader1.setBackground(Color.DARK_GRAY);
+
+        // // create key
+        // JTextField key2 = new JTextField("new Header");
+        // key2.setBackground(Color.GRAY);
+        // key2.setForeground(Color.WHITE);
+        // key2.setBorder(border);
+
+        // // create value
+        // JTextField value2 = new JTextField("new value");
+        // value2.setBorder(border);
+        // value2.setBackground(Color.GRAY);
+        // value2.setForeground(Color.WHITE);
+        // key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        // value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
+
+        // // add components to header panel
+        // panelHeader1.add(key2);
+        // panelHeader1.add(value2);
+        JPanel panelHeader1 = newHeaderResponse();
+        JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+        panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+
+        GridBagConstraints gbc4 = new GridBagConstraints();
+
+         gbc4.gridx = 0;
+        gbc4.gridy = 0;
+        gbc4.fill = GridBagConstraints.HORIZONTAL;
+        panelHeaderGridBagLayout.add(panelHeader1, gbc4);
+
+        gbc4.gridx = 0;
+        gbc4.gridy = 1;
+        gbc4.weightx = 1;
+        gbc4.weighty = 1;
+        gbc4.insets = new Insets(50, 50, 50, 50);
+        JLabel labelHeaderResponse = new JLabel(" ");
+        panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+
+
+        // create copy to clipboard button
+        JButton newButton = new JButton("Copy to Clipboard");
+        newButton.setForeground(Color.WHITE);
+        newButton.setBackground(new Color(90, 80, 160));
+        panelHeaderEast.add(newButton , BorderLayout.NORTH);
+        panelHeaderEast.add(panelHeaderGridBagLayout , BorderLayout.CENTER);
+
+        //GridBagConstraints gbc4 = new GridBagConstraints();
+
+        // gbc4.gridx = 0;
+        // gbc4.gridy = 0;
+        // gbc4.insets = new Insets(50, 50, 50, 50);
+        // panelHeaderEast.add(panelHeader1, gbc4);
+
+        // gbc4.gridx = 0;
+        // gbc4.gridy = 1;
+        // gbc4.insets = new Insets(50, 50, 50, 50);
+        // panelHeaderEast.add(newButton, gbc4);
+        
+
+
+        tabbedPane2.add("Message Body", panelMessageBody);
+        tabbedPane2.add("Header", panelHeaderEast);
+
+        panelEast.add(panelEast_North, BorderLayout.NORTH);
+        panelEast.add(tabbedPane2, BorderLayout.CENTER);
+
+        mainPanel.add(panelCenter, BorderLayout.CENTER);
+        mainPanel.add(panelWest, BorderLayout.WEST);
+        mainPanel.add(panelEast, BorderLayout.EAST);
+
+    }
+
+
+
+    public JPanel newHeaderResponse(){
+        JPanel panelHeader1 = new JPanel(new FlowLayout());
         panelHeader1.setBackground(Color.DARK_GRAY);
 
         // create key
@@ -826,39 +903,17 @@ public class Gui {
         value2.setBorder(border);
         value2.setBackground(Color.GRAY);
         value2.setForeground(Color.WHITE);
+        int keyWidth = key2.getPreferredSize().width + 50;
+        int keyHeight = key2.getPreferredSize().height + 10;
+        int valueWidth = value2.getPreferredSize().width + 50;
+        int valueHeight = value2.getPreferredSize().height + 10;
         key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
         value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
         // add components to header panel
         panelHeader1.add(key2);
         panelHeader1.add(value2);
-
-        // create copy to clipboard button
-        JButton newButton = new JButton("Copy to Clipboard");
-        newButton.setForeground(Color.WHITE);
-        newButton.setBackground(new Color(90, 80, 160));
-
-        GridBagConstraints gbc4 = new GridBagConstraints();
-
-        gbc4.gridx = 0;
-        gbc4.gridy = 0;
-        gbc4.insets = new Insets(50, 50, 50, 50);
-        panelHeaderEast.add(panelHeader1, gbc4);
-
-        gbc4.gridx = 0;
-        gbc4.gridy = 1;
-        gbc4.insets = new Insets(50, 50, 50, 50);
-        panelHeaderEast.add(newButton, gbc4);
-
-        tabbedPane2.add("Message Body", panelMessageBody);
-        tabbedPane2.add("Header", panelHeaderEast);
-
-        panelEast.add(panelEast_North, BorderLayout.NORTH);
-        panelEast.add(tabbedPane2, BorderLayout.CENTER);
-
-        mainPanel.add(panelCenter, BorderLayout.CENTER);
-        mainPanel.add(panelWest, BorderLayout.WEST);
-        mainPanel.add(panelEast, BorderLayout.EAST);
+        return panelHeader1;
 
     }
 
