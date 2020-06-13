@@ -394,18 +394,6 @@ public class Request implements Serializable {
             if(bufferedOutputStream != null)
             bufferedOutputStream.close();
 
-        InputStream inputStream = null;
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                inputStream = connection.getInputStream();
-            }
-            else{
-                inputStream = connection.getErrorStream();
-            }
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-    
-            System.out.println(new String(bufferedInputStream.readAllBytes()));
-            System.out.println(connection.getResponseCode());
-            System.out.println(connection.getHeaderFields());
         } catch (IOException e) {
             e.printStackTrace();
         }
