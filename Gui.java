@@ -1,4 +1,5 @@
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -36,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.awt.*;
 
 /**
@@ -49,6 +51,11 @@ public class Gui {
     private JFrame frame;
     String[] argsMain;
     int i;
+    ArrayList<String> headerResponseArrayList = new ArrayList<>();
+    Border border = BorderFactory.createLineBorder(Color.GRAY);
+    int j = 3;
+
+
 
     public Gui() {
         argsMain = new String[30];
@@ -225,6 +232,8 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 argsMain[0] = URLAddress.getText();
+                argsMain[i] = "Gui";
+                i++;
                 Jurl.main(argsMain);
 
             }
@@ -266,53 +275,72 @@ public class Gui {
         tabbedPane.add("Auth", panelAuth);
 
         // panel header center
-        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
-        panelHeader.setBackground(Color.DARK_GRAY);
+        JPanel panelHeader;
+        // JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
+        // panelHeader.setBackground(Color.DARK_GRAY);
 
-        // key in header
-        JTextField key = new JTextField("new Header");
-        key.setBackground(Color.GRAY);
-        key.setForeground(Color.WHITE);
-        Border border = BorderFactory.createLineBorder(Color.GRAY);
-        key.setBorder(border);
+        // // key in header
+        // headerResponseArrayList.add("\"");
+        // StringBuffer headerResponse = new StringBuffer(); 
+        // JTextField key = new JTextField("new Header");
+        // key.setBackground(Color.GRAY);
+        // key.setForeground(Color.WHITE);
+        // Border border = BorderFactory.createLineBorder(Color.GRAY);
+        // key.setBorder(border);
 
-        // value in header
-        JTextField value = new JTextField("new value");
-        value.setBorder(border);
-        value.setBackground(Color.GRAY);
-        value.setForeground(Color.WHITE);
-        int keyWidth = key.getPreferredSize().width + 50;
-        int keyHeight = key.getPreferredSize().height + 10;
-        key.setPreferredSize(new Dimension(keyWidth, keyHeight));
-        int valueWidth = value.getPreferredSize().width + 50;
-        int valueHeight = value.getPreferredSize().height + 10;
-        value.setPreferredSize(new Dimension(valueWidth, valueHeight));
+        // // value in header
+        // JTextField value = new JTextField("new value");
+        // value.setBorder(border);
+        // value.setBackground(Color.GRAY);
+        // value.setForeground(Color.WHITE);
+        // int keyWidth = key.getPreferredSize().width + 50;
+        // int keyHeight = key.getPreferredSize().height + 10;
+        // key.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        // int valueWidth = value.getPreferredSize().width + 50;
+        // int valueHeight = value.getPreferredSize().height + 10;
+        // value.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
-        // checkbox in header
-        JCheckBox c1 = new JCheckBox();
-        c1.setBackground(Color.DARK_GRAY);
-        c1.setBorder(border);
+        // // checkbox in header
+        // JCheckBox c1 = new JCheckBox();
+        // c1.setBackground(Color.DARK_GRAY);
+        // c1.setBorder(border);
 
-        // recycle button in header
-        ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
-        JButton recycle = new JButton(recycleBin);
-        recycle.setBackground(Color.DARK_GRAY);
-        recycle.setBorder(border);
-        int recycleWidth = recycle.getPreferredSize().width - 1000;
-        int recycleHeight = recycle.getPreferredSize().height - 4;
-        recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+        
+        // c1.addActionListener(new ActionListener(){
+        //     public void actionPerformed(ActionEvent e){
+        //         headerResponse.append(key.getText()+":" + value.getText()+";");
+        //         headerResponseArrayList.add(headerResponse.toString());
+        //     }
+        // });
 
-        // add components to header panel
-        panelHeader.add(key);
-        panelHeader.add(value);
-        panelHeader.add(c1);
-        panelHeader.add(recycle);
+
+        // // recycle button in header
+        // ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
+        // JButton recycle = new JButton(recycleBin);
+        // recycle.setBackground(Color.DARK_GRAY);
+        // recycle.setBorder(border);
+        // int recycleWidth = recycle.getPreferredSize().width - 1000;
+        // int recycleHeight = recycle.getPreferredSize().height - 4;
+        // recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+        // recycle.addActionListener(new ActionListener(){
+        //     public void actionPerformed(ActionEvent e){
+        //         headerResponseArrayList.remove(key.getText()+":" + value.getText()+";");
+        //     }
+        // });
+
+        // // add components to header panel
+        // panelHeader.add(key);
+        // panelHeader.add(value);
+        // panelHeader.add(c1);
+        // panelHeader.add(recycle);
+
+        panelHeader = newHeader();
 
         // create new button
         JButton newHeader = new JButton("+  NEW");
         newHeader.setForeground(Color.WHITE);
         newHeader.setBackground(new Color(90, 80, 160));
-
+      
         GridBagConstraints gbc2 = new GridBagConstraints();
 
         // first row
@@ -330,10 +358,35 @@ public class Gui {
         panelHeaderCenter.add(panelHeader, gbc2);
 
         gbc2.gridx = 0;
-        gbc2.gridy = 3;
+        gbc2.gridy = 2;
         gbc2.weightx = 1;
         gbc2.weighty = 1;
-        panelHeaderCenter.add(new JLabel(" "), gbc2);
+        JLabel labelHeader =new JLabel(" ");
+        panelHeaderCenter.add(labelHeader, gbc2);
+
+        newHeader.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                JPanel panelNewHaeder = newHeader();
+                panelHeaderCenter.remove(labelHeader);
+                gbc2.gridx = 0;
+                gbc2.gridy = j;
+                j++;
+                gbc2.weightx = 0;
+                gbc2.weighty = 0;
+                gbc2.fill = GridBagConstraints.HORIZONTAL;
+                gbc2.insets = new Insets(10, 10, 10, 10);
+                panelHeaderCenter.add(panelNewHaeder,gbc2);
+                gbc2.gridx = 0;
+                gbc2.gridy = j;
+                j++;
+                gbc2.weightx = 1;
+                gbc2.weighty = 1;
+                panelHeaderCenter.add(labelHeader,gbc2);
+                panelHeaderCenter.revalidate();
+                panelHeaderCenter.repaint();
+            }
+        });
+
 
         // panel body
 
@@ -348,6 +401,7 @@ public class Gui {
 
         // key in header
         JTextField keyFormData = new JTextField("name");
+    
         keyFormData.setBackground(Color.GRAY);
         keyFormData.setForeground(Color.WHITE);
         keyFormData.setBorder(border);
@@ -357,6 +411,13 @@ public class Gui {
         valueFormData.setBorder(border);
         valueFormData.setBackground(Color.GRAY);
         valueFormData.setForeground(Color.WHITE);
+
+        int keyWidth = keyFormData.getPreferredSize().width + 50;
+        int keyHeight = keyFormData.getPreferredSize().height + 10;
+        int valueWidth = valueFormData.getPreferredSize().width + 50;
+        int valueHeight = valueFormData.getPreferredSize().height + 10;
+        ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
+
         keyFormData.setPreferredSize(new Dimension(keyWidth, keyHeight));
         valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
@@ -367,6 +428,8 @@ public class Gui {
 
         // recycle button in header
         JButton recycleFormData = new JButton(recycleBin);
+        int recycleWidth = recycleFormData.getPreferredSize().width - 1000;
+        int recycleHeight = recycleFormData.getPreferredSize().height - 4;
         recycleFormData.setBackground(Color.DARK_GRAY);
         recycleFormData.setBorder(border);
         recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
@@ -860,6 +923,69 @@ public class Gui {
         mainPanel.add(panelCenter, BorderLayout.CENTER);
         mainPanel.add(panelWest, BorderLayout.WEST);
         mainPanel.add(panelEast, BorderLayout.EAST);
+
+    }
+
+    public JPanel newHeader(){
+        JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
+        panelHeader.setBackground(Color.DARK_GRAY);
+
+        // key in header
+        headerResponseArrayList.add("\"");
+        StringBuffer headerResponse = new StringBuffer(); 
+        JTextField key = new JTextField("new Header");
+        Border border = BorderFactory.createLineBorder(Color.GRAY);
+        key.setBackground(Color.GRAY);
+        key.setForeground(Color.WHITE);
+        key.setBorder(border);
+
+        // value in header
+        JTextField value = new JTextField("new value");
+        value.setBorder(border);
+        value.setBackground(Color.GRAY);
+        value.setForeground(Color.WHITE);
+        int keyWidth = key.getPreferredSize().width + 50;
+        int keyHeight = key.getPreferredSize().height + 10;
+        key.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        int valueWidth = value.getPreferredSize().width + 50;
+        int valueHeight = value.getPreferredSize().height + 10;
+        value.setPreferredSize(new Dimension(valueWidth, valueHeight));
+        
+        // checkbox in header
+        JCheckBox c1 = new JCheckBox();
+        c1.setBackground(Color.DARK_GRAY);
+        c1.setBorder(border);
+        
+        
+        c1.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                headerResponse.append(key.getText()+":" + value.getText()+";");
+                headerResponseArrayList.add(headerResponse.toString());
+            }
+        });
+        
+        
+        // recycle button in header
+        ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
+        JButton recycle = new JButton(recycleBin);
+        recycle.setBackground(Color.DARK_GRAY);
+        recycle.setBorder(border);
+        int recycleWidth = recycle.getPreferredSize().width - 1000;
+        int recycleHeight = recycle.getPreferredSize().height - 4;
+        recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+        recycle.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                headerResponseArrayList.remove(key.getText()+":" + value.getText()+";");
+            }
+        });
+
+        // add components to header panel
+        panelHeader.add(key);
+        panelHeader.add(value);
+        panelHeader.add(c1);
+        panelHeader.add(recycle);
+
+        return panelHeader;
 
     }
 
