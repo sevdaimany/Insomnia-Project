@@ -56,6 +56,7 @@ public class Gui {
     Border border = BorderFactory.createLineBorder(Color.GRAY);
     int jHeader = 3;
     int jFormdata = 3;
+    int jHeaderResponse = 0;
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
 
@@ -233,34 +234,7 @@ public class Gui {
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                argsMain[0] = URLAddress.getText();
-                argsMain[i] = "Gui";
-                i++;
-
-                if (headerRequestArrayList.size() > 1) {
-                    // headerRequestArrayList.add("\"");
-                    argsMain[i] = "--headers";
-                    i++;
-
-                    argsMain[i] = convertToString(headerRequestArrayList);
-                    i++;
-                }
-
-                if (formDataRequestArrayList.size() > 1) {
-                    argsMain[i] = "--data";
-                    i++;
-
-                    argsMain[i] = convertToString(formDataRequestArrayList);
-                    i++;
-                }
-                Jurl.main(argsMain);
-
-            }
-        });
-
+       
         JButton saveButton = new JButton("Save");
         saveButton.setBorder(border2);
         saveButton.setBackground(Color.WHITE);
@@ -473,10 +447,10 @@ public class Gui {
         resetFile.setBorder(border);
         resetFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(chooseFileBoolean){ 
-                argsMain[indexBinary] = "";
-                argsMain[indexBinary+1] ="";
-                BinaryPath.setText("No file selected");
+                if (chooseFileBoolean) {
+                    argsMain[indexBinary] = "";
+                    argsMain[indexBinary + 1] = "";
+                    BinaryPath.setText("No file selected");
                 }
             }
         });
@@ -810,70 +784,83 @@ public class Gui {
 
         // header
 
-        JPanel panelHeaderEast = new JPanel(new BorderLayout(3,3));
+        JPanel panelHeaderEast = new JPanel(new BorderLayout(3, 3));
         panelHeaderEast.setBackground(Color.DARK_GRAY);
 
-        // JPanel panelHeader1 = new JPanel(new FlowLayout());
-        // panelHeader1.setBackground(Color.DARK_GRAY);
-
-        // // create key
-        // JTextField key2 = new JTextField("new Header");
-        // key2.setBackground(Color.GRAY);
-        // key2.setForeground(Color.WHITE);
-        // key2.setBorder(border);
-
-        // // create value
-        // JTextField value2 = new JTextField("new value");
-        // value2.setBorder(border);
-        // value2.setBackground(Color.GRAY);
-        // value2.setForeground(Color.WHITE);
-        // key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
-        // value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
-
-        // // add components to header panel
-        // panelHeader1.add(key2);
-        // panelHeader1.add(value2);
-        JPanel panelHeader1 = newHeaderResponse();
         JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
         panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
 
+        
+        
         GridBagConstraints gbc4 = new GridBagConstraints();
-
-         gbc4.gridx = 0;
-        gbc4.gridy = 0;
-        gbc4.fill = GridBagConstraints.HORIZONTAL;
-        panelHeaderGridBagLayout.add(panelHeader1, gbc4);
-
-        gbc4.gridx = 0;
-        gbc4.gridy = 1;
-        gbc4.weightx = 1;
-        gbc4.weighty = 1;
-        gbc4.insets = new Insets(50, 50, 50, 50);
-        JLabel labelHeaderResponse = new JLabel(" ");
-        panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
-
+         String[] headerStrings = headerStringArray();
+        //  System.out.print("hiiiiiiiiiiiiiiiiii");
+        //  for(int p = 0 ; p < headerStrings.length;p++){
+        //     System.out.println(headerStrings[p]);
+        //  }
+       
 
         // create copy to clipboard button
         JButton newButton = new JButton("Copy to Clipboard");
         newButton.setForeground(Color.WHITE);
         newButton.setBackground(new Color(90, 80, 160));
-        panelHeaderEast.add(newButton , BorderLayout.NORTH);
-        panelHeaderEast.add(panelHeaderGridBagLayout , BorderLayout.CENTER);
-
-        //GridBagConstraints gbc4 = new GridBagConstraints();
-
-        // gbc4.gridx = 0;
-        // gbc4.gridy = 0;
-        // gbc4.insets = new Insets(50, 50, 50, 50);
-        // panelHeaderEast.add(panelHeader1, gbc4);
-
-        // gbc4.gridx = 0;
-        // gbc4.gridy = 1;
-        // gbc4.insets = new Insets(50, 50, 50, 50);
-        // panelHeaderEast.add(newButton, gbc4);
-        
+        panelHeaderEast.add(newButton, BorderLayout.NORTH);
+        panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
 
 
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                argsMain[0] = URLAddress.getText();
+                argsMain[i] = "Gui";
+                i++;
+
+                if (headerRequestArrayList.size() > 1) {
+                    // headerRequestArrayList.add("\"");
+                    argsMain[i] = "--headers";
+                    i++;
+
+                    argsMain[i] = convertToString(headerRequestArrayList);
+                    i++;
+                }
+
+                if (formDataRequestArrayList.size() > 1) {
+                    argsMain[i] = "--data";
+                    i++;
+
+                    argsMain[i] = convertToString(formDataRequestArrayList);
+                    i++;
+                }
+
+                for(int p = 1 ; p < headerStrings.length ;  p+=2){
+            
+                    if(headerStrings[p].equals("null") || headerStrings[p].equals("Set-Cookie"))
+                    continue;
+
+                    JPanel panelHeader1 = newHeaderResponse(p,headerStrings);
+                    gbc4.gridx = 0;
+                    gbc4.gridy = jHeaderResponse;
+                    gbc4.fill = GridBagConstraints.HORIZONTAL;
+                    panelHeaderGridBagLayout.add(panelHeader1, gbc4);
+                    jHeaderResponse++;
+            
+                    
+                }
+                gbc4.gridx = 0;
+                gbc4.gridy = jHeaderResponse;
+                gbc4.weightx = 1;
+                gbc4.weighty = 1;
+                gbc4.insets = new Insets(50, 50, 50, 50);
+                JLabel labelHeaderResponse = new JLabel(" ");
+                panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+
+                
+                Jurl.main(argsMain);
+
+            }
+        });
+
+       
         tabbedPane2.add("Message Body", panelMessageBody);
         tabbedPane2.add("Header", panelHeaderEast);
 
@@ -886,9 +873,21 @@ public class Gui {
 
     }
 
+    public String[] headerStringArray() {
+        BufferedInputStream in = null;
+        String headers;
+        String[] seprateHeaders = null ;
+        try {
+            in = new BufferedInputStream(new FileInputStream("GuiResponseHeaders.txt"));
+            headers = new String(in.readAllBytes());
+            seprateHeaders = headers.split("&");
+        } catch (Exception e) {
+        }
+        return seprateHeaders;
+    }
 
 
-    public JPanel newHeaderResponse(){
+    public JPanel newHeaderResponse(int p ,String[] headerStrings) {
         JPanel panelHeader1 = new JPanel(new FlowLayout());
         panelHeader1.setBackground(Color.DARK_GRAY);
 
@@ -897,6 +896,7 @@ public class Gui {
         key2.setBackground(Color.GRAY);
         key2.setForeground(Color.WHITE);
         key2.setBorder(border);
+        key2.setText(headerStrings[p]);
 
         // create value
         JTextField value2 = new JTextField("new value");
@@ -909,7 +909,7 @@ public class Gui {
         int valueHeight = value2.getPreferredSize().height + 10;
         key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
         value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
-
+        value2.setText(headerStrings[p+1]);
         // add components to header panel
         panelHeader1.add(key2);
         panelHeader1.add(value2);
