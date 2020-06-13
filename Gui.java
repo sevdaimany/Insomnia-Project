@@ -241,10 +241,18 @@ public class Gui {
                 i++;
 
                 if (headerRequestArrayList.size() > 1) {
-                    headerRequestArrayList.add("\"");
+                    // headerRequestArrayList.add("\"");
                     argsMain[i] = "--headers";
                     i++;
                     argsMain[i] = headerRequestArrayList.toString();
+                    i++;
+                }
+
+                if (formDataRequestArrayList.size() > 1) {
+                    argsMain[i] = "--data";
+                    i++;
+                    argsMain[i] = formDataRequestArrayList.toString();
+                    i++;
                 }
                 Jurl.main(argsMain);
 
@@ -408,8 +416,6 @@ public class Gui {
         JPanel panelBodyCenter = new JPanel(cardRequestBody);
         panelBodyCenter.setBackground(Color.DARK_GRAY);
 
-      
-
         JPanel panelBodyCenterFormData = new JPanel(new GridBagLayout());
         panelBodyCenterFormData.setBackground(Color.DARK_GRAY);
 
@@ -464,7 +470,6 @@ public class Gui {
         newFormData.setForeground(Color.WHITE);
         newFormData.setBackground(new Color(90, 80, 160));
 
-      
         GridBagConstraints gbc2FormData = new GridBagConstraints();
 
         // first row
@@ -494,9 +499,9 @@ public class Gui {
         JLabel labelFormData = new JLabel(" ");
         panelBodyCenterFormData.add(labelFormData, gbc2FormData);
 
-        newFormData.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                
+        newFormData.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
                 JPanel panelNewFormData = newFormData();
                 panelBodyCenterFormData.remove(labelFormData);
                 gbc2FormData.gridx = 0;
@@ -507,7 +512,7 @@ public class Gui {
                 gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
                 gbc2FormData.insets = new Insets(10, 10, 10, 10);
                 panelBodyCenterFormData.add(panelNewFormData, gbc2FormData);
-        
+
                 gbc2FormData.gridx = 0;
                 gbc2FormData.gridy = jFormdata;
                 jFormdata++;
@@ -516,12 +521,9 @@ public class Gui {
                 panelBodyCenterFormData.add(labelFormData, gbc2FormData);
                 panelBodyCenterFormData.revalidate();
                 panelBodyCenterFormData.repaint();
-        
 
             }
         });
-
-
 
         panelBodyCenter.add("Form Data", panelBodyCenterFormData);
 
@@ -549,20 +551,18 @@ public class Gui {
         panelBodyCenterBinary.add(resetFile);
 
         panelBodyCenter.add("Binary", panelBodyCenterBinary);
-        
+
         panelBody.add(comboBox2, BorderLayout.NORTH);
         panelBody.add(panelBodyCenter, BorderLayout.CENTER);
-
 
         comboBox2.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 if (((String) comboBox2.getSelectedItem()).equals("Form Data")) {
-                  //  panelBodyCenter.removeAll();
+                    // panelBodyCenter.removeAll();
                     panelBodyCenter.revalidate();
                     panelBodyCenter.repaint();
                     cardRequestBody.show(panelBodyCenter, "Form Data");
-
 
                     // panelBodyCenter.setLayout(new GridBagLayout());
 
@@ -632,13 +632,13 @@ public class Gui {
                     // gbc2FormData.weightx = 1;
                     // gbc2FormData.weighty = 1;
                     // panelBodyCenter.add(new JLabel(" "), gbc2FormData);
-                     panelBodyCenter.revalidate();
-                     panelBodyCenter.repaint();
-
-                } else if(((String) comboBox2.getSelectedItem()).equals("Binary Data")) {
                     panelBodyCenter.revalidate();
                     panelBodyCenter.repaint();
-                    cardRequestBody.show(panelBodyCenter ,"Binary");
+
+                } else if (((String) comboBox2.getSelectedItem()).equals("Binary Data")) {
+                    panelBodyCenter.revalidate();
+                    panelBodyCenter.repaint();
+                    cardRequestBody.show(panelBodyCenter, "Binary");
 
                     // panelBodyCenter.setLayout(new FlowLayout());
                     // JFileChooser fileChooser = new JFileChooser();
@@ -662,14 +662,13 @@ public class Gui {
                     // panelBodyCenter.add(BinaryPath);
                     // panelBodyCenter.add(chooseFile);
                     // panelBodyCenter.add(resetFile);
-                     panelBodyCenter.revalidate();
-                     panelBodyCenter.repaint();
+                    panelBodyCenter.revalidate();
+                    panelBodyCenter.repaint();
 
                 }
             }
         });
 
-     
         // panel Query
         JPanel panelQuery = new JPanel(new GridLayout(1, 4, 10, 5));
         panelQuery.setBackground(Color.DARK_GRAY);
@@ -1110,9 +1109,16 @@ public class Gui {
         valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
         // checkbox in header
+        StringBuffer formDataRequBuffer = new StringBuffer();
         JCheckBox c1FormData = new JCheckBox();
         c1FormData.setBackground(Color.DARK_GRAY);
         c1FormData.setBorder(border);
+        c1FormData.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                formDataRequBuffer.append(keyFormData.getText() + "=" + valueFormData.getText() + "&");
+                formDataRequestArrayList.add(formDataRequBuffer.toString());
+            }
+        });
 
         // recycle button in header
         JButton recycleFormData = new JButton(recycleBin);
@@ -1121,6 +1127,11 @@ public class Gui {
         recycleFormData.setBackground(Color.DARK_GRAY);
         recycleFormData.setBorder(border);
         recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+        recycleFormData.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                formDataRequestArrayList.remove(keyFormData.getText() + "=" + valueFormData.getText() + "&");
+            }
+        });
 
         // add components to header panel
         panelFormData.add(keyFormData);
