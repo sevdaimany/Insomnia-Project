@@ -56,6 +56,8 @@ public class Gui {
     Border border = BorderFactory.createLineBorder(Color.GRAY);
     int jHeader = 3;
     int jFormdata = 3;
+    int indexBinary = 0;
+    boolean chooseFileBoolean = false;
 
     public Gui() {
         argsMain = new String[30];
@@ -431,29 +433,36 @@ public class Gui {
 
         JPanel panelBodyCenterBinary = new JPanel(new FlowLayout());
         panelBodyCenterBinary.setBackground(Color.DARK_GRAY);
-        
+
         JTextField BinaryPath = new JTextField("No file selected");
         BinaryPath.setPreferredSize(new Dimension(760, 30));
         BinaryPath.setBackground(Color.GRAY);
         BinaryPath.setForeground(Color.white);
-        
+
         JButton chooseFile = new JButton("Choose file");
         chooseFile.setBackground(Color.DARK_GRAY);
         chooseFile.setBorder(border);
         chooseFile.setPreferredSize(new Dimension(120, 25));
         chooseFile.setForeground(Color.LIGHT_GRAY);
+
         chooseFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
                 int result = fileChooser.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     argsMain[i] = "--binary";
+                    indexBinary = i;
                     i++;
                     argsMain[i] = selectedFile.getAbsolutePath();
+                    i++;
+                    BinaryPath.setEditable(false);
+                    BinaryPath.setText(selectedFile.getAbsolutePath());
+                    chooseFileBoolean = true;
                 }
+
             }
         });
 
@@ -462,6 +471,15 @@ public class Gui {
         resetFile.setPreferredSize(new Dimension(120, 25));
         resetFile.setForeground(Color.LIGHT_GRAY);
         resetFile.setBorder(border);
+        resetFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(chooseFileBoolean){ 
+                argsMain[indexBinary] = "";
+                argsMain[indexBinary+1] ="";
+                BinaryPath.setText("No file selected");
+                }
+            }
+        });
         panelBodyCenterBinary.add(BinaryPath);
         panelBodyCenterBinary.add(chooseFile);
         panelBodyCenterBinary.add(resetFile);
