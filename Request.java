@@ -20,6 +20,7 @@ public class Request implements Serializable {
     private final boolean h_requestsHeaders;
     private final boolean d_formdataMesssageBody;
     private boolean Gui;
+    private boolean png;
 
     public Request(String urlString, String method, HashMap<String, String> body,
             HashMap<String, String> requestsHeaders, String file, boolean i_showResponseHeaders, boolean f_redirect,
@@ -125,7 +126,57 @@ public class Request implements Serializable {
     }
 
     public void printResponseBody() throws IOException {
-        // if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
+
+        if (connection.getHeaderField("Content-Type") != null) {
+            png = connection.getHeaderField("Content-Type").equals("image/png");
+            // System.out.println(png);
+        }
+
+        // InputStream in2 = connection.getInputStream();
+
+        // byte[] bytes = null;
+        // try {
+        // bytes = in2.readAllBytes();
+
+        // if (png) {
+        // FileOutputStream pngfile = new FileOutputStream("GuiPreview.png");
+        // pngfile.write(bytes);
+        // pngfile.close();
+        // }
+        // if (o_saveResponseBody) {
+        // String pathFile = "./responseBody/";
+        // if (o_fileName == null || o_fileName.isEmpty()) {
+        // String name = Integer.toString(new Random().nextInt(1000000000)) +
+        // ".insomnia";
+        // // fileSaveResponseBody = new File("./responseBody/" + name);
+        // pathFile += name;
+
+        // } else {
+        // //fileSaveResponseBody = new File("./responseBody/" + o_fileName +
+        // ".insomnia");
+        // // fileSaveResponseBody.createNewFile();
+        // pathFile = pathFile + o_fileName + ".insomnia";
+        // }
+        // FileOutputStream saveResponsdeBodyFile = new FileOutputStream(pathFile);
+        // saveResponsdeBodyFile.write(bytes);
+        // saveResponsdeBodyFile.close();
+        // }
+
+        // if(Gui){
+        // FileOutputStream GuiResponseBody = new
+        // FileOutputStream("./GuiResponseBody.txt");
+        // GuiResponseBody.write(bytes);
+        // GuiResponseBody.close();
+        // }
+        // if(!Gui){
+
+        // for(int k = 0 ; k < bytes.length ; k++)
+        // System.out.print((char)bytes[k]);
+
+        // System.out.println("\n\n");
+        // }
+        // } catch (IOException e) {
+        // }
 
         File fileSaveResponseBody = null;
         BufferedWriter writer = null;
@@ -146,11 +197,12 @@ public class Request implements Serializable {
         }
 
         if (Gui) {
-            GuiResponseBody = new File("./GuiResponseBody.txt");
+            GuiResponseBody = new File("GuiResponseBody.txt");
             GuiResponseBody.createNewFile();
         }
 
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
         String inputLine;
         StringBuffer content = new StringBuffer();
 
@@ -165,10 +217,11 @@ public class Request implements Serializable {
             if (o_saveResponseBody)
                 writer.write(inputLine);
             if (Gui) {
-                GuiWriter.write(inputLine);
+                GuiWriter.write(inputLine + "\n");
             } else {
                 content.append(inputLine);
             }
+
         }
 
         in.close();
@@ -176,13 +229,29 @@ public class Request implements Serializable {
             System.out.println(content.toString());
             System.out.println("\n");
         }
+
         if (o_saveResponseBody)
             writer.close();
         if (Gui)
             GuiWriter.close();
-        // } else {
-        // System.out.println("request not worked");
+        // if(png){
+        // pngWriter.flush();
+        // pngWriter.close();
         // }
+        if (png) {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("GuiPreview.png"));
+            BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiResponseBody.txt"));
+            byte[] pngbyte = new byte[4096];
+            int count;
+            while (in2.available() > 0) {
+                count = in2.read(pngbyte);
+                out.write(pngbyte, 0, count);
+            }
+            out.flush();
+            in2.close();
+            out.close();
+        }
+
     }
 
     public void printResponseHeaders() throws IOException {
@@ -227,15 +296,14 @@ public class Request implements Serializable {
                     System.out.println("\t" + aValue);
                 }
             }
+
         }
         if (Gui) {
             GuiWriter.write("\n\n");
+            GuiWriter.close();
         } else {
             System.out.println("\n");
         }
-
-        GuiWriter.close();
-
 
     }
 
@@ -268,6 +336,9 @@ public class Request implements Serializable {
             if (d_formdataMesssageBody) {
                 formData();
             }
+        }
+        if(Method.equals("GET")){
+            uploadBinary();
         }
 
         if (h_requestsHeaders) {
@@ -324,7 +395,7 @@ public class Request implements Serializable {
         }
     }
 
-    public void formData() throws IOException{
+    public void formData() throws IOException {
         BufferedWriter GuiWriter = null;
         File GuiFormData = null;
 
@@ -341,11 +412,10 @@ public class Request implements Serializable {
             BufferedOutputStream request = new BufferedOutputStream(connection.getOutputStream());
             bufferOutFormData(boundary, request);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
-            if(Gui){
+            if (Gui) {
                 GuiWriter.write(new String(bufferedInputStream.readAllBytes()));
-            }
-            else{ 
-            System.out.println(new String(bufferedInputStream.readAllBytes()));
+            } else {
+                System.out.println(new String(bufferedInputStream.readAllBytes()));
             }
             GuiWriter.close();
         } catch (Exception e) {
