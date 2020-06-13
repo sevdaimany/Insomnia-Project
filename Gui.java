@@ -56,7 +56,6 @@ public class Gui {
     Border border = BorderFactory.createLineBorder(Color.GRAY);
     int jHeader = 3;
     int jFormdata = 3;
-    int jHeaderResponse = 0;
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
 
@@ -234,7 +233,7 @@ public class Gui {
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
-       
+
         JButton saveButton = new JButton("Save");
         saveButton.setBorder(border2);
         saveButton.setBackground(Color.WHITE);
@@ -732,28 +731,6 @@ public class Gui {
             public void actionPerformed(ActionEvent e) {
 
                 if (((String) comboBox3.getSelectedItem()).equals("Raw")) {
-                    JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
-                    JTextArea raw = new JTextArea();
-                    raw.setEditable(false);
-                    JScrollPane scrollPane = new JScrollPane(raw);
-
-                    raw.setPreferredSize(new Dimension(2000, 800));
-                    scrollPane.setPreferredSize(new Dimension(499, 679));
-
-                    BufferedInputStream in = null;
-                    try {
-                        in = new BufferedInputStream(new FileInputStream("GuiResponseBody.txt"));
-
-                        raw.append(new String(in.readAllBytes()));
-                    } catch (Exception ex) {
-                    }
-
-                    panelMessageBodyRaw.add(scrollPane);
-
-                    panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
-
-                    panelMessageBodyRaw.repaint();
-                    panelMessageBodyRaw.revalidate();
 
                     card.show(panelMessageBodyCenter, "Raw");
 
@@ -790,15 +767,11 @@ public class Gui {
         JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
         panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
 
-        
-        
         GridBagConstraints gbc4 = new GridBagConstraints();
-         String[] headerStrings = headerStringArray();
-        //  System.out.print("hiiiiiiiiiiiiiiiiii");
-        //  for(int p = 0 ; p < headerStrings.length;p++){
-        //     System.out.println(headerStrings[p]);
-        //  }
-       
+        // System.out.print("hiiiiiiiiiiiiiiiiii");
+        // for(int p = 0 ; p < headerStrings.length;p++){
+        // System.out.println(headerStrings[p]);
+        // }
 
         // create copy to clipboard button
         JButton newButton = new JButton("Copy to Clipboard");
@@ -807,7 +780,6 @@ public class Gui {
         panelHeaderEast.add(newButton, BorderLayout.NORTH);
         panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
 
-
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -815,16 +787,17 @@ public class Gui {
                 argsMain[i] = "Gui";
                 i++;
 
-                if (headerRequestArrayList.size() > 1) {
+                if (headerRequestArrayList.size() > 0) {
                     // headerRequestArrayList.add("\"");
                     argsMain[i] = "--headers";
                     i++;
 
                     argsMain[i] = convertToString(headerRequestArrayList);
+                    System.out.println(convertToString(headerRequestArrayList));
                     i++;
                 }
 
-                if (formDataRequestArrayList.size() > 1) {
+                if (formDataRequestArrayList.size() > 0) {
                     argsMain[i] = "--data";
                     i++;
 
@@ -832,35 +805,100 @@ public class Gui {
                     i++;
                 }
 
-                for(int p = 1 ; p < headerStrings.length ;  p+=2){
-            
-                    if(headerStrings[p].equals("null") || headerStrings[p].equals("Set-Cookie"))
-                    continue;
+                Jurl.main(argsMain);
+                // File errorFile = new File("GuiError.txt");
+                int lengthFile = 0;
+                try {
+                    BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiError.txt"));
+                    lengthFile = in2.readAllBytes().length;
+                    System.out.println(lengthFile);
+                } catch (IOException exc) {
+                }
 
-                    JPanel panelHeader1 = newHeaderResponse(p,headerStrings);
+                if (lengthFile > 0) {
+                    JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+                    JTextArea raw = new JTextArea();
+                    raw.setEditable(false);
+                    JScrollPane scrollPane = new JScrollPane(raw);
+
+                    raw.setPreferredSize(new Dimension(2000, 800));
+                    scrollPane.setPreferredSize(new Dimension(499, 679));
+                    BufferedInputStream in = null;
+                    try {
+                        in = new BufferedInputStream(new FileInputStream("GuiError.txt"));
+
+                        raw.append(new String(in.readAllBytes()));
+                    } catch (Exception ex) {
+                    }
+
+                    panelMessageBodyRaw.add(scrollPane);
+
+                    panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+
+                    card.show(panelMessageBodyCenter, "Raw");
+
+                    panelMessageBodyRaw.repaint();
+                    panelMessageBodyRaw.revalidate();
+
+                } else {
+
+                    panelHeaderGridBagLayout.removeAll();
+                    panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+                    String[] headerStrings = headerStringArray();
+                    int jHeaderResponse = 0;
+
+                    for (int p = 1; p < headerStrings.length; p += 2) {
+
+                        if (headerStrings[p].equals("null") || headerStrings[p].equals("Set-Cookie"))
+                            continue;
+
+                        JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
+                        gbc4.gridx = 0;
+                        gbc4.gridy = jHeaderResponse;
+                        gbc4.fill = GridBagConstraints.HORIZONTAL;
+                        panelHeaderGridBagLayout.add(panelHeader1, gbc4);
+                        jHeaderResponse++;
+
+                    }
                     gbc4.gridx = 0;
                     gbc4.gridy = jHeaderResponse;
-                    gbc4.fill = GridBagConstraints.HORIZONTAL;
-                    panelHeaderGridBagLayout.add(panelHeader1, gbc4);
-                    jHeaderResponse++;
-            
-                    
-                }
-                gbc4.gridx = 0;
-                gbc4.gridy = jHeaderResponse;
-                gbc4.weightx = 1;
-                gbc4.weighty = 1;
-                gbc4.insets = new Insets(50, 50, 50, 50);
-                JLabel labelHeaderResponse = new JLabel(" ");
-                panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+                    gbc4.weightx = 1;
+                    gbc4.weighty = 1;
+                    gbc4.insets = new Insets(50, 50, 50, 50);
+                    JLabel labelHeaderResponse = new JLabel(" ");
+                    panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+                    panelHeaderGridBagLayout.revalidate();
+                    panelHeaderGridBagLayout.repaint();
 
-                
-                Jurl.main(argsMain);
+                    JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+                    JTextArea raw = new JTextArea();
+                    raw.setEditable(false);
+                    JScrollPane scrollPane = new JScrollPane(raw);
+
+                    raw.setPreferredSize(new Dimension(2000, 800));
+                    scrollPane.setPreferredSize(new Dimension(499, 679));
+
+                    BufferedInputStream in = null;
+                    try {
+                        in = new BufferedInputStream(new FileInputStream("GuiResponseBody.txt"));
+
+                        raw.append(new String(in.readAllBytes()));
+                    } catch (Exception ex) {
+                    }
+
+                    panelMessageBodyRaw.add(scrollPane);
+
+                    panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+
+                    card.show(panelMessageBodyCenter, "Raw");
+
+                    panelMessageBodyRaw.repaint();
+                    panelMessageBodyRaw.revalidate();
+                }
 
             }
         });
 
-       
         tabbedPane2.add("Message Body", panelMessageBody);
         tabbedPane2.add("Header", panelHeaderEast);
 
@@ -876,7 +914,7 @@ public class Gui {
     public String[] headerStringArray() {
         BufferedInputStream in = null;
         String headers;
-        String[] seprateHeaders = null ;
+        String[] seprateHeaders = null;
         try {
             in = new BufferedInputStream(new FileInputStream("GuiResponseHeaders.txt"));
             headers = new String(in.readAllBytes());
@@ -886,8 +924,7 @@ public class Gui {
         return seprateHeaders;
     }
 
-
-    public JPanel newHeaderResponse(int p ,String[] headerStrings) {
+    public JPanel newHeaderResponse(int p, String[] headerStrings) {
         JPanel panelHeader1 = new JPanel(new FlowLayout());
         panelHeader1.setBackground(Color.DARK_GRAY);
 
@@ -896,6 +933,7 @@ public class Gui {
         key2.setBackground(Color.GRAY);
         key2.setForeground(Color.WHITE);
         key2.setBorder(border);
+        key2.setEditable(false);
         key2.setText(headerStrings[p]);
 
         // create value
@@ -903,13 +941,14 @@ public class Gui {
         value2.setBorder(border);
         value2.setBackground(Color.GRAY);
         value2.setForeground(Color.WHITE);
-        int keyWidth = key2.getPreferredSize().width + 50;
-        int keyHeight = key2.getPreferredSize().height + 10;
-        int valueWidth = value2.getPreferredSize().width + 50;
-        int valueHeight = value2.getPreferredSize().height + 10;
+        value2.setEditable(false);
+        int keyWidth = 210;
+        int keyHeight = 35;
+        int valueWidth = 210;
+        int valueHeight = 35;
         key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
         value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
-        value2.setText(headerStrings[p+1]);
+        value2.setText(headerStrings[p + 1]);
         // add components to header panel
         panelHeader1.add(key2);
         panelHeader1.add(value2);
