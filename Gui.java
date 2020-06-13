@@ -51,12 +51,11 @@ public class Gui {
     private JFrame frame;
     String[] argsMain;
     int i;
-    ArrayList<String> headerRequestArrayList ;
-    ArrayList<String>  formDataRequestArrayList ;
+    ArrayList<String> headerRequestArrayList;
+    ArrayList<String> formDataRequestArrayList;
     Border border = BorderFactory.createLineBorder(Color.GRAY);
-    int j = 3;
-
-
+    int jHeader = 3;
+    int jFormdata = 4;
 
     public Gui() {
         argsMain = new String[30];
@@ -241,7 +240,7 @@ public class Gui {
                 argsMain[i] = "Gui";
                 i++;
 
-                if(headerRequestArrayList.size() > 1){
+                if (headerRequestArrayList.size() > 1) {
                     headerRequestArrayList.add("\"");
                     argsMain[i] = "--headers";
                     i++;
@@ -266,7 +265,7 @@ public class Gui {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         // create body panel
-        JPanel panelBody = new JPanel(new GridBagLayout());
+        JPanel panelBody = new JPanel(new BorderLayout(5, 5));
         panelBody.setBackground(Color.DARK_GRAY);
 
         // create header panel
@@ -294,7 +293,7 @@ public class Gui {
 
         // // key in header
         // headerResponseArrayList.add("\"");
-        // StringBuffer headerResponse = new StringBuffer(); 
+        // StringBuffer headerResponse = new StringBuffer();
         // JTextField key = new JTextField("new Header");
         // key.setBackground(Color.GRAY);
         // key.setForeground(Color.WHITE);
@@ -318,14 +317,12 @@ public class Gui {
         // c1.setBackground(Color.DARK_GRAY);
         // c1.setBorder(border);
 
-        
         // c1.addActionListener(new ActionListener(){
-        //     public void actionPerformed(ActionEvent e){
-        //         headerResponse.append(key.getText()+":" + value.getText()+";");
-        //         headerResponseArrayList.add(headerResponse.toString());
-        //     }
+        // public void actionPerformed(ActionEvent e){
+        // headerResponse.append(key.getText()+":" + value.getText()+";");
+        // headerResponseArrayList.add(headerResponse.toString());
+        // }
         // });
-
 
         // // recycle button in header
         // ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
@@ -336,9 +333,9 @@ public class Gui {
         // int recycleHeight = recycle.getPreferredSize().height - 4;
         // recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
         // recycle.addActionListener(new ActionListener(){
-        //     public void actionPerformed(ActionEvent e){
-        //         headerResponseArrayList.remove(key.getText()+":" + value.getText()+";");
-        //     }
+        // public void actionPerformed(ActionEvent e){
+        // headerResponseArrayList.remove(key.getText()+":" + value.getText()+";");
+        // }
         // });
 
         // // add components to header panel
@@ -353,7 +350,7 @@ public class Gui {
         JButton newHeader = new JButton("+  NEW");
         newHeader.setForeground(Color.WHITE);
         newHeader.setBackground(new Color(90, 80, 160));
-      
+
         GridBagConstraints gbc2 = new GridBagConstraints();
 
         // first row
@@ -374,37 +371,35 @@ public class Gui {
         gbc2.gridy = 2;
         gbc2.weightx = 1;
         gbc2.weighty = 1;
-        JLabel labelHeader =new JLabel(" ");
+        JLabel labelHeader = new JLabel(" ");
         panelHeaderCenter.add(labelHeader, gbc2);
 
-        newHeader.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                for(int o = 0 ; o < headerRequestArrayList.size() ; o++){
-                    
+        newHeader.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for (int o = 0; o < headerRequestArrayList.size(); o++) {
+
                     System.out.println(headerRequestArrayList.get(o));
                 }
                 JPanel panelNewHaeder = newHeader();
                 panelHeaderCenter.remove(labelHeader);
                 gbc2.gridx = 0;
-                gbc2.gridy = j;
-                j++;
+                gbc2.gridy = jHeader;
+                jHeader++;
                 gbc2.weightx = 0;
                 gbc2.weighty = 0;
                 gbc2.fill = GridBagConstraints.HORIZONTAL;
                 gbc2.insets = new Insets(10, 10, 10, 10);
-                panelHeaderCenter.add(panelNewHaeder,gbc2);
+                panelHeaderCenter.add(panelNewHaeder, gbc2);
                 gbc2.gridx = 0;
-                gbc2.gridy = j;
-                j++;
+                gbc2.gridy = jHeader;
+                jHeader++;
                 gbc2.weightx = 1;
                 gbc2.weighty = 1;
-                panelHeaderCenter.add(labelHeader,gbc2);
+                panelHeaderCenter.add(labelHeader, gbc2);
                 panelHeaderCenter.revalidate();
                 panelHeaderCenter.repaint();
             }
         });
-        
-
 
         // panel body
 
@@ -413,50 +408,59 @@ public class Gui {
         comboBox2.setPreferredSize(new Dimension(760, 30));
         comboBox2.setBackground(Color.GRAY);
         comboBox2.setForeground(Color.white);
+        panelBody.add(comboBox2, BorderLayout.NORTH);
+        CardLayout cardRequestBody = new CardLayout(3, 3);
+
+        JPanel panelBodyCenter = new JPanel(cardRequestBody);
+        panelBodyCenter.setBackground(Color.DARK_GRAY);
+
+        JPanel panelBodyCenterFormData = new JPanel(new GridBagLayout());
+
         // panelBody.add(comboBox2);
-        JPanel panelFormData = new JPanel(new GridLayout(1, 4, 10, 5));
-        panelFormData.setBackground(Color.DARK_GRAY);
+        JPanel panelFormData = newFormData();
+        // JPanel panelFormData = new JPanel(new GridLayout(1, 4, 10, 5));
+        // panelFormData.setBackground(Color.DARK_GRAY);
 
-        // key in header
-        JTextField keyFormData = new JTextField("name");
-    
-        keyFormData.setBackground(Color.GRAY);
-        keyFormData.setForeground(Color.WHITE);
-        keyFormData.setBorder(border);
+        // // key in header
+        // JTextField keyFormData = new JTextField("name");
 
-        // value in header
-        JTextField valueFormData = new JTextField("value");
-        valueFormData.setBorder(border);
-        valueFormData.setBackground(Color.GRAY);
-        valueFormData.setForeground(Color.WHITE);
+        // keyFormData.setBackground(Color.GRAY);
+        // keyFormData.setForeground(Color.WHITE);
+        // keyFormData.setBorder(border);
 
-        int keyWidth = keyFormData.getPreferredSize().width + 50;
-        int keyHeight = keyFormData.getPreferredSize().height + 10;
-        int valueWidth = valueFormData.getPreferredSize().width + 50;
-        int valueHeight = valueFormData.getPreferredSize().height + 10;
-        ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
+        // // value in header
+        // JTextField valueFormData = new JTextField("value");
+        // valueFormData.setBorder(border);
+        // valueFormData.setBackground(Color.GRAY);
+        // valueFormData.setForeground(Color.WHITE);
 
-        keyFormData.setPreferredSize(new Dimension(keyWidth, keyHeight));
-        valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
+        // int keyWidth = keyFormData.getPreferredSize().width + 50;
+        // int keyHeight = keyFormData.getPreferredSize().height + 10;
+        // int valueWidth = valueFormData.getPreferredSize().width + 50;
+        // int valueHeight = valueFormData.getPreferredSize().height + 10;
+        // ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
 
-        // checkbox in header
-        JCheckBox c1FormData = new JCheckBox();
-        c1FormData.setBackground(Color.DARK_GRAY);
-        c1FormData.setBorder(border);
+        // keyFormData.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        // valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
-        // recycle button in header
-        JButton recycleFormData = new JButton(recycleBin);
-        int recycleWidth = recycleFormData.getPreferredSize().width - 1000;
-        int recycleHeight = recycleFormData.getPreferredSize().height - 4;
-        recycleFormData.setBackground(Color.DARK_GRAY);
-        recycleFormData.setBorder(border);
-        recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+        // // checkbox in header
+        // JCheckBox c1FormData = new JCheckBox();
+        // c1FormData.setBackground(Color.DARK_GRAY);
+        // c1FormData.setBorder(border);
 
-        // add components to header panel
-        panelFormData.add(keyFormData);
-        panelFormData.add(valueFormData);
-        panelFormData.add(c1FormData);
-        panelFormData.add(recycleFormData);
+        // // recycle button in header
+        // JButton recycleFormData = new JButton(recycleBin);
+        // int recycleWidth = recycleFormData.getPreferredSize().width - 1000;
+        // int recycleHeight = recycleFormData.getPreferredSize().height - 4;
+        // recycleFormData.setBackground(Color.DARK_GRAY);
+        // recycleFormData.setBorder(border);
+        // recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+
+        // // add components to header panel
+        // panelFormData.add(keyFormData);
+        // panelFormData.add(valueFormData);
+        // panelFormData.add(c1FormData);
+        // panelFormData.add(recycleFormData);
 
         // create new button
         JButton newFormData = new JButton("+  NEW");
@@ -466,135 +470,166 @@ public class Gui {
         GridBagConstraints gbc2FormData = new GridBagConstraints();
 
         // first row
+        // gbc2FormData.gridx = 0;
+        // gbc2FormData.gridy = 0;
+        // gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
+        // gbc2FormData.insets = new Insets(3, 2, 2, 2);
+        // panelBodyCenterFormData.add(comboBox2, gbc2FormData);
+
         gbc2FormData.gridx = 0;
         gbc2FormData.gridy = 0;
         gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
         gbc2FormData.insets = new Insets(3, 2, 2, 2);
-        panelBody.add(comboBox2, gbc2FormData);
-
-        gbc2FormData.gridx = 0;
-        gbc2FormData.gridy = 1;
-        gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-        gbc2FormData.insets = new Insets(3, 2, 2, 2);
-        panelBody.add(newFormData, gbc2FormData);
+        panelBodyCenterFormData.add(newFormData, gbc2FormData);
 
         // second row
         gbc2FormData.gridx = 0;
-        gbc2FormData.gridy = 2;
+        gbc2FormData.gridy = 1;
         gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
         gbc2FormData.insets = new Insets(10, 10, 10, 10);
-        panelBody.add(panelFormData, gbc2FormData);
+        panelBodyCenterFormData.add(panelFormData, gbc2FormData);
 
         gbc2FormData.gridx = 0;
-        gbc2FormData.gridy = 4;
+        gbc2FormData.gridy = 2;
         gbc2FormData.weightx = 1;
         gbc2FormData.weighty = 1;
-        panelBody.add(new JLabel(" "), gbc2FormData);
+        panelBodyCenterFormData.add(new JLabel(" "), gbc2FormData);
+        panelBodyCenter.add("Form Data", panelBodyCenterFormData);
+
+
+
+        JPanel panelBodyCenterBinary = new JPanel(new FlowLayout());
+        JFileChooser fileChooser = new JFileChooser();
+        JTextField BinaryPath = new JTextField("No file selected");
+        BinaryPath.setPreferredSize(new Dimension(760, 30));
+        BinaryPath.setBackground(Color.GRAY);
+        BinaryPath.setForeground(Color.white);
+
+        JButton chooseFile = new JButton("Choose file");
+        chooseFile.setBackground(Color.DARK_GRAY);
+        chooseFile.setBorder(border);
+        chooseFile.setPreferredSize(new Dimension(120, 25));
+        chooseFile.setForeground(Color.LIGHT_GRAY);
+
+        JButton resetFile = new JButton("Reset file");
+        resetFile.setBackground(Color.DARK_GRAY);
+        resetFile.setPreferredSize(new Dimension(120, 25));
+        resetFile.setForeground(Color.LIGHT_GRAY);
+        resetFile.setBorder(border);
+        panelBodyCenterBinary.add(comboBox2);
+        panelBodyCenterBinary.add(BinaryPath);
+        panelBodyCenterBinary.add(chooseFile);
+        panelBodyCenterBinary.add(resetFile);
+        panelBodyCenter.add("Binary", panelBodyCenterBinary);
+
 
         comboBox2.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 if (((String) comboBox2.getSelectedItem()).equals("Form Data")) {
-                    panelBody.removeAll();
+                    cardRequestBody.show(panelBodyCenterFormData, "Form Data");
 
-                    panelBody.setLayout(new GridBagLayout());
+                    // panelBodyCenter.removeAll();
 
-                    JPanel panelFormData = new JPanel(new GridLayout(1, 4, 10, 5));
-                    panelFormData.setBackground(Color.DARK_GRAY);
+                    // panelBodyCenter.setLayout(new GridBagLayout());
 
-                    // key in header
-                    JTextField keyFormData = new JTextField("name");
-                    keyFormData.setBackground(Color.GRAY);
-                    keyFormData.setForeground(Color.WHITE);
-                    keyFormData.setBorder(border);
+                    // JPanel panelFormData = new JPanel(new GridLayout(1, 4, 10, 5));
+                    // panelFormData.setBackground(Color.DARK_GRAY);
 
-                    // value in header
-                    JTextField valueFormData = new JTextField("value");
-                    valueFormData.setBorder(border);
-                    valueFormData.setBackground(Color.GRAY);
-                    valueFormData.setForeground(Color.WHITE);
-                    keyFormData.setPreferredSize(new Dimension(keyWidth, keyHeight));
-                    valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
+                    // // key in header
+                    // JTextField keyFormData = new JTextField("name");
+                    // keyFormData.setBackground(Color.GRAY);
+                    // keyFormData.setForeground(Color.WHITE);
+                    // keyFormData.setBorder(border);
 
-                    // checkbox in header
-                    JCheckBox c1FormData = new JCheckBox();
-                    c1FormData.setBackground(Color.DARK_GRAY);
-                    c1FormData.setBorder(border);
+                    // // value in header
+                    // JTextField valueFormData = new JTextField("value");
+                    // valueFormData.setBorder(border);
+                    // valueFormData.setBackground(Color.GRAY);
+                    // valueFormData.setForeground(Color.WHITE);
+                    // keyFormData.setPreferredSize(new Dimension(keyWidth, keyHeight));
+                    // valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
 
-                    // recycle button in header
-                    JButton recycleFormData = new JButton(recycleBin);
-                    recycleFormData.setBackground(Color.DARK_GRAY);
-                    recycleFormData.setBorder(border);
-                    recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+                    // // checkbox in header
+                    // JCheckBox c1FormData = new JCheckBox();
+                    // c1FormData.setBackground(Color.DARK_GRAY);
+                    // c1FormData.setBorder(border);
 
-                    // add components to header panel
-                    panelFormData.add(keyFormData);
-                    panelFormData.add(valueFormData);
-                    panelFormData.add(c1FormData);
-                    panelFormData.add(recycleFormData);
+                    // // recycle button in header
+                    // JButton recycleFormData = new JButton(recycleBin);
+                    // recycleFormData.setBackground(Color.DARK_GRAY);
+                    // recycleFormData.setBorder(border);
+                    // recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
 
-                    // create new button
-                    JButton newFormData = new JButton("+  NEW");
-                    newFormData.setForeground(Color.WHITE);
-                    newFormData.setBackground(new Color(90, 80, 160));
+                    // // add components to header panel
+                    // panelFormData.add(keyFormData);
+                    // panelFormData.add(valueFormData);
+                    // panelFormData.add(c1FormData);
+                    // panelFormData.add(recycleFormData);
 
-                    GridBagConstraints gbc2FormData = new GridBagConstraints();
+                    // // create new button
+                    // JButton newFormData = new JButton("+ NEW");
+                    // newFormData.setForeground(Color.WHITE);
+                    // newFormData.setBackground(new Color(90, 80, 160));
 
-                    // first row
-                    gbc2FormData.gridx = 0;
-                    gbc2FormData.gridy = 0;
-                    gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-                    gbc2FormData.insets = new Insets(3, 2, 2, 2);
-                    panelBody.add(comboBox2, gbc2FormData);
+                    // GridBagConstraints gbc2FormData = new GridBagConstraints();
 
-                    gbc2FormData.gridx = 0;
-                    gbc2FormData.gridy = 1;
-                    gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-                    gbc2FormData.insets = new Insets(3, 2, 2, 2);
-                    panelBody.add(newFormData, gbc2FormData);
+                    // // first row
+                    // gbc2FormData.gridx = 0;
+                    // gbc2FormData.gridy = 0;
+                    // gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
+                    // gbc2FormData.insets = new Insets(3, 2, 2, 2);
+                    // panelBodyCenter.add(comboBox2, gbc2FormData);
 
-                    // second row
-                    gbc2FormData.gridx = 0;
-                    gbc2FormData.gridy = 2;
-                    gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-                    gbc2FormData.insets = new Insets(10, 10, 10, 10);
-                    panelBody.add(panelFormData, gbc2FormData);
+                    // gbc2FormData.gridx = 0;
+                    // gbc2FormData.gridy = 1;
+                    // gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
+                    // gbc2FormData.insets = new Insets(3, 2, 2, 2);
+                    // panelBodyCenter.add(newFormData, gbc2FormData);
 
-                    gbc2FormData.gridx = 0;
-                    gbc2FormData.gridy = 4;
-                    gbc2FormData.weightx = 1;
-                    gbc2FormData.weighty = 1;
-                    panelBody.add(new JLabel(" "), gbc2FormData);
-                    panelBody.revalidate();
-                    panelBody.repaint();
+                    // // second row
+                    // gbc2FormData.gridx = 0;
+                    // gbc2FormData.gridy = 2;
+                    // gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
+                    // gbc2FormData.insets = new Insets(10, 10, 10, 10);
+                    // panelBodyCenter.add(panelFormData, gbc2FormData);
+
+                    // gbc2FormData.gridx = 0;
+                    // gbc2FormData.gridy = 4;
+                    // gbc2FormData.weightx = 1;
+                    // gbc2FormData.weighty = 1;
+                    // panelBodyCenter.add(new JLabel(" "), gbc2FormData);
+                    // panelBodyCenter.revalidate();
+                    // panelBodyCenter.repaint();
 
                 } else {
-                    panelBody.removeAll();
+                    cardRequestBody.show(panelBodyCenterBinary, "Binary");
+                    // panelBodyCenter.removeAll();
 
-                    panelBody.setLayout(new FlowLayout());
-                    JFileChooser fileChooser = new JFileChooser();
-                    JTextField BinaryPath = new JTextField("No file selected");
-                    BinaryPath.setPreferredSize(new Dimension(760, 30));
-                    BinaryPath.setBackground(Color.GRAY);
-                    BinaryPath.setForeground(Color.white);
+                    // panelBodyCenter.setLayout(new FlowLayout());
+                    // JFileChooser fileChooser = new JFileChooser();
+                    // JTextField BinaryPath = new JTextField("No file selected");
+                    // BinaryPath.setPreferredSize(new Dimension(760, 30));
+                    // BinaryPath.setBackground(Color.GRAY);
+                    // BinaryPath.setForeground(Color.white);
 
-                    JButton chooseFile = new JButton("Choose file");
-                    chooseFile.setBackground(Color.DARK_GRAY);
-                    chooseFile.setBorder(border);
-                    chooseFile.setPreferredSize(new Dimension(120, 25));
-                    chooseFile.setForeground(Color.LIGHT_GRAY);
+                    // JButton chooseFile = new JButton("Choose file");
+                    // chooseFile.setBackground(Color.DARK_GRAY);
+                    // chooseFile.setBorder(border);
+                    // chooseFile.setPreferredSize(new Dimension(120, 25));
+                    // chooseFile.setForeground(Color.LIGHT_GRAY);
 
-                    JButton resetFile = new JButton("Reset file");
-                    resetFile.setBackground(Color.DARK_GRAY);
-                    resetFile.setPreferredSize(new Dimension(120, 25));
-                    resetFile.setForeground(Color.LIGHT_GRAY);
-                    resetFile.setBorder(border);
-                    panelBody.add(comboBox2);
-                    panelBody.add(BinaryPath);
-                    panelBody.add(chooseFile);
-                    panelBody.add(resetFile);
-                    panelBody.revalidate();
-                    panelBody.repaint();
+                    // JButton resetFile = new JButton("Reset file");
+                    // resetFile.setBackground(Color.DARK_GRAY);
+                    // resetFile.setPreferredSize(new Dimension(120, 25));
+                    // resetFile.setForeground(Color.LIGHT_GRAY);
+                    // resetFile.setBorder(border);
+                    // panelBodyCenter.add(comboBox2);
+                    // panelBodyCenter.add(BinaryPath);
+                    // panelBodyCenter.add(chooseFile);
+                    // panelBodyCenter.add(resetFile);
+                    // panelBodyCenter.revalidate();
+                    // panelBodyCenter.repaint();
 
                 }
             }
@@ -944,12 +979,12 @@ public class Gui {
 
     }
 
-    public JPanel newHeader(){
+    public JPanel newHeader() {
         JPanel panelHeader = new JPanel(new GridLayout(1, 4, 10, 5));
         panelHeader.setBackground(Color.DARK_GRAY);
 
         // key in header
-        StringBuffer headerResponse = new StringBuffer(); 
+        StringBuffer headerResponse = new StringBuffer();
         JTextField key = new JTextField("new Header");
         Border border = BorderFactory.createLineBorder(Color.GRAY);
         key.setBackground(Color.GRAY);
@@ -967,21 +1002,19 @@ public class Gui {
         int valueWidth = value.getPreferredSize().width + 50;
         int valueHeight = value.getPreferredSize().height + 10;
         value.setPreferredSize(new Dimension(valueWidth, valueHeight));
-        
+
         // checkbox in header
         JCheckBox c1 = new JCheckBox();
         c1.setBackground(Color.DARK_GRAY);
         c1.setBorder(border);
-        
-        
-        c1.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                headerResponse.append(key.getText()+":" + value.getText()+";");
+
+        c1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                headerResponse.append(key.getText() + ":" + value.getText() + ";");
                 headerRequestArrayList.add(headerResponse.toString());
             }
         });
-        
-        
+
         // recycle button in header
         ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
         JButton recycle = new JButton(recycleBin);
@@ -990,9 +1023,9 @@ public class Gui {
         int recycleWidth = recycle.getPreferredSize().width - 1000;
         int recycleHeight = recycle.getPreferredSize().height - 4;
         recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
-        recycle.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                headerRequestArrayList.remove(key.getText()+":" + value.getText()+";");
+        recycle.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                headerRequestArrayList.remove(key.getText() + ":" + value.getText() + ";");
             }
         });
 
@@ -1006,13 +1039,13 @@ public class Gui {
 
     }
 
-    public JPanel newFormData(){
+    public JPanel newFormData() {
         JPanel panelFormData = new JPanel(new GridLayout(1, 4, 10, 5));
         panelFormData.setBackground(Color.DARK_GRAY);
 
         // key in header
         JTextField keyFormData = new JTextField("name");
-    
+
         keyFormData.setBackground(Color.GRAY);
         keyFormData.setForeground(Color.WHITE);
         keyFormData.setBorder(border);
@@ -1054,7 +1087,6 @@ public class Gui {
         return panelFormData;
 
     }
-
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
