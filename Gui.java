@@ -1064,6 +1064,8 @@ public class Gui {
         recycle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 headerRequestArrayList.remove(key.getText() + ":" + value.getText() + ";");
+                value.setText("new value");
+                key.setText("new Header");
             }
         });
 
@@ -1125,6 +1127,8 @@ public class Gui {
         recycleFormData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 formDataRequestArrayList.remove(keyFormData.getText() + "=" + valueFormData.getText() + "&");
+                valueFormData.setText("value");
+                keyFormData.setText("name");
             }
         });
 
