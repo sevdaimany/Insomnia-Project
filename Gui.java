@@ -59,6 +59,7 @@ public class Gui {
     int jFormdata = 3;
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
+    JPanel panelHeaderGridBagLayout;
 
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
@@ -233,7 +234,7 @@ public class Gui {
         });
 
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
-        int addressWidth = URLAddress.getPreferredSize().width + 410;
+        int addressWidth = URLAddress.getPreferredSize().width + 370;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
@@ -788,7 +789,6 @@ public class Gui {
         // JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
         // panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
 
-        GridBagConstraints gbc4 = new GridBagConstraints();
         // System.out.print("hiiiiiiiiiiiiiiiiii");
         // for(int p = 0 ; p < headerStrings.length;p++){
         // System.out.println(headerStrings[p]);
@@ -885,21 +885,24 @@ public class Gui {
                     panelMessageBodyRaw.repaint();
                     panelMessageBodyRaw.revalidate();
 
-
-
-
-                    JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+                    if (panelHeaderGridBagLayout != null) {
+                        panelHeaderEast.remove(panelHeaderGridBagLayout);
+                    }
+                    panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
 
-
                 } else {
 
+                    if (panelHeaderGridBagLayout != null) {
+                        panelHeaderEast.remove(panelHeaderGridBagLayout);
+                    }
                     JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
                     // panelHeaderGridBagLayout.removeAll();
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     String[] headerStrings = headerStringArray();
                     int jHeaderResponse = 0;
+                    GridBagConstraints gbc4 = new GridBagConstraints();
 
                     for (int p = 1; p < headerStrings.length; p += 2) {
 
@@ -977,6 +980,8 @@ public class Gui {
             seprateHeaders = headers.split("&");
         } catch (Exception e) {
         }
+        for (int y = 0; y < seprateHeaders.length; y++)
+            System.out.println(seprateHeaders[y]);
         return seprateHeaders;
     }
 
