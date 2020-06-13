@@ -51,7 +51,8 @@ public class Gui {
     private JFrame frame;
     String[] argsMain;
     int i;
-    ArrayList<String> headerResponseArrayList = new ArrayList<>();
+    ArrayList<String> headerRequestArrayList ;
+    ArrayList<String>  formDataRequestArrayList ;
     Border border = BorderFactory.createLineBorder(Color.GRAY);
     int j = 3;
 
@@ -59,6 +60,11 @@ public class Gui {
 
     public Gui() {
         argsMain = new String[30];
+        headerRequestArrayList = new ArrayList<>();
+        headerRequestArrayList.add("\"");
+        formDataRequestArrayList = new ArrayList<>();
+        formDataRequestArrayList.add("\"");
+
         i = 1;
 
         // create frame
@@ -234,6 +240,13 @@ public class Gui {
                 argsMain[0] = URLAddress.getText();
                 argsMain[i] = "Gui";
                 i++;
+
+                if(headerRequestArrayList.size() > 1){
+                    headerRequestArrayList.add("\"");
+                    argsMain[i] = "--headers";
+                    i++;
+                    argsMain[i] = headerRequestArrayList.toString();
+                }
                 Jurl.main(argsMain);
 
             }
@@ -366,6 +379,10 @@ public class Gui {
 
         newHeader.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                for(int o = 0 ; o < headerRequestArrayList.size() ; o++){
+                    
+                    System.out.println(headerRequestArrayList.get(o));
+                }
                 JPanel panelNewHaeder = newHeader();
                 panelHeaderCenter.remove(labelHeader);
                 gbc2.gridx = 0;
@@ -386,6 +403,7 @@ public class Gui {
                 panelHeaderCenter.repaint();
             }
         });
+        
 
 
         // panel body
@@ -931,7 +949,6 @@ public class Gui {
         panelHeader.setBackground(Color.DARK_GRAY);
 
         // key in header
-        headerResponseArrayList.add("\"");
         StringBuffer headerResponse = new StringBuffer(); 
         JTextField key = new JTextField("new Header");
         Border border = BorderFactory.createLineBorder(Color.GRAY);
@@ -960,7 +977,7 @@ public class Gui {
         c1.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 headerResponse.append(key.getText()+":" + value.getText()+";");
-                headerResponseArrayList.add(headerResponse.toString());
+                headerRequestArrayList.add(headerResponse.toString());
             }
         });
         
@@ -975,7 +992,7 @@ public class Gui {
         recycle.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
         recycle.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                headerResponseArrayList.remove(key.getText()+":" + value.getText()+";");
+                headerRequestArrayList.remove(key.getText()+":" + value.getText()+";");
             }
         });
 
@@ -988,6 +1005,56 @@ public class Gui {
         return panelHeader;
 
     }
+
+    public JPanel newFormData(){
+        JPanel panelFormData = new JPanel(new GridLayout(1, 4, 10, 5));
+        panelFormData.setBackground(Color.DARK_GRAY);
+
+        // key in header
+        JTextField keyFormData = new JTextField("name");
+    
+        keyFormData.setBackground(Color.GRAY);
+        keyFormData.setForeground(Color.WHITE);
+        keyFormData.setBorder(border);
+
+        // value in header
+        JTextField valueFormData = new JTextField("value");
+        valueFormData.setBorder(border);
+        valueFormData.setBackground(Color.GRAY);
+        valueFormData.setForeground(Color.WHITE);
+
+        int keyWidth = keyFormData.getPreferredSize().width + 50;
+        int keyHeight = keyFormData.getPreferredSize().height + 10;
+        int valueWidth = valueFormData.getPreferredSize().width + 50;
+        int valueHeight = valueFormData.getPreferredSize().height + 10;
+        ImageIcon recycleBin = new ImageIcon("trash can-1.1s-18px.png");
+
+        keyFormData.setPreferredSize(new Dimension(keyWidth, keyHeight));
+        valueFormData.setPreferredSize(new Dimension(valueWidth, valueHeight));
+
+        // checkbox in header
+        JCheckBox c1FormData = new JCheckBox();
+        c1FormData.setBackground(Color.DARK_GRAY);
+        c1FormData.setBorder(border);
+
+        // recycle button in header
+        JButton recycleFormData = new JButton(recycleBin);
+        int recycleWidth = recycleFormData.getPreferredSize().width - 1000;
+        int recycleHeight = recycleFormData.getPreferredSize().height - 4;
+        recycleFormData.setBackground(Color.DARK_GRAY);
+        recycleFormData.setBorder(border);
+        recycleFormData.setPreferredSize(new Dimension(recycleWidth, recycleHeight));
+
+        // add components to header panel
+        panelFormData.add(keyFormData);
+        panelFormData.add(valueFormData);
+        panelFormData.add(c1FormData);
+        panelFormData.add(recycleFormData);
+
+        return panelFormData;
+
+    }
+
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
