@@ -892,10 +892,17 @@ public class Gui {
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
 
+                    label1.setText("ERROR");
+                    label1.setForeground(Color.RED);
+                    label1.repaint();
+
+
+
                 } else {
 
                     if (panelHeaderGridBagLayout != null) {
                         panelHeaderEast.remove(panelHeaderGridBagLayout);
+                        panelHeaderGridBagLayout.removeAll();
                     }
                     JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
                     // panelHeaderGridBagLayout.removeAll();
@@ -906,7 +913,27 @@ public class Gui {
 
                     for (int p = 1; p < headerStrings.length; p += 2) {
 
-                        if (headerStrings[p].equals("null") || headerStrings[p].equals("Set-Cookie"))
+                        if (headerStrings[p].equals("null")) { 
+                            String[] nullStrings = headerStrings[p+1].split(" ");
+                           
+                            StringBuffer buffer = new StringBuffer();
+                            for(int r= 1; r < nullStrings.length ; r++){
+                            buffer.append(nullStrings[r]+" ");
+                            }
+                            label1.setText(buffer.toString());
+                            int codeResponse = Integer.parseInt(nullStrings[1]);
+                            if(codeResponse/100 == 2)
+                            label1.setForeground(Color.GREEN);
+                           else if(codeResponse/100 == 3)
+                            label1.setForeground(Color.BLUE);
+                           else if(codeResponse/100 == 4)
+                            label1.setForeground(Color.ORANGE);
+                           else if(codeResponse/100 == 5)
+                            label1.setForeground(Color.RED);
+                            label1.repaint();
+                            continue;
+                        }
+                            if(headerStrings[p].equals("Set-Cookie") || headerStrings[p].equals("Content-Security-Policy"))
                             continue;
 
                         JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
@@ -977,11 +1004,11 @@ public class Gui {
         try {
             in = new BufferedInputStream(new FileInputStream("GuiResponseHeaders.txt"));
             headers = new String(in.readAllBytes());
-            seprateHeaders = headers.split("&");
+            seprateHeaders = headers.split("&&&");
         } catch (Exception e) {
         }
-        for (int y = 0; y < seprateHeaders.length; y++)
-            System.out.println(seprateHeaders[y]);
+        // for (int y = 0; y < seprateHeaders.length; y++)
+        //     System.out.println(seprateHeaders[y]);
         return seprateHeaders;
     }
 
