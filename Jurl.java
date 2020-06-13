@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -8,6 +10,7 @@ import java.io.FileInputStream;
 
 public class Jurl {
 
+    
     public static void main(String[] args) {
 
         String urlString;
@@ -20,7 +23,7 @@ public class Jurl {
         boolean h_requestsHeaders = false;
         boolean d_formdataMesssageBody = false;
         HashMap<String, String> body = new HashMap<>();
-
+        boolean Gui = false;
         ArrayList<String> input = new ArrayList<>();
         ArrayList<String> argInput = new ArrayList<>();
         argInput.add("--method");
@@ -39,6 +42,11 @@ public class Jurl {
         }
 
         urlString = input.get(0);
+
+        if(input.contains("Gui"))
+        Gui = true;
+
+        
 
         if (input.contains("-i"))
             i_showResponseHeaders = true;
@@ -102,6 +110,7 @@ public class Jurl {
                 } else {
                     headersHashMap = new HashMap<>();
                     String headers = input.get(index + 1);
+                    System.out.println(headers);
                     // headers = headers.substring(1, headers.length() - 1);
                     String[] keyValue = headers.split(";");
                     for (int i = 0; i < keyValue.length; i++) {
@@ -111,6 +120,8 @@ public class Jurl {
                             return;
                         } else {
                             headersHashMap.put(seprateKeyValue[0], seprateKeyValue[1]);
+                           System.out.println(seprateKeyValue[0]);
+                            System.out.println(seprateKeyValue[1]);
                         }
                     }
                     h_requestsHeaders = true;
@@ -170,8 +181,29 @@ public class Jurl {
 
         }
         String file = null;
+        if(input.contains("--binary")){
+            if(input.contains("--method")){
+                if(input.contains("Get")){
+
+                    int index = input.indexOf("--binary");
+                    if(index + 1 < input.size()){
+                        file = input.get(index+1);
+                    }
+                }
+                else{
+                    System.out.println("Wrong method.");
+                    return;
+                }
+            }
+
+            if(input.contains("--data") || input.contains("--upload")){
+                System.out.println("cant not send formdata with binary file");
+                return;
+            }
+        }
+
         Request request = new Request(urlString, Method, body, headersHashMap, file, i_showResponseHeaders, f_redirect,
-                o_saveResponseBody, o_fileName, h_requestsHeaders, d_formdataMesssageBody);
+                o_saveResponseBody, o_fileName, h_requestsHeaders, d_formdataMesssageBody,Gui);
 
         if (input.contains("--save")) {
             int index = input.indexOf("--save");
@@ -297,4 +329,7 @@ public class Jurl {
 
     }
 
+
+    
+  
 }
