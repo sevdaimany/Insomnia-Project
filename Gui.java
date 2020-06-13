@@ -30,6 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -734,27 +735,36 @@ public class Gui {
         JTabbedPane tabbedPane2 = new JTabbedPane();
 
         // messsage body
-        JPanel panelMessageBody = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+
+        JPanel panelMessageBody = new JPanel(new BorderLayout(5, 5));
         panelMessageBody.setBackground(Color.DARK_GRAY);
+
+        CardLayout card = new CardLayout(3, 3);
+        JPanel panelMessageBodyCenter = new JPanel(card);
+        panelMessageBodyCenter.setBackground(Color.DARK_GRAY);
         String choices2[] = { "Raw", "Preview", "JSON" };
         JComboBox comboBox3 = new JComboBox(choices2);
         comboBox3.setBackground(Color.GRAY);
         comboBox3.setForeground(Color.WHITE);
         comboBox3.setPreferredSize(new Dimension(500, 30));
-        panelMessageBody.add(comboBox3);
+
+        panelMessageBody.add(comboBox3, BorderLayout.NORTH);
+        panelMessageBody.add(panelMessageBodyCenter, BorderLayout.CENTER);
+
+        // panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+        // panelMessageBodyCenter.add("Preview", panelMessageBodyPreview);
+
         comboBox3.addActionListener(new ActionListener() {
-            
+
             public void actionPerformed(ActionEvent e) {
 
                 if (((String) comboBox3.getSelectedItem()).equals("Raw")) {
-                    panelMessageBody.removeAll();
-                    panelMessageBody.add(comboBox3);
+                    JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                     JTextArea raw = new JTextArea();
                     raw.setEditable(false);
-                    // StringBuffer content = null;
                     JScrollPane scrollPane = new JScrollPane(raw);
 
-                    raw.setPreferredSize(new Dimension(20000, 800));
+                    raw.setPreferredSize(new Dimension(2000, 800));
                     scrollPane.setPreferredSize(new Dimension(499, 679));
 
                     BufferedInputStream in = null;
@@ -765,9 +775,36 @@ public class Gui {
                     } catch (Exception ex) {
                     }
 
-                    panelMessageBody.add(scrollPane);
+                    panelMessageBodyRaw.add(scrollPane);
+
+                    panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+
+                    panelMessageBodyRaw.repaint();
+                    panelMessageBodyRaw.revalidate();
+
+                    card.show(panelMessageBodyCenter, "Raw");
 
                 }
+
+                else if (((String) comboBox3.getSelectedItem()).equals("Preview")) {
+                    // panelMessageBodyPreview.removeAll();
+                    // panelMessageBodyPreview.repaint();
+
+                    // panelMessageBodyPreview.repaint();
+
+                    JPanel panelMessageBodyPreview = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+                    ImageIcon image = new ImageIcon("GuiPreview.png");
+                    JLabel label = null;
+                    if (image != null) {
+                        label = new JLabel(image);
+                    }
+                    panelMessageBodyPreview.add(label);
+                    panelMessageBodyCenter.add("Preview", panelMessageBodyPreview);
+
+                    card.show(panelMessageBodyCenter, "Preview");
+
+                }
+
             }
 
         });
