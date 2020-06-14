@@ -10,7 +10,7 @@ import java.util.Random;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 
-public class Jurl {
+public class Jurl{
 
     public static void main(String[] args) {
 
@@ -63,6 +63,11 @@ public class Jurl {
                 GuiWriter = new BufferedWriter(new FileWriter(GuiError));
             } catch (IOException e) {
             }
+        }
+
+        if(input.contains("--help")){
+            help();
+            return;
         }
 
         if (input.contains("--method")) {
@@ -337,7 +342,7 @@ public class Jurl {
     }
 
     public static void saveRequest(Request request, String nameDirectory) throws IOException {
-
+        
         File saveRequestDirectory = new File("./requests/" + nameDirectory);
         saveRequestDirectory.mkdir();
 
@@ -402,14 +407,34 @@ public class Jurl {
     public static void createFolder(String nameFolder) {
         File nameFile = new File("./requests/" + nameFolder);
         if (nameFile.exists()) {
-            System.out.println(nameFolder + " Already exist.");
+           // System.out.println(nameFolder + " Already exist.");
             return;
         } else {
             nameFile.mkdir();
-            System.out.println(nameFolder+" Folder created");
+            //System.out.println(nameFolder+" Folder created");
             return;
         }
 
+    }
+
+    public static void help(){
+        System.out.println("URL String must be the first command");
+        System.out.println("--method  methodName: to set request method ");
+        System.out.println("    method name : GET,POST,PUT,DELETE ");
+        System.out.println("--headers “key1:value1;key2:value2\" : to set requests headers");
+        System.out.println("-i :show response headers ");
+        System.out.println("-f: set follow redirect");
+        System.out.println("--output: save response body in a file");
+        System.out.println("   can get a fileName or not");
+        System.out.println("--save nameFolder :save request in nameFolder directory");
+        System.out.println("--data “name1=valueq&name2=value2\" :set message body in formData form");
+        System.out.println("   must set request method in POST or PUT or DELETE");
+        System.out.println("--upload absoluteFilePath : upload file in formdata form");
+        System.out.println("   must set request method in POST or PUT or DELETE");
+        System.out.println("list : list all folders");
+        System.out.println("list folderName : list all requests information in foldername");
+        System.out.println("fire numberRequstInList : run selected request");
+        System.out.println("fire create nameFolder : create folder");
     }
 
 }
