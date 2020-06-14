@@ -665,13 +665,13 @@ public class Gui {
 
         // create panel west center
         JPanel panelWest_Center = new JPanel();
-        panelWest_Center.setLayout(new GridBagLayout());
+        panelWest_Center.setLayout(new BorderLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         panelWest_Center.setBackground(Color.DARK_GRAY);
 
         // create filter text field
         JTextField filter = new JTextField("Filter");
-        filter.setPreferredSize(new Dimension(200, 20));
+        filter.setPreferredSize(new Dimension(200, 30));
         filter.setBackground(Color.GRAY);
         filter.setForeground(Color.WHITE);
 
@@ -685,6 +685,12 @@ public class Gui {
         menu2.add(saveRequest);
         menu2.add(newFolder);
         mb2.add(menu2);
+
+        JPanel panelWest_Center_North = new JPanel(new FlowLayout());
+        panelWest_Center_North.setBackground(Color.DARK_GRAY);
+        panelWest_Center_North.add(filter);
+        panelWest_Center_North.add(mb2);
+
 
         saveRequest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -701,44 +707,50 @@ public class Gui {
             }
         });
 
+        JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
+        
         // create jTree
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
         // DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
         // DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
         // requests.add(folder);
         // requests.add(folder2);
-         jt = new JTree(requests);
+        jt = new JTree(requests);
+       // JScrollPane scrollPane3 = new JScrollPane(jt);
         jt.setBackground(Color.DARK_GRAY);
         try {
             scanner(jt);
         } catch (InterruptedException e) {
         }
+       
+        
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panelWest_Center.add(filter, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.5;
-        panelWest_Center.add(mb2, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        panelWest_Center.add(jt, gbc);
-
         gbc.weightx = 1;
-        gbc.weighty = 1;
-        panelWest_Center.add(new JLabel(" "), gbc);
+         gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        panelWest_Center_Center.add(jt, gbc);
+       
 
+        panelWest_Center.add(panelWest_Center_North,BorderLayout.NORTH);
+        panelWest_Center.add(panelWest_Center_Center,BorderLayout.CENTER);
+        ;
+        
         panelWest.add(insomniaLable, BorderLayout.NORTH);
         panelWest.add(panelWest_Center, BorderLayout.CENTER);
 
+        
+        newFolder.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                JOptionPane newFolderOptionPane = new JOptionPane("new Folder");
+                nameDirectory = newFolderOptionPane.showInputDialog("Enter a directory name to create.");
+                Jurl.createFolder(nameDirectory);
+                jt.repaint();
+            }
+        });
         // <<<<<<<<<<<<<<<<< create East panel >>>>>>>>>>>>>>>>>>>>>>>>>>>
         JPanel panelEast = new JPanel(new BorderLayout(0, 0));
-
+        
         // create panel east north
         JPanel panelEast_North = new JPanel(new FlowLayout(FlowLayout.LEFT, 60, 8));
         panelEast_North.setBackground(Color.WHITE);
@@ -746,7 +758,7 @@ public class Gui {
         label1.setForeground(new Color(50, 200, 180));
         JLabel label2 = new JLabel("6.60s");
         JLabel label3 = new JLabel("15.2KB");
-
+        
         // add lables
         panelEast_North.add(label1);
         panelEast_North.add(label2);
@@ -860,10 +872,7 @@ public class Gui {
                     }
                 }
 
-                System.out.println(formDataRequestArrayList.size());
-                for (int b = 0; b < formDataRequestArrayList.size(); b++) {
-                    System.out.println(formDataRequestArrayList.get(b));
-                }
+               
                 if (formDataRequestArrayList.size() > 0) {
 
                     if (argsArrayList.contains("--data")) {
