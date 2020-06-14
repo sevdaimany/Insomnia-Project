@@ -61,7 +61,6 @@ public class Gui {
     int jFormdata = 3;
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
-    JPanel panelHeaderGridBagLayout;
 
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
@@ -361,12 +360,6 @@ public class Gui {
 
         GridBagConstraints gbc2FormData = new GridBagConstraints();
 
-        // first row
-        // gbc2FormData.gridx = 0;
-        // gbc2FormData.gridy = 0;
-        // gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-        // gbc2FormData.insets = new Insets(3, 2, 2, 2);
-        // panelBodyCenterFormData.add(comboBox2, gbc2FormData);
 
         gbc2FormData.gridx = 0;
         gbc2FormData.gridy = 0;
@@ -797,10 +790,10 @@ public class Gui {
         // }
 
         // create copy to clipboard button
-        JButton newButton = new JButton("Copy to Clipboard");
-        newButton.setForeground(Color.WHITE);
-        newButton.setBackground(new Color(90, 80, 160));
-        panelHeaderEast.add(newButton, BorderLayout.NORTH);
+        // JButton newButton = new JButton("Copy to Clipboard");
+        // newButton.setForeground(Color.WHITE);
+        // newButton.setBackground(new Color(90, 80, 160));
+        // panelHeaderEast.add(newButton, BorderLayout.NORTH);
         // panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         sendButton.addActionListener(new ActionListener() {
@@ -890,25 +883,38 @@ public class Gui {
                     panelMessageBodyRaw.repaint();
                     panelMessageBodyRaw.revalidate();
 
-                    if (panelHeaderGridBagLayout != null) {
-                        panelHeaderEast.remove(panelHeaderGridBagLayout);
-                    }
-                    panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+
+
+                    panelHeaderEast.removeAll();
+                    JButton newButton = new JButton("Copy to Clipboard");
+                    newButton.setForeground(Color.WHITE);
+                    newButton.setBackground(new Color(90, 80, 160));
+                    panelHeaderEast.add(newButton, BorderLayout.NORTH);
+                  JPanel  panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+                    panelHeaderGridBagLayout.revalidate();
+                    panelHeaderGridBagLayout.repaint();
+                    panelHeaderEast.revalidate();
+                    panelHeaderEast.repaint();
+                    
 
                     label1.setText("ERROR");
                     label1.setForeground(Color.RED);
                     label1.repaint();
 
                 } else {
-
-                    if (panelHeaderGridBagLayout != null) {
-                        panelHeaderEast.remove(panelHeaderGridBagLayout);
-                        panelHeaderGridBagLayout.removeAll();
-                    }
+                    panelHeaderEast.removeAll();
+                    JButton newButton = new JButton("Copy to Clipboard");
+                    newButton.setForeground(Color.WHITE);
+                    newButton.setBackground(new Color(90, 80, 160));
+                    panelHeaderEast.add(newButton, BorderLayout.NORTH);
+                    // if (panelHeaderGridBagLayout != null) {
+                    //     panelHeaderEast.remove(panelHeaderGridBagLayout);
+                    //     panelHeaderGridBagLayout.removeAll();
+                    // }
                     JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
-                    // panelHeaderGridBagLayout.removeAll();
+                    JScrollPane scrollPane2 = new JScrollPane(panelHeaderGridBagLayout);
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     String[] headerStrings = headerStringArray();
                     int jHeaderResponse = 0;
@@ -941,8 +947,8 @@ public class Gui {
                             label3.repaint();
 
                         }
-                        if (headerStrings[p].equals("Set-Cookie") || headerStrings[p].equals("Content-Security-Policy"))
-                            continue;
+                        // if (headerStrings[p].equals("Set-Cookie") || headerStrings[p].equals("Content-Security-Policy")||headerStrings[p].equals("set-cookie"))
+                        //     continue;
 
                         JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
                         gbc4.gridx = 0;
@@ -959,10 +965,13 @@ public class Gui {
                     gbc4.insets = new Insets(50, 50, 50, 50);
                     JLabel labelHeaderResponse = new JLabel(" ");
                     panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
-                    panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+                    panelHeaderEast.add(scrollPane2, BorderLayout.CENTER);
 
                     panelHeaderGridBagLayout.revalidate();
                     panelHeaderGridBagLayout.repaint();
+                    panelHeaderEast.revalidate();
+                    panelHeaderEast.repaint();
+                   
 
                     JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                     JTextArea raw = new JTextArea();
@@ -1033,19 +1042,22 @@ public class Gui {
         panelHeader1.setBackground(Color.DARK_GRAY);
 
         // create key
-        JTextField key2 = new JTextField("new Header");
-        key2.setBackground(Color.GRAY);
+        JTextArea key2 = new JTextArea("new Header");
+        key2.setBackground(Color.DARK_GRAY);
         key2.setForeground(Color.WHITE);
         key2.setBorder(border);
         key2.setEditable(false);
         key2.setText(headerStrings[p]);
+        key2.setLineWrap(true);
+       // key2.repaint();
 
         // create value
-        JTextField value2 = new JTextField("new value");
+        JTextArea value2 = new JTextArea("new value");
         value2.setBorder(border);
-        value2.setBackground(Color.GRAY);
+        value2.setBackground(Color.DARK_GRAY);
         value2.setForeground(Color.WHITE);
         value2.setEditable(false);
+       value2.repaint();
         int keyWidth = 210;
         int keyHeight = 35;
         int valueWidth = 210;
@@ -1053,6 +1065,7 @@ public class Gui {
         key2.setPreferredSize(new Dimension(keyWidth, keyHeight));
         value2.setPreferredSize(new Dimension(valueWidth, valueHeight));
         value2.setText(headerStrings[p + 1]);
+        value2.setLineWrap(true);
         // add components to header panel
         panelHeader1.add(key2);
         panelHeader1.add(value2);
