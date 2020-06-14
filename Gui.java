@@ -28,6 +28,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
 import java.awt.event.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -61,7 +63,9 @@ public class Gui {
     int jFormdata = 3;
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
+    // JTree jt = new JTree();
 
+    
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
         formDataRequestArrayList = new ArrayList<>();
@@ -360,7 +364,6 @@ public class Gui {
 
         GridBagConstraints gbc2FormData = new GridBagConstraints();
 
-
         gbc2FormData.gridx = 0;
         gbc2FormData.gridy = 0;
         gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
@@ -640,7 +643,8 @@ public class Gui {
         panelCenter.add(panelCenter_North, BorderLayout.NORTH);
         panelCenter.add(tabbedPane, BorderLayout.CENTER);
 
-        // <<<<<<<<<<<<<<<<< create west panel >>>>>>>>>>>>>>>>>>>>>>
+        // <<<<<<<<<<<<<<<<< create west panel
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         JPanel panelWest = new JPanel(new BorderLayout(0, 0));
 
         // create insomnia lable
@@ -677,13 +681,16 @@ public class Gui {
 
         // create jTree
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
-        DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
-        DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
-        requests.add(folder);
-        requests.add(folder2);
+        // DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
+        // DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
+        // requests.add(folder);
+        // requests.add(folder2);
         JTree jt = new JTree(requests);
         jt.setBackground(Color.DARK_GRAY);
-
+        try {
+            scanner(jt);
+        } catch (InterruptedException e) {
+        }
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -883,21 +890,18 @@ public class Gui {
                     panelMessageBodyRaw.repaint();
                     panelMessageBodyRaw.revalidate();
 
-
-
                     panelHeaderEast.removeAll();
                     JButton newButton = new JButton("Copy to Clipboard");
                     newButton.setForeground(Color.WHITE);
                     newButton.setBackground(new Color(90, 80, 160));
                     panelHeaderEast.add(newButton, BorderLayout.NORTH);
-                  JPanel  panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+                    JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
                     panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
                     panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
                     panelHeaderGridBagLayout.revalidate();
                     panelHeaderGridBagLayout.repaint();
                     panelHeaderEast.revalidate();
                     panelHeaderEast.repaint();
-                    
 
                     label1.setText("ERROR");
                     label1.setForeground(Color.RED);
@@ -910,8 +914,8 @@ public class Gui {
                     newButton.setBackground(new Color(90, 80, 160));
                     panelHeaderEast.add(newButton, BorderLayout.NORTH);
                     // if (panelHeaderGridBagLayout != null) {
-                    //     panelHeaderEast.remove(panelHeaderGridBagLayout);
-                    //     panelHeaderGridBagLayout.removeAll();
+                    // panelHeaderEast.remove(panelHeaderGridBagLayout);
+                    // panelHeaderGridBagLayout.removeAll();
                     // }
                     JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
                     JScrollPane scrollPane2 = new JScrollPane(panelHeaderGridBagLayout);
@@ -947,8 +951,9 @@ public class Gui {
                             label3.repaint();
 
                         }
-                        // if (headerStrings[p].equals("Set-Cookie") || headerStrings[p].equals("Content-Security-Policy")||headerStrings[p].equals("set-cookie"))
-                        //     continue;
+                        // if (headerStrings[p].equals("Set-Cookie") ||
+                        // headerStrings[p].equals("Content-Security-Policy")||headerStrings[p].equals("set-cookie"))
+                        // continue;
 
                         JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
                         gbc4.gridx = 0;
@@ -971,7 +976,6 @@ public class Gui {
                     panelHeaderGridBagLayout.repaint();
                     panelHeaderEast.revalidate();
                     panelHeaderEast.repaint();
-                   
 
                     JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                     JTextArea raw = new JTextArea();
@@ -1049,7 +1053,7 @@ public class Gui {
         key2.setEditable(false);
         key2.setText(headerStrings[p]);
         key2.setLineWrap(true);
-       // key2.repaint();
+        // key2.repaint();
 
         // create value
         JTextArea value2 = new JTextArea("new value");
@@ -1057,7 +1061,7 @@ public class Gui {
         value2.setBackground(Color.DARK_GRAY);
         value2.setForeground(Color.WHITE);
         value2.setEditable(false);
-       value2.repaint();
+        value2.repaint();
         int keyWidth = 210;
         int keyHeight = 35;
         int valueWidth = 210;
@@ -1222,6 +1226,83 @@ public class Gui {
         }
         return args;
     }
+
+
+    public static void displayDirectoryContents(File dir, DefaultMutableTreeNode root2, JTree jt)
+            throws InterruptedException {
+
+        DefaultMutableTreeNode newdir = new DefaultMutableTreeNode();
+
+        // creates array of file type for all the files found
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            if (file == null) {
+                System.out.println("NUll directory found ");
+                continue;
+            }
+            if (file.isDirectory()) {
+                // file is a directory that is a folder has been dound
+
+                if (file.listFiles() == null) {
+                    // skips null files
+                    continue;
+                }
+
+                // gets the current model of the jtree
+                DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+
+                // gets the root
+                DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+
+                // generates a node newdir using filename
+                newdir = new DefaultMutableTreeNode(file.getName());
+
+                // adds a node to the root of the jtree
+                root2.add(newdir);
+
+                // refresh the model to show the changes
+                model.reload();
+
+                // recursively calls the function again to explore the contents
+                // folder
+                displayDirectoryContents(file, newdir, jt);
+            } else {
+                // Else part File is not a directory
+
+                // gets the current model of the tree
+                DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+
+                // selected node is the position where the new node will be
+                // inserted
+                DefaultMutableTreeNode selectednode = root2;
+
+                DefaultMutableTreeNode newfile = new DefaultMutableTreeNode(file.getName());
+
+                // inserts a node newfile under selected node which is the root
+                model.insertNodeInto(newfile, selectednode, selectednode.getChildCount());
+
+                // refresh the model to show the changes
+                model.reload();
+
+            }
+
+        }
+    }
+
+    public static void scanner(JTree jt) throws InterruptedException {
+        // creates a file with the location filename
+        String location = "D:\\java\\project2\\requests";
+        File currentDir = new File(location);
+
+        // result is the variable name for jtree
+        DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+        // gets the root of the current model used only once at the starting
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        // function caled
+        displayDirectoryContents(currentDir, root, jt);
+    }
+
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
