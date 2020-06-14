@@ -24,11 +24,15 @@ import javax.swing.JTree;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
+import jdk.jshell.execution.Util;
 
 import java.awt.event.*;
 import java.io.BufferedInputStream;
@@ -1276,6 +1280,7 @@ public class Gui {
                 // selected node is the position where the new node will be
                 // inserted
                 DefaultMutableTreeNode selectednode = root2;
+                
 
                 DefaultMutableTreeNode newfile = new DefaultMutableTreeNode(file.getName());
 
@@ -1306,6 +1311,18 @@ public class Gui {
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
+                try {
+                    //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                   // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+                   // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+                    UIManager.getLookAndFeelDefaults().put("Tree.background", Color.RED);
+                    UIManager.getLookAndFeelDefaults().put("Tree.textBackground", Color.DARK_GRAY);
+            
+                } catch (ClassNotFoundException | InstantiationException
+                        | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
 
         Gui g = new Gui();
 
