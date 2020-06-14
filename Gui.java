@@ -1,4 +1,5 @@
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -675,13 +676,22 @@ public class Gui {
         // create menubar
         JMenuBar mb2 = new JMenuBar();
         JMenu menu2 = new JMenu("  +");
-        JMenuItem newRequest = new JMenuItem("New Request");
-        newRequest.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        JMenuItem saveRequest = new JMenuItem("save Request");
+        saveRequest.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         JMenuItem newFolder = new JMenuItem("New Folder");
         newFolder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
-        menu2.add(newRequest);
+        menu2.add(saveRequest);
         menu2.add(newFolder);
         mb2.add(menu2);
+
+        // saveRequest.addActionListener(new ActionListener(){
+        //     public void actionPerformed(ActionEvent e){
+        //         JOptionPane newRequestOptionPane = new JOptionPane("Save Request");
+        //        String nameDirectory = newRequestOptionPane.showInputDialog("Enter a directory name to Save request.");
+        //         if(argsArrayList.contains("--save"))
+
+        //     }
+        // });
 
         // create jTree
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
@@ -826,13 +836,7 @@ public class Gui {
                 argsArrayList.add("Gui");
 
                 if (headerRequestArrayList.size() > 0) {
-                    // headerRequestArrayList.add("\"");
-                    // argsMain[i] = "--headers";
-                    // i++;
-
-                    // argsMain[i] = convertToString(headerRequestArrayList);
-                    // System.out.println(convertToString(headerRequestArrayList));
-                    // i++;
+                  
                     if (argsArrayList.contains("--headers")) {
                         int index = argsArrayList.indexOf("--headers");
                         argsArrayList.add(index + 1, convertToString(headerRequestArrayList));
@@ -840,14 +844,21 @@ public class Gui {
                         argsArrayList.add("--headers");
                         argsArrayList.add(convertToString(headerRequestArrayList));
                     }
+                }else{
+                    if (argsArrayList.contains("--headers")) {
+                        int index = argsArrayList.indexOf("--headers");
+                        argsArrayList.remove("--headers");
+                        argsArrayList.remove(index + 1);
+                    } 
                 }
 
-                if (formDataRequestArrayList.size() > 0) {
-                    // argsMain[i] = "--data";
-                    // i++;
 
-                    // argsMain[i] = convertToString(formDataRequestArrayList);
-                    // i++;
+                System.out.println(formDataRequestArrayList.size());
+                for(int b = 0 ; b< formDataRequestArrayList.size() ; b++){
+                    System.out.println(formDataRequestArrayList.get(b));
+                }
+                if (formDataRequestArrayList.size() > 0) {
+                    
                     if (argsArrayList.contains("--data")) {
                         int index = argsArrayList.indexOf("--data");
                         argsArrayList.add(index + 1, convertToString(formDataRequestArrayList));
@@ -855,6 +866,12 @@ public class Gui {
                         argsArrayList.add("--data");
                         argsArrayList.add(convertToString(formDataRequestArrayList));
                     }
+                }else{
+                    if (argsArrayList.contains("--data")) {
+                        int index = argsArrayList.indexOf("--data");
+                        argsArrayList.remove("--data");
+                        argsArrayList.remove(index + 1);
+                    } 
                 }
 
                 argsMain = convertToArray(argsArrayList);
@@ -1176,8 +1193,17 @@ public class Gui {
         c1FormData.setBorder(border);
         c1FormData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+         boolean selected = c1FormData.isSelected();
+                if(selected){
+                    if(!(keyFormData.getText().equals("name") && keyFormData.getText().equals("value"))){ 
                 formDataRequBuffer.append(keyFormData.getText() + "=" + valueFormData.getText() + "&");
                 formDataRequestArrayList.add(formDataRequBuffer.toString());
+                    }
+                
+                }
+                else{
+                formDataRequestArrayList.remove(keyFormData.getText() + "=" + valueFormData.getText() + "&");
+                }
             }
         });
 
