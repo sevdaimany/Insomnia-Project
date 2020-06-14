@@ -37,6 +37,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.awt.*;
 
@@ -807,6 +809,8 @@ public class Gui {
                 // argsMain[0] = URLAddress.getText();
                 // argsMain[i] = "Gui";
                 // i++;
+                final long startTime = System.nanoTime();
+
                 if (argsArrayList.contains("URL")) {
                     int index = argsArrayList.indexOf("URL");
                     argsArrayList.add(index + 1, URLAddress.getText());
@@ -852,6 +856,7 @@ public class Gui {
                 argsMain = convertToArray(argsArrayList);
                 Jurl.main(argsMain);
                 // File errorFile = new File("GuiError.txt");
+
                 int lengthFile = 0;
                 try {
                     BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiError.txt"));
@@ -896,8 +901,6 @@ public class Gui {
                     label1.setForeground(Color.RED);
                     label1.repaint();
 
-
-
                 } else {
 
                     if (panelHeaderGridBagLayout != null) {
@@ -913,27 +916,32 @@ public class Gui {
 
                     for (int p = 1; p < headerStrings.length; p += 2) {
 
-                        if (headerStrings[p].equals("null")) { 
-                            String[] nullStrings = headerStrings[p+1].split(" ");
-                           
+                        if (headerStrings[p].equals("null")) {
+                            String[] nullStrings = headerStrings[p + 1].split(" ");
+
                             StringBuffer buffer = new StringBuffer();
-                            for(int r= 1; r < nullStrings.length ; r++){
-                            buffer.append(nullStrings[r]+" ");
+                            for (int r = 1; r < nullStrings.length; r++) {
+                                buffer.append(nullStrings[r] + " ");
                             }
                             label1.setText(buffer.toString());
                             int codeResponse = Integer.parseInt(nullStrings[1]);
-                            if(codeResponse/100 == 2)
-                            label1.setForeground(Color.GREEN);
-                           else if(codeResponse/100 == 3)
-                            label1.setForeground(Color.BLUE);
-                           else if(codeResponse/100 == 4)
-                            label1.setForeground(Color.ORANGE);
-                           else if(codeResponse/100 == 5)
-                            label1.setForeground(Color.RED);
+                            if (codeResponse / 100 == 2)
+                                label1.setForeground(Color.GREEN);
+                            else if (codeResponse / 100 == 3)
+                                label1.setForeground(Color.BLUE);
+                            else if (codeResponse / 100 == 4)
+                                label1.setForeground(Color.ORANGE);
+                            else if (codeResponse / 100 == 5)
+                                label1.setForeground(Color.RED);
                             label1.repaint();
                             continue;
                         }
-                            if(headerStrings[p].equals("Set-Cookie") || headerStrings[p].equals("Content-Security-Policy"))
+                        if (headerStrings[p].equals("Content-Length")) {
+                            label3.setText(headerStrings[p + 1] + "B");
+                            label3.repaint();
+
+                        }
+                        if (headerStrings[p].equals("Set-Cookie") || headerStrings[p].equals("Content-Security-Policy"))
                             continue;
 
                         JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
@@ -982,6 +990,14 @@ public class Gui {
                     panelMessageBodyRaw.revalidate();
                 }
 
+                double duration = System.nanoTime() - startTime;
+                duration = duration / 1000000000.0;
+                DecimalFormat decimalFormat = new DecimalFormat("##.##");
+                decimalFormat.setRoundingMode(RoundingMode.DOWN);
+                String formatResult = decimalFormat.format(duration);
+                duration = Double.parseDouble(formatResult);
+                label2.setText(String.valueOf(duration) + "s");
+                label2.repaint();
             }
         });
 
@@ -1008,7 +1024,7 @@ public class Gui {
         } catch (Exception e) {
         }
         // for (int y = 0; y < seprateHeaders.length; y++)
-        //     System.out.println(seprateHeaders[y]);
+        // System.out.println(seprateHeaders[y]);
         return seprateHeaders;
     }
 
