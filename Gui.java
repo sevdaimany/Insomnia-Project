@@ -133,11 +133,11 @@ public class Gui {
                 exiButtonGroup.add(exiRadioButton);
                 exiButtonGroup.add(hideRadioButton);
 
-                JRadioButton lightTheme = new JRadioButton("light theme");
-                JRadioButton darkTheme = new JRadioButton("dark theme", true);
-                ButtonGroup theme = new ButtonGroup();
-                theme.add(lightTheme);
-                theme.add(darkTheme);
+                // JRadioButton lightTheme = new JRadioButton("light theme");
+                // JRadioButton darkTheme = new JRadioButton("dark theme", true);
+                // ButtonGroup theme = new ButtonGroup();
+                // theme.add(lightTheme);
+                // theme.add(darkTheme);
 
                 JButton saveButton = new JButton("Save");
                 saveButton.setPreferredSize(new Dimension(100, 25));
@@ -145,8 +145,8 @@ public class Gui {
                 optionDialog.add(followRedirectCheckBox);
                 optionDialog.add(exiRadioButton);
                 optionDialog.add(hideRadioButton);
-                optionDialog.add(lightTheme);
-                optionDialog.add(darkTheme);
+                // optionDialog.add(lightTheme);
+                // optionDialog.add(darkTheme);
                 optionDialog.add(saveButton);
             }
         });
@@ -170,6 +170,11 @@ public class Gui {
         JMenuItem toggleFullScreen = new JMenuItem("Toggle Full Screen");
         toggleFullScreen.setMnemonic(KeyEvent.VK_F11);
         toggleFullScreen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SLASH, ActionEvent.CTRL_MASK));
+        toggleFullScreen.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+        });
         JMenuItem toggleSidebar = new JMenuItem("Toggle Sidebar");
         toggleSidebar.setMnemonic(KeyEvent.VK_F12);
         toggleSidebar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ActionEvent.CTRL_MASK));
