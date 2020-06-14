@@ -30,6 +30,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.DimensionUIResource;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -68,7 +69,8 @@ public class Gui {
     int jFormdata = 3;
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
-    // JTree jt = new JTree();
+    String nameDirectory = null;
+     JTree jt ;
 
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
@@ -243,7 +245,7 @@ public class Gui {
         });
 
         JTextField URLAddress = new JTextField("https://api.myproduct.com/v1/users");
-        int addressWidth = URLAddress.getPreferredSize().width + 370;
+        int addressWidth = URLAddress.getPreferredSize().width + 400;
         int addressHeight = URLAddress.getPreferredSize().height + 12;
         URLAddress.setPreferredSize(new Dimension(addressWidth, addressHeight));
         URLAddress.setBorder(border2);
@@ -252,22 +254,23 @@ public class Gui {
         sendButton.setBorder(border2);
         sendButton.setBackground(Color.WHITE);
         sendButton.setForeground(Color.GRAY);
+        sendButton.setPreferredSize(new DimensionUIResource(45, 30));
 
-        JButton saveButton = new JButton("Save");
-        saveButton.setBorder(border2);
-        saveButton.setBackground(Color.WHITE);
-        saveButton.setForeground(Color.GRAY);
+        // JButton saveButton = new JButton("Save");
+        // saveButton.setBorder(border2);
+        // saveButton.setBackground(Color.WHITE);
+        // saveButton.setForeground(Color.GRAY);
 
         // add components
         panelCenter_North.add(comboBox);
         panelCenter_North.add(URLAddress);
         panelCenter_North.add(sendButton);
-        panelCenter_North.add(saveButton);
+        // panelCenter_North.add(saveButton);
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
         // create body panel
-        JPanel panelBody = new JPanel(new BorderLayout(5, 5));
+        JPanel panelBody = new JPanel(new BorderLayout());
         panelBody.setBackground(Color.DARK_GRAY);
 
         // create header panel
@@ -378,7 +381,7 @@ public class Gui {
         gbc2FormData.gridx = 0;
         gbc2FormData.gridy = 1;
         gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-        gbc2FormData.insets = new Insets(10, 10, 10, 10);
+        gbc2FormData.insets = new Insets(5, 5, 5, 5);
         panelBodyCenterFormData.add(panelFormData, gbc2FormData);
 
         gbc2FormData.gridx = 0;
@@ -399,7 +402,7 @@ public class Gui {
                 gbc2FormData.weightx = 0;
                 gbc2FormData.weighty = 0;
                 gbc2FormData.fill = GridBagConstraints.HORIZONTAL;
-                gbc2FormData.insets = new Insets(10, 10, 10, 10);
+                gbc2FormData.insets = new Insets(5, 5, 5, 5);
                 panelBodyCenterFormData.add(panelNewFormData, gbc2FormData);
 
                 gbc2FormData.gridx = 0;
@@ -648,7 +651,7 @@ public class Gui {
         panelCenter.add(tabbedPane, BorderLayout.CENTER);
 
         // <<<<<<<<<<<<<<<<< create west panel
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
         JPanel panelWest = new JPanel(new BorderLayout(0, 0));
 
         // create insomnia lable
@@ -683,15 +686,20 @@ public class Gui {
         menu2.add(newFolder);
         mb2.add(menu2);
 
-        // saveRequest.addActionListener(new ActionListener(){
-        // public void actionPerformed(ActionEvent e){
-        // JOptionPane newRequestOptionPane = new JOptionPane("Save Request");
-        // String nameDirectory = newRequestOptionPane.showInputDialog("Enter a
-        // directory name to Save request.");
-        // if(argsArrayList.contains("--save"))
+        saveRequest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane newRequestOptionPane = new JOptionPane("Save Request");
+                nameDirectory = newRequestOptionPane.showInputDialog("Enter a directory name to Save request.");
+                if (argsArrayList.contains("--save")) {
+                    int index = argsArrayList.indexOf("--save");
+                    argsArrayList.add(index + 1, nameDirectory);
+                } else {
+                    argsArrayList.add("--save");
+                    argsArrayList.add(nameDirectory);
+                }
 
-        // }
-        // });
+            }
+        });
 
         // create jTree
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
@@ -699,7 +707,7 @@ public class Gui {
         // DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
         // requests.add(folder);
         // requests.add(folder2);
-        JTree jt = new JTree(requests);
+         jt = new JTree(requests);
         jt.setBackground(Color.DARK_GRAY);
         try {
             scanner(jt);
@@ -875,6 +883,16 @@ public class Gui {
 
                 argsMain = convertToArray(argsArrayList);
                 Jurl.main(argsMain);
+                jt = new JTree(requests);
+                try {
+                    jt.setBackground(Color.DARK_GRAY);
+                    scanner(jt);
+                    // jt.repaint();
+                    // jt.revalidate();
+                    panelWest_Center.revalidate();
+                    panelWest_Center.repaint();
+                } catch (InterruptedException ex) {
+                }
                 // File errorFile = new File("GuiError.txt");
 
                 int lengthFile = 0;
@@ -982,6 +1000,11 @@ public class Gui {
                         panelHeaderGridBagLayout.add(panelHeader1, gbc4);
                         jHeaderResponse++;
 
+                        if(argsArrayList.contains("--save")){
+                            int index = argsArrayList.indexOf("--save");
+                            argsArrayList.remove("--save");
+                            argsArrayList.remove(index +1);
+                        }
                     }
                     gbc4.gridx = 0;
                     gbc4.gridy = jHeaderResponse;
