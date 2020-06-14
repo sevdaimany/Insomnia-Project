@@ -70,6 +70,7 @@ public class Gui {
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
     String nameDirectory = null;
+    boolean exit = true;
 
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
@@ -132,6 +133,27 @@ public class Gui {
                 ButtonGroup exiButtonGroup = new ButtonGroup();
                 exiButtonGroup.add(exiRadioButton);
                 exiButtonGroup.add(hideRadioButton);
+                exiRadioButton.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                        if(exiRadioButton.isSelected()){
+                            exit = true;
+                        }
+                        else{
+                            exit = false;
+                        }
+                    }
+                });
+                hideRadioButton.addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                        if(hideRadioButton.isSelected()){
+                            exit = false;
+                        }
+                        else{
+                            exit  = true;
+                        }
+                    }
+                });
+                
 
                 // JRadioButton lightTheme = new JRadioButton("light theme");
                 // JRadioButton darkTheme = new JRadioButton("dark theme", true);
@@ -178,8 +200,50 @@ public class Gui {
         JMenuItem toggleSidebar = new JMenuItem("Toggle Sidebar");
         toggleSidebar.setMnemonic(KeyEvent.VK_F12);
         toggleSidebar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ActionEvent.CTRL_MASK));
+        // toggleSidebar.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         if (SystemTray.isSupported()) {
 
-        // add components
+        //             SystemTray tray = SystemTray.getSystemTray();
+        //             Image image = Toolkit.getDefaultToolkit().getImage("tray.gif");
+        //             TrayIcon trayIcon = new TrayIcon(image);
+        //             frame.setVisible(false);
+        //             MouseListener mouseListener = new MouseListener() {
+
+        //                 public void mouseClicked(MouseEvent e) {
+        //                     frame.setVisible(true);
+        //                 }
+
+        //                 public void mouseEntered(MouseEvent e) {
+
+        //                 }
+
+        //                 public void mouseExited(MouseEvent e) {
+
+        //                 }
+
+        //                 public void mousePressed(MouseEvent e) {
+
+        //                 }
+
+        //                 public void mouseReleased(MouseEvent e) {
+
+        //                 }
+        //             };
+
+        //             trayIcon.setImageAutoSize(true);
+        //             trayIcon.addMouseListener(mouseListener);
+        //             try {
+        //                 tray.add(trayIcon);
+
+        //             } catch (AWTException ex) {
+        //                 System.err.println("TrayIcon could not be added.");
+        //             }
+        //         }
+        //     }
+        // });
+
+        // // add components
         menuView.add(toggleFullScreen);
         menuView.add(toggleSidebar);
 
