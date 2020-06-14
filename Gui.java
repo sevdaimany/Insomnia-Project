@@ -70,7 +70,6 @@ public class Gui {
     int indexBinary = 0;
     boolean chooseFileBoolean = false;
     String nameDirectory = null;
-     JTree jt ;
 
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
@@ -666,7 +665,6 @@ public class Gui {
         // create panel west center
         JPanel panelWest_Center = new JPanel();
         panelWest_Center.setLayout(new BorderLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
         panelWest_Center.setBackground(Color.DARK_GRAY);
 
         // create filter text field
@@ -691,7 +689,6 @@ public class Gui {
         panelWest_Center_North.add(filter);
         panelWest_Center_North.add(mb2);
 
-
         saveRequest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane newRequestOptionPane = new JOptionPane("Save Request");
@@ -708,49 +705,67 @@ public class Gui {
         });
 
         JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
-        
+        GridBagConstraints gbc = new GridBagConstraints();
+
         // create jTree
         DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
         // DefaultMutableTreeNode folder = new DefaultMutableTreeNode();
         // DefaultMutableTreeNode folder2 = new DefaultMutableTreeNode();
         // requests.add(folder);
         // requests.add(folder2);
-        jt = new JTree(requests);
-       // JScrollPane scrollPane3 = new JScrollPane(jt);
+        JTree jt = new JTree(requests);
         jt.setBackground(Color.DARK_GRAY);
         try {
             scanner(jt);
         } catch (InterruptedException e) {
         }
-       
-        
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
-         gbc.weighty = 1;
+        gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
         panelWest_Center_Center.add(jt, gbc);
-       
 
-        panelWest_Center.add(panelWest_Center_North,BorderLayout.NORTH);
-        panelWest_Center.add(panelWest_Center_Center,BorderLayout.CENTER);
+        panelWest_Center.add(panelWest_Center_North, BorderLayout.NORTH);
+        panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
         ;
-        
+
         panelWest.add(insomniaLable, BorderLayout.NORTH);
         panelWest.add(panelWest_Center, BorderLayout.CENTER);
 
-        
-        newFolder.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        newFolder.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 JOptionPane newFolderOptionPane = new JOptionPane("new Folder");
                 nameDirectory = newFolderOptionPane.showInputDialog("Enter a directory name to create.");
                 Jurl.createFolder(nameDirectory);
+        DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
+                JTree jt = new JTree(requests);
+                jt.setBackground(Color.DARK_GRAY);
+                try {
+                    scanner(jt);
+                } catch (InterruptedException ex) {
+                }
+                JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
+                GridBagConstraints gbc = new GridBagConstraints();
+
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.weightx = 1;
+                gbc.weighty = 1;
+                gbc.fill = GridBagConstraints.BOTH;
+                panelWest_Center_Center.add(jt, gbc);
+                panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
+                panelWest_Center_Center.repaint();
+                panelWest_Center_Center.revalidate();
+
                 jt.repaint();
+                jt.revalidate();
             }
         });
         // <<<<<<<<<<<<<<<<< create East panel >>>>>>>>>>>>>>>>>>>>>>>>>>>
         JPanel panelEast = new JPanel(new BorderLayout(0, 0));
-        
+
         // create panel east north
         JPanel panelEast_North = new JPanel(new FlowLayout(FlowLayout.LEFT, 60, 8));
         panelEast_North.setBackground(Color.WHITE);
@@ -758,7 +773,7 @@ public class Gui {
         label1.setForeground(new Color(50, 200, 180));
         JLabel label2 = new JLabel("6.60s");
         JLabel label3 = new JLabel("15.2KB");
-        
+
         // add lables
         panelEast_North.add(label1);
         panelEast_North.add(label2);
@@ -872,7 +887,6 @@ public class Gui {
                     }
                 }
 
-               
                 if (formDataRequestArrayList.size() > 0) {
 
                     if (argsArrayList.contains("--data")) {
@@ -892,7 +906,7 @@ public class Gui {
 
                 argsMain = convertToArray(argsArrayList);
                 Jurl.main(argsMain);
-                jt = new JTree(requests);
+                // jt = new JTree(requests);
                 try {
                     jt.setBackground(Color.DARK_GRAY);
                     scanner(jt);
@@ -1009,10 +1023,10 @@ public class Gui {
                         panelHeaderGridBagLayout.add(panelHeader1, gbc4);
                         jHeaderResponse++;
 
-                        if(argsArrayList.contains("--save")){
+                        if (argsArrayList.contains("--save")) {
                             int index = argsArrayList.indexOf("--save");
                             argsArrayList.remove("--save");
-                            argsArrayList.remove(index +1);
+                            argsArrayList.remove(index + 1);
                         }
                     }
                     gbc4.gridx = 0;
