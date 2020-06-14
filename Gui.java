@@ -70,7 +70,6 @@ public class Gui {
     boolean chooseFileBoolean = false;
     // JTree jt = new JTree();
 
-    
     public Gui() {
         headerRequestArrayList = new ArrayList<>();
         formDataRequestArrayList = new ArrayList<>();
@@ -685,12 +684,13 @@ public class Gui {
         mb2.add(menu2);
 
         // saveRequest.addActionListener(new ActionListener(){
-        //     public void actionPerformed(ActionEvent e){
-        //         JOptionPane newRequestOptionPane = new JOptionPane("Save Request");
-        //        String nameDirectory = newRequestOptionPane.showInputDialog("Enter a directory name to Save request.");
-        //         if(argsArrayList.contains("--save"))
+        // public void actionPerformed(ActionEvent e){
+        // JOptionPane newRequestOptionPane = new JOptionPane("Save Request");
+        // String nameDirectory = newRequestOptionPane.showInputDialog("Enter a
+        // directory name to Save request.");
+        // if(argsArrayList.contains("--save"))
 
-        //     }
+        // }
         // });
 
         // create jTree
@@ -836,7 +836,7 @@ public class Gui {
                 argsArrayList.add("Gui");
 
                 if (headerRequestArrayList.size() > 0) {
-                  
+
                     if (argsArrayList.contains("--headers")) {
                         int index = argsArrayList.indexOf("--headers");
                         argsArrayList.add(index + 1, convertToString(headerRequestArrayList));
@@ -844,21 +844,20 @@ public class Gui {
                         argsArrayList.add("--headers");
                         argsArrayList.add(convertToString(headerRequestArrayList));
                     }
-                }else{
+                } else {
                     if (argsArrayList.contains("--headers")) {
                         int index = argsArrayList.indexOf("--headers");
                         argsArrayList.remove("--headers");
                         argsArrayList.remove(index + 1);
-                    } 
+                    }
                 }
 
-
                 System.out.println(formDataRequestArrayList.size());
-                for(int b = 0 ; b< formDataRequestArrayList.size() ; b++){
+                for (int b = 0; b < formDataRequestArrayList.size(); b++) {
                     System.out.println(formDataRequestArrayList.get(b));
                 }
                 if (formDataRequestArrayList.size() > 0) {
-                    
+
                     if (argsArrayList.contains("--data")) {
                         int index = argsArrayList.indexOf("--data");
                         argsArrayList.add(index + 1, convertToString(formDataRequestArrayList));
@@ -866,12 +865,12 @@ public class Gui {
                         argsArrayList.add("--data");
                         argsArrayList.add(convertToString(formDataRequestArrayList));
                     }
-                }else{
+                } else {
                     if (argsArrayList.contains("--data")) {
                         int index = argsArrayList.indexOf("--data");
                         argsArrayList.remove("--data");
                         argsArrayList.remove(index + 1);
-                    } 
+                    }
                 }
 
                 argsMain = convertToArray(argsArrayList);
@@ -1129,8 +1128,13 @@ public class Gui {
 
         c1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                headerResponse.append(key.getText() + ":" + value.getText() + ";");
-                headerRequestArrayList.add(headerResponse.toString());
+                boolean selected = c1.isSelected();
+                if (selected) {
+                    if (!(key.getText().equals("new Headers") && key.getText().equals("new value"))) {
+                        headerResponse.append(key.getText() + ":" + value.getText() + ";");
+                        headerRequestArrayList.add(headerResponse.toString());
+                    }
+                }
             }
         });
 
@@ -1193,16 +1197,15 @@ public class Gui {
         c1FormData.setBorder(border);
         c1FormData.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-         boolean selected = c1FormData.isSelected();
-                if(selected){
-                    if(!(keyFormData.getText().equals("name") && keyFormData.getText().equals("value"))){ 
-                formDataRequBuffer.append(keyFormData.getText() + "=" + valueFormData.getText() + "&");
-                formDataRequestArrayList.add(formDataRequBuffer.toString());
+                boolean selected = c1FormData.isSelected();
+                if (selected) {
+                    if (!(keyFormData.getText().equals("name") && keyFormData.getText().equals("value"))) {
+                        formDataRequBuffer.append(keyFormData.getText() + "=" + valueFormData.getText() + "&");
+                        formDataRequestArrayList.add(formDataRequBuffer.toString());
                     }
-                
-                }
-                else{
-                formDataRequestArrayList.remove(keyFormData.getText() + "=" + valueFormData.getText() + "&");
+
+                } else {
+                    formDataRequestArrayList.remove(keyFormData.getText() + "=" + valueFormData.getText() + "&");
                 }
             }
         });
@@ -1257,7 +1260,6 @@ public class Gui {
         return args;
     }
 
-
     public static void displayDirectoryContents(File dir, DefaultMutableTreeNode root2, JTree jt)
             throws InterruptedException {
 
@@ -1306,7 +1308,6 @@ public class Gui {
                 // selected node is the position where the new node will be
                 // inserted
                 DefaultMutableTreeNode selectednode = root2;
-                
 
                 DefaultMutableTreeNode newfile = new DefaultMutableTreeNode(file.getName());
 
@@ -1334,21 +1335,20 @@ public class Gui {
         displayDirectoryContents(currentDir, root, jt);
     }
 
-
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
             InstantiationException, IllegalAccessException {
-                try {
-                    //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-                    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-                   // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-                   // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-                    UIManager.getLookAndFeelDefaults().put("Tree.background", Color.RED);
-                    UIManager.getLookAndFeelDefaults().put("Tree.textBackground", Color.DARK_GRAY);
-            
-                } catch (ClassNotFoundException | InstantiationException
-                        | IllegalAccessException | UnsupportedLookAndFeelException e) {
-                    e.printStackTrace();
-                }
+        try {
+            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+            UIManager.getLookAndFeelDefaults().put("Tree.background", Color.RED);
+            UIManager.getLookAndFeelDefaults().put("Tree.textBackground", Color.DARK_GRAY);
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
 
         Gui g = new Gui();
 
