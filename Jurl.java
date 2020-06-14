@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 
 public class Jurl {
 
@@ -35,11 +37,15 @@ public class Jurl {
         argInput.add("--data");
         argInput.add("--json");
         argInput.add("--upload");
+        argInput.add("Gui");
+        argInput.add("--binary");
 
-        for (int i = 0; i < args.length; i++) {
-            input.add(args[i]);
+        int count = 0;
+        while (count < args.length && args[count] != null) {
+            input.add(args[count]);
+            // System.out.println(args[count]);
+            count++;
         }
-
         urlString = input.get(0);
 
         if (input.contains("Gui"))
@@ -47,6 +53,17 @@ public class Jurl {
 
         if (input.contains("-i"))
             i_showResponseHeaders = true;
+        BufferedWriter GuiWriter = null;
+        File GuiError = null;
+        if (Gui) {
+            try {
+                GuiError = new File("GuiError.txt");
+                GuiError.createNewFile();
+
+                GuiWriter = new BufferedWriter(new FileWriter(GuiError));
+            } catch (IOException e) {
+            }
+        }
 
         if (input.contains("--method")) {
             int index = input.indexOf("--method");
@@ -54,6 +71,22 @@ public class Jurl {
                 String methodName = input.get(index + 1);
                 if (methodName.equals("GET") || methodName.equals("POST") || methodName.equals("PUT")
                         || methodName.equals("DELETE")) {
+                    if (methodName.equals("POST") || methodName.equals("PUT") || methodName.equals("DELETE")) {
+                        if (!(input.contains("--data") || input.contains("--binary") || input.contains("--upload"))) {
+                            if (Gui) {
+                                try {
+                                    GuiWriter.write("no message body.");
+                                    GuiWriter.flush();
+                                    GuiWriter.close();
+                                    return;
+                                } catch (IOException ex) {
+                                }
+                            } else {
+                                System.out.println("No message body.");
+                                return;
+                            }
+                        }
+                    }
                     Method = methodName;
                 } else {
                     System.out.println("Invalid method name.");
@@ -77,7 +110,8 @@ public class Jurl {
                     showRequestsInList(folderName);
                     return;
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
+                    System.out.println("No request save in " + folderName);
                     return;
                 }
 
@@ -112,13 +146,22 @@ public class Jurl {
                     String[] keyValue = headers.split(";");
                     for (int i = 0; i < keyValue.length; i++) {
                         String[] seprateKeyValue = keyValue[i].split(":");
-                        if (seprateKeyValue.length != 2) {
-                            System.out.println("invalid header.");
+                        if (seprateKeyValue.length != 2 || seprateKeyValue[0].equals("new Header")
+                                || seprateKeyValue[1].equals("new value")) {
+                            try {
+                                if (Gui) {
+                                    GuiWriter.write("Invalid header");
+                                    GuiWriter.flush();
+                                    GuiWriter.close();
+                                } else
+                                    System.out.println("invalid header.");
+                            } catch (IOException e) {
+                            }
                             return;
                         } else {
                             headersHashMap.put(seprateKeyValue[0], seprateKeyValue[1]);
-                            System.out.println(seprateKeyValue[0]);
-                            System.out.println(seprateKeyValue[1]);
+                            // System.out.println(seprateKeyValue[0]);
+                            // System.out.println(seprateKeyValue[1]);
                         }
                     }
                     h_requestsHeaders = true;
@@ -144,8 +187,17 @@ public class Jurl {
                     String[] keyValue = formdatas.split("&");
                     for (int i = 0; i < keyValue.length; i++) {
                         String[] seprateKeyValue = keyValue[i].split("=");
-                        if (seprateKeyValue.length != 2) {
-                            System.out.println("invalid form data.");
+                        if (seprateKeyValue.length != 2 || seprateKeyValue[0].equals("name")
+                                || seprateKeyValue[1].equals("value")) {
+                            if (Gui) {
+                                try {
+                                    GuiWriter.write("Invalid form data.");
+                                    GuiWriter.flush();
+                                    GuiWriter.close();
+                                } catch (IOException e) {
+                                }
+                            } else
+                                System.out.println("invalid form data.");
                             return;
                         } else {
                             body.put(seprateKeyValue[0], seprateKeyValue[1]);
@@ -217,7 +269,9 @@ public class Jurl {
                     try {
                         saveRequest(request, nameDirectory);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        // e.printStackTrace();
+                        System.out.println("Cannot open Directory" + nameDirectory);
+                        return;
                     }
                 }
 
@@ -232,22 +286,31 @@ public class Jurl {
         if (input.contains("fire")) {
             int index = input.indexOf("fire");
             if (index + 1 < input.size()) {
-                if (index + 2 < input.size()) {
-                    String nameDirectory = input.get(index + 1);
-                    ArrayList<Integer> requestNum = new ArrayList<>();
-                    for (int i = index + 2; i < input.size(); i++) {
-                        requestNum.add(Integer.parseInt(input.get(i)));
-                    }
-                    try {
-                        fireRequest(requestNum, nameDirectory);
-                        return;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        return;
-                    }
-                } else {
-                    System.out.println("request number is not entered");
+                if (input.get(index + 1).equals("create")) {
+
+                    String nameCreateFolder = input.get(index +2);
+                    createFolder(nameCreateFolder);
                     return;
+                } else {
+
+                    if (index + 2 < input.size()) {
+                        String nameDirectory = input.get(index + 1);
+                        ArrayList<Integer> requestNum = new ArrayList<>();
+                        for (int i = index + 2; i < input.size(); i++) {
+                            requestNum.add(Integer.parseInt(input.get(i)));
+                        }
+                        try {
+                            fireRequest(requestNum, nameDirectory);
+                            return;
+                        } catch (Exception e) {
+                            // e.printStackTrace();
+                            System.out.println("Cannot open Directory " + nameDirectory);
+                            return;
+                        }
+                    } else {
+                        System.out.println("request number is not entered");
+                        return;
+                    }
                 }
             } else {
                 System.out.println("folder name is not entered");
@@ -258,8 +321,17 @@ public class Jurl {
         try {
             request.run();
         } catch (IOException e) {
-            e.printStackTrace();
-
+            if (Gui) {
+                try {
+                    GuiWriter.write("Cannot open " + urlString);
+                    GuiWriter.flush();
+                    GuiWriter.close();
+                    return;
+                } catch (IOException ex) {
+                }
+            }
+            System.out.println("Cannot open " + urlString);
+            return;
         }
 
     }
@@ -318,11 +390,24 @@ public class Jurl {
                 try {
                     request.run();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("cannot run request");
                 }
 
             }
 
+        }
+
+    }
+
+    public static void createFolder(String nameFolder) {
+        File nameFile = new File("./requests/" + nameFolder);
+        if (nameFile.exists()) {
+            System.out.println(nameFolder + " Already exist.");
+            return;
+        } else {
+            nameFile.mkdir();
+            System.out.println(nameFolder+" Folder created");
+            return;
         }
 
     }
