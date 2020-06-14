@@ -116,6 +116,16 @@ public class Gui {
 
                 JCheckBox followRedirectCheckBox = new JCheckBox(" follow redirect ");
                 followRedirectCheckBox.setPreferredSize(new Dimension(250, 30));
+                followRedirectCheckBox.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        boolean selected = followRedirectCheckBox.isSelected();
+                        if (selected) {
+                            argsArrayList.add("-f");
+                        } else {
+                            argsArrayList.remove("-f");
+                        }
+                    }
+                });
 
                 JRadioButton exiRadioButton = new JRadioButton(" Exit ", true);
                 JRadioButton hideRadioButton = new JRadioButton(" Hide on system tray ");
@@ -739,7 +749,7 @@ public class Gui {
                 JOptionPane newFolderOptionPane = new JOptionPane("new Folder");
                 nameDirectory = newFolderOptionPane.showInputDialog("Enter a directory name to create.");
                 Jurl.createFolder(nameDirectory);
-        DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
+                DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
                 JTree jt = new JTree(requests);
                 jt.setBackground(Color.DARK_GRAY);
                 try {
@@ -906,16 +916,32 @@ public class Gui {
 
                 argsMain = convertToArray(argsArrayList);
                 Jurl.main(argsMain);
-                // jt = new JTree(requests);
-                try {
+                if (argsArrayList.contains("--save")) {
+                    DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
+                    JTree jt = new JTree(requests);
                     jt.setBackground(Color.DARK_GRAY);
-                    scanner(jt);
-                    // jt.repaint();
-                    // jt.revalidate();
-                    panelWest_Center.revalidate();
-                    panelWest_Center.repaint();
-                } catch (InterruptedException ex) {
+                    try {
+                        scanner(jt);
+                    } catch (InterruptedException ex) {
+                    }
+                    JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
+                    GridBagConstraints gbc = new GridBagConstraints();
+
+                    gbc.gridx = 0;
+                    gbc.gridy = 0;
+                    gbc.weightx = 1;
+                    gbc.weighty = 1;
+                    gbc.fill = GridBagConstraints.BOTH;
+                    panelWest_Center_Center.add(jt, gbc);
+                    panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
+                    panelWest_Center_Center.repaint();
+                    panelWest_Center_Center.revalidate();
+
+                    jt.repaint();
+                    jt.revalidate();
+
                 }
+
                 // File errorFile = new File("GuiError.txt");
 
                 int lengthFile = 0;
