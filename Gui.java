@@ -133,27 +133,24 @@ public class Gui {
                 ButtonGroup exiButtonGroup = new ButtonGroup();
                 exiButtonGroup.add(exiRadioButton);
                 exiButtonGroup.add(hideRadioButton);
-                exiRadioButton.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                        if(exiRadioButton.isSelected()){
+                exiRadioButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (exiRadioButton.isSelected()) {
+                            exit = true;
+                        } else {
+                            exit = false;
+                        }
+                    }
+                });
+                hideRadioButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (hideRadioButton.isSelected()) {
+                            exit = false;
+                        } else {
                             exit = true;
                         }
-                        else{
-                            exit = false;
-                        }
                     }
                 });
-                hideRadioButton.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                        if(hideRadioButton.isSelected()){
-                            exit = false;
-                        }
-                        else{
-                            exit  = true;
-                        }
-                    }
-                });
-                
 
                 // JRadioButton lightTheme = new JRadioButton("light theme");
                 // JRadioButton darkTheme = new JRadioButton("dark theme", true);
@@ -178,6 +175,54 @@ public class Gui {
 
         Exit.setMnemonic(KeyEvent.VK_E);
         Exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
+        Exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                if (exit) {
+                    System.exit(0);
+                } else {
+                    if (SystemTray.isSupported()) {
+
+                        SystemTray tray = SystemTray.getSystemTray();
+                        Image image = Toolkit.getDefaultToolkit().getImage("tray.gif");
+                        TrayIcon trayIcon = new TrayIcon(image);
+                        frame.setVisible(false);
+                        MouseListener mouseListener = new MouseListener() {
+
+                            public void mouseClicked(MouseEvent e) {
+                                frame.setVisible(true);
+                            }
+
+                            public void mouseEntered(MouseEvent e) {
+
+                            }
+
+                            public void mouseExited(MouseEvent e) {
+
+                            }
+
+                            public void mousePressed(MouseEvent e) {
+
+                            }
+
+                            public void mouseReleased(MouseEvent e) {
+
+                            }
+                        };
+
+                        trayIcon.setImageAutoSize(true);
+                        trayIcon.addMouseListener(mouseListener);
+                        try {
+                            tray.add(trayIcon);
+
+                        } catch (AWTException ex) {
+                            System.err.println("TrayIcon could not be added.");
+                        }
+                    }
+
+                }
+            }
+        });
 
         // add menu items to menu
         menuApplication.add(options);
@@ -201,46 +246,46 @@ public class Gui {
         toggleSidebar.setMnemonic(KeyEvent.VK_F12);
         toggleSidebar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ActionEvent.CTRL_MASK));
         // toggleSidebar.addActionListener(new ActionListener() {
-        //     public void actionPerformed(ActionEvent e) {
-        //         if (SystemTray.isSupported()) {
+        // public void actionPerformed(ActionEvent e) {
+        // if (SystemTray.isSupported()) {
 
-        //             SystemTray tray = SystemTray.getSystemTray();
-        //             Image image = Toolkit.getDefaultToolkit().getImage("tray.gif");
-        //             TrayIcon trayIcon = new TrayIcon(image);
-        //             frame.setVisible(false);
-        //             MouseListener mouseListener = new MouseListener() {
+        // SystemTray tray = SystemTray.getSystemTray();
+        // Image image = Toolkit.getDefaultToolkit().getImage("tray.gif");
+        // TrayIcon trayIcon = new TrayIcon(image);
+        // frame.setVisible(false);
+        // MouseListener mouseListener = new MouseListener() {
 
-        //                 public void mouseClicked(MouseEvent e) {
-        //                     frame.setVisible(true);
-        //                 }
+        // public void mouseClicked(MouseEvent e) {
+        // frame.setVisible(true);
+        // }
 
-        //                 public void mouseEntered(MouseEvent e) {
+        // public void mouseEntered(MouseEvent e) {
 
-        //                 }
+        // }
 
-        //                 public void mouseExited(MouseEvent e) {
+        // public void mouseExited(MouseEvent e) {
 
-        //                 }
+        // }
 
-        //                 public void mousePressed(MouseEvent e) {
+        // public void mousePressed(MouseEvent e) {
 
-        //                 }
+        // }
 
-        //                 public void mouseReleased(MouseEvent e) {
+        // public void mouseReleased(MouseEvent e) {
 
-        //                 }
-        //             };
+        // }
+        // };
 
-        //             trayIcon.setImageAutoSize(true);
-        //             trayIcon.addMouseListener(mouseListener);
-        //             try {
-        //                 tray.add(trayIcon);
+        // trayIcon.setImageAutoSize(true);
+        // trayIcon.addMouseListener(mouseListener);
+        // try {
+        // tray.add(trayIcon);
 
-        //             } catch (AWTException ex) {
-        //                 System.err.println("TrayIcon could not be added.");
-        //             }
-        //         }
-        //     }
+        // } catch (AWTException ex) {
+        // System.err.println("TrayIcon could not be added.");
+        // }
+        // }
+        // }
         // });
 
         // // add components
