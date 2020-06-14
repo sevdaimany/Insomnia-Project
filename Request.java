@@ -113,7 +113,7 @@ public class Request implements Serializable {
         connection = (HttpURLConnection) url.openConnection();
         sendMethod();
 
-        if (isF_redirect() || Gui) {
+        if (isF_redirect()) {
             while (connection.getResponseCode() > 299 && connection.getResponseCode() < 400) {
                 String location = connection.getHeaderField("Location");
                 url = new URL(location);
@@ -276,7 +276,7 @@ public class Request implements Serializable {
 
         // print result
         if (Gui) {
-            GuiWriter.write("&Request Method&" + connection.getRequestMethod());
+            GuiWriter.write("&&&Request Method&&&" + connection.getRequestMethod());
         } else {
             System.out.println("Request Method: " + connection.getRequestMethod());
         }
@@ -286,7 +286,7 @@ public class Request implements Serializable {
         for (String key : map.keySet()) {
             // if(!key.equals("null"))
             if (Gui) {
-                GuiWriter.write("&"+key + "&");
+                GuiWriter.write("&&&"+key + "&&&");
             } else {
                 System.out.print(key + ": ");
             }
@@ -379,8 +379,8 @@ public class Request implements Serializable {
         bufferedOutputStream.close();
     }
 
-    public void uploadBinary() {
-        try {
+    public void uploadBinary() throws IOException{
+        
             connection.setRequestProperty("Content-Type", "application/octet-stream");
             File haditabatabaei = new File(file);
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(connection.getOutputStream());
@@ -390,9 +390,6 @@ public class Request implements Serializable {
             if(bufferedOutputStream != null)
             bufferedOutputStream.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void formData() throws IOException {

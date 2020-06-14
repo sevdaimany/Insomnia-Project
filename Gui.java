@@ -1398,14 +1398,15 @@ public class Gui {
             gbc.fill = GridBagConstraints.BOTH;
             panelWest_Center_Center.add(jt, gbc);
             panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
-            panelWest_Center_Center.repaint();
-            panelWest_Center_Center.revalidate();
+             panelWest_Center_Center.repaint();
+             panelWest_Center_Center.revalidate();
 
             jt.repaint();
             jt.revalidate();
         }
     }
 
+    
     public String[] headerStringArray() {
         BufferedInputStream in = null;
         String headers;
@@ -1605,9 +1606,7 @@ public class Gui {
     }
 
     public String[] convertToArray(ArrayList<String> arrayList) {
-        for (int g = 0; g < arrayList.size(); g++) {
-            System.out.println(arrayList.get(g));
-        }
+       
         int index = 1;
         String[] args = new String[arrayList.size() - 1];
         for (int u = 0; u < arrayList.size(); u++) {
