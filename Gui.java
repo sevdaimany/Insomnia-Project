@@ -160,6 +160,11 @@ public class Gui {
 
                 JButton saveButton = new JButton("Save");
                 saveButton.setPreferredSize(new Dimension(100, 25));
+                saveButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        optionDialog.dispose();
+                    }
+                });
 
                 optionDialog.add(followRedirectCheckBox);
                 optionDialog.add(exiRadioButton);
@@ -245,48 +250,6 @@ public class Gui {
         JMenuItem toggleSidebar = new JMenuItem("Toggle Sidebar");
         toggleSidebar.setMnemonic(KeyEvent.VK_F12);
         toggleSidebar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ActionEvent.CTRL_MASK));
-        // toggleSidebar.addActionListener(new ActionListener() {
-        // public void actionPerformed(ActionEvent e) {
-        // if (SystemTray.isSupported()) {
-
-        // SystemTray tray = SystemTray.getSystemTray();
-        // Image image = Toolkit.getDefaultToolkit().getImage("tray.gif");
-        // TrayIcon trayIcon = new TrayIcon(image);
-        // frame.setVisible(false);
-        // MouseListener mouseListener = new MouseListener() {
-
-        // public void mouseClicked(MouseEvent e) {
-        // frame.setVisible(true);
-        // }
-
-        // public void mouseEntered(MouseEvent e) {
-
-        // }
-
-        // public void mouseExited(MouseEvent e) {
-
-        // }
-
-        // public void mousePressed(MouseEvent e) {
-
-        // }
-
-        // public void mouseReleased(MouseEvent e) {
-
-        // }
-        // };
-
-        // trayIcon.setImageAutoSize(true);
-        // trayIcon.addMouseListener(mouseListener);
-        // try {
-        // tray.add(trayIcon);
-
-        // } catch (AWTException ex) {
-        // System.err.println("TrayIcon could not be added.");
-        // }
-        // }
-        // }
-        // });
 
         // // add components
         menuView.add(toggleFullScreen);
@@ -1029,195 +992,204 @@ public class Gui {
                 }
 
                 argsMain = convertToArray(argsArrayList);
-                Jurl.main(argsMain);
-                if (argsArrayList.contains("--save")) {
-                    DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
-                    JTree jt = new JTree(requests);
-                    jt.setBackground(Color.DARK_GRAY);
-                    try {
-                        scanner(jt);
-                    } catch (InterruptedException ex) {
-                    }
-                    JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
-                    GridBagConstraints gbc = new GridBagConstraints();
+                // Jurl.main(argsMain);
+                connectionClass.setConnectionClassFields(argsMain, panelWest_Center, panelMessageBodyCenter, panelHeaderEast, card, label1, label3, label2, startTime);
+                // Insomnia insomnia = new Insomnia();
+                // insomnia.execute();
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+              // updateGUI(panelWest_Center, panelMessageBodyCenter, panelHeaderEast, card, label1, label3, label2, startTime);
+                // if (argsArrayList.contains("--save")) {
+                // DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
+                // JTree jt = new JTree(requests);
+                // jt.setBackground(Color.DARK_GRAY);
+                // try {
+                // scanner(jt);
+                // } catch (InterruptedException ex) {
+                // }
+                // JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
+                // GridBagConstraints gbc = new GridBagConstraints();
 
-                    gbc.gridx = 0;
-                    gbc.gridy = 0;
-                    gbc.weightx = 1;
-                    gbc.weighty = 1;
-                    gbc.fill = GridBagConstraints.BOTH;
-                    panelWest_Center_Center.add(jt, gbc);
-                    panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
-                    panelWest_Center_Center.repaint();
-                    panelWest_Center_Center.revalidate();
+                // gbc.gridx = 0;
+                // gbc.gridy = 0;
+                // gbc.weightx = 1;
+                // gbc.weighty = 1;
+                // gbc.fill = GridBagConstraints.BOTH;
+                // panelWest_Center_Center.add(jt, gbc);
+                // panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
+                // panelWest_Center_Center.repaint();
+                // panelWest_Center_Center.revalidate();
 
-                    jt.repaint();
-                    jt.revalidate();
+                // jt.repaint();
+                // jt.revalidate();
 
-                }
+                // }
+               //////////////////////////////////////  setJTree(panelWest_Center);
 
                 // File errorFile = new File("GuiError.txt");
 
-                int lengthFile = 0;
-                try {
-                    BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiError.txt"));
-                    lengthFile = in2.readAllBytes().length;
-                } catch (IOException exc) {
-                }
+              //////////////////////////  int lengthFile = 0;
+              ///////////////////////////////////////  // try {
+                //////////////////////////////////////     BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiError.txt"));
+               //////////////////////////////////////  //     lengthFile = in2.readAllBytes().length;
+               //////////////////////////////////////  // } catch (IOException exc) {
+               //////////////////////////////////////  // }
 
-                if (lengthFile > 0) {
-                    JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
-                    JTextArea raw = new JTextArea();
-                    raw.setEditable(false);
-                    JScrollPane scrollPane = new JScrollPane(raw);
-                    raw.setLineWrap(true);
+                ////////////////////////////////////// // if (lengthFile > 0) {
 
-                    raw.setPreferredSize(new Dimension(2000, 800));
-                    scrollPane.setPreferredSize(new Dimension(499, 679));
-                    BufferedInputStream in = null;
-                    try {
-                        in = new BufferedInputStream(new FileInputStream("GuiError.txt"));
+                    // JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3,
+                    // 3));
+                    // JTextArea raw = new JTextArea();
+                    // raw.setEditable(false);
+                    // JScrollPane scrollPane = new JScrollPane(raw);
+                    // raw.setLineWrap(true);
 
-                        raw.append(new String(in.readAllBytes()));
-                    } catch (Exception ex) {
-                    }
+                    // raw.setPreferredSize(new Dimension(2000, 800));
+                    // scrollPane.setPreferredSize(new Dimension(499, 679));
+                    // BufferedInputStream in = null;
+                    // try {
+                    // in = new BufferedInputStream(new FileInputStream("GuiError.txt"));
 
-                    panelMessageBodyRaw.add(scrollPane);
-
-                    panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
-
-                    card.show(panelMessageBodyCenter, "Raw");
-
-                    panelMessageBodyRaw.repaint();
-                    panelMessageBodyRaw.revalidate();
-
-                    panelHeaderEast.removeAll();
-                    JButton newButton = new JButton("Copy to Clipboard");
-                    newButton.setForeground(Color.WHITE);
-                    newButton.setBackground(new Color(90, 80, 160));
-                    panelHeaderEast.add(newButton, BorderLayout.NORTH);
-                    JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
-                    panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
-                    panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
-                    panelHeaderGridBagLayout.revalidate();
-                    panelHeaderGridBagLayout.repaint();
-                    panelHeaderEast.revalidate();
-                    panelHeaderEast.repaint();
-
-                    label1.setText("ERROR");
-                    label1.setForeground(Color.RED);
-                    label1.repaint();
-
-                } else {
-                    panelHeaderEast.removeAll();
-                    JButton newButton = new JButton("Copy to Clipboard");
-                    newButton.setForeground(Color.WHITE);
-                    newButton.setBackground(new Color(90, 80, 160));
-                    panelHeaderEast.add(newButton, BorderLayout.NORTH);
-                    // if (panelHeaderGridBagLayout != null) {
-                    // panelHeaderEast.remove(panelHeaderGridBagLayout);
-                    // panelHeaderGridBagLayout.removeAll();
+                    // raw.append(new String(in.readAllBytes()));
+                    // } catch (Exception ex) {
                     // }
-                    JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
-                    JScrollPane scrollPane2 = new JScrollPane(panelHeaderGridBagLayout);
-                    panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
-                    String[] headerStrings = headerStringArray();
-                    int jHeaderResponse = 0;
-                    GridBagConstraints gbc4 = new GridBagConstraints();
 
-                    for (int p = 1; p < headerStrings.length; p += 2) {
+                    // panelMessageBodyRaw.add(scrollPane);
 
-                        if (headerStrings[p].equals("null")) {
-                            String[] nullStrings = headerStrings[p + 1].split(" ");
+                    // panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
 
-                            StringBuffer buffer = new StringBuffer();
-                            for (int r = 1; r < nullStrings.length; r++) {
-                                buffer.append(nullStrings[r] + " ");
-                            }
-                            label1.setText(buffer.toString());
-                            int codeResponse = Integer.parseInt(nullStrings[1]);
-                            if (codeResponse / 100 == 2)
-                                label1.setForeground(Color.GREEN);
-                            else if (codeResponse / 100 == 3)
-                                label1.setForeground(Color.BLUE);
-                            else if (codeResponse / 100 == 4)
-                                label1.setForeground(Color.ORANGE);
-                            else if (codeResponse / 100 == 5)
-                                label1.setForeground(Color.RED);
-                            label1.repaint();
-                            continue;
-                        }
-                        if (headerStrings[p].equals("Content-Length")) {
-                            label3.setText(headerStrings[p + 1] + "B");
-                            label3.repaint();
+                    // card.show(panelMessageBodyCenter, "Raw");
 
-                        }
-                        // if (headerStrings[p].equals("Set-Cookie") ||
-                        // headerStrings[p].equals("Content-Security-Policy")||headerStrings[p].equals("set-cookie"))
-                        // continue;
+                    // panelMessageBodyRaw.repaint();
+                    // panelMessageBodyRaw.revalidate();
 
-                        JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
-                        gbc4.gridx = 0;
-                        gbc4.gridy = jHeaderResponse;
-                        gbc4.fill = GridBagConstraints.HORIZONTAL;
-                        panelHeaderGridBagLayout.add(panelHeader1, gbc4);
-                        jHeaderResponse++;
+                    // panelHeaderEast.removeAll();
+                    // JButton newButton = new JButton("Copy to Clipboard");
+                    // newButton.setForeground(Color.WHITE);
+                    // newButton.setBackground(new Color(90, 80, 160));
+                    // panelHeaderEast.add(newButton, BorderLayout.NORTH);
+                    // JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+                    // panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+                    // panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+                    // panelHeaderGridBagLayout.revalidate();
+                    // panelHeaderGridBagLayout.repaint();
+                    // panelHeaderEast.revalidate();
+                    // panelHeaderEast.repaint();
 
-                        if (argsArrayList.contains("--save")) {
-                            int index = argsArrayList.indexOf("--save");
-                            argsArrayList.remove("--save");
-                            argsArrayList.remove(index + 1);
-                        }
-                    }
-                    gbc4.gridx = 0;
-                    gbc4.gridy = jHeaderResponse;
-                    gbc4.weightx = 1;
-                    gbc4.weighty = 1;
-                    gbc4.insets = new Insets(50, 50, 50, 50);
-                    JLabel labelHeaderResponse = new JLabel(" ");
-                    panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
-                    panelHeaderEast.add(scrollPane2, BorderLayout.CENTER);
+                    // label1.setText("ERROR");
+                    // label1.setForeground(Color.RED);
+                    // label1.repaint();
+                  ////////////////////////////////////////////  showError(card, panelMessageBodyCenter, panelHeaderEast, label1);
 
-                    panelHeaderGridBagLayout.revalidate();
-                    panelHeaderGridBagLayout.repaint();
-                    panelHeaderEast.revalidate();
-                    panelHeaderEast.repaint();
+              ////////////////////////////////////////////////////////////////////////////  } else {
 
-                    JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
-                    JTextArea raw = new JTextArea();
-                    raw.setEditable(false);
-                    JScrollPane scrollPane = new JScrollPane(raw);
+                    // panelHeaderEast.removeAll();
+                    // JButton newButton = new JButton("Copy to Clipboard");
+                    // newButton.setForeground(Color.WHITE);
+                    // newButton.setBackground(new Color(90, 80, 160));
+                    // panelHeaderEast.add(newButton, BorderLayout.NORTH);
 
-                    raw.setPreferredSize(new Dimension(2000, 800));
-                    scrollPane.setPreferredSize(new Dimension(499, 679));
+                    // JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+                    // JScrollPane scrollPane2 = new JScrollPane(panelHeaderGridBagLayout);
+                    // panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+                    // String[] headerStrings = headerStringArray();
+                    // int jHeaderResponse = 0;
+                    // GridBagConstraints gbc4 = new GridBagConstraints();
 
-                    BufferedInputStream in = null;
-                    try {
-                        in = new BufferedInputStream(new FileInputStream("GuiResponseBody.txt"));
+                    // for (int p = 1; p < headerStrings.length; p += 2) {
 
-                        raw.append(new String(in.readAllBytes()));
-                    } catch (Exception ex) {
-                    }
+                    // if (headerStrings[p].equals("null")) {
+                    // String[] nullStrings = headerStrings[p + 1].split(" ");
 
-                    panelMessageBodyRaw.add(scrollPane);
+                    // StringBuffer buffer = new StringBuffer();
+                    // for (int r = 1; r < nullStrings.length; r++) {
+                    // buffer.append(nullStrings[r] + " ");
+                    // }
+                    // label1.setText(buffer.toString());
+                    // int codeResponse = Integer.parseInt(nullStrings[1]);
+                    // if (codeResponse / 100 == 2)
+                    // label1.setForeground(Color.GREEN);
+                    // else if (codeResponse / 100 == 3)
+                    // label1.setForeground(Color.BLUE);
+                    // else if (codeResponse / 100 == 4)
+                    // label1.setForeground(Color.ORANGE);
+                    // else if (codeResponse / 100 == 5)
+                    // label1.setForeground(Color.RED);
+                    // label1.repaint();
+                    // continue;
+                    // }
+                    // if (headerStrings[p].equals("Content-Length")) {
+                    // label3.setText(headerStrings[p + 1] + "B");
+                    // label3.repaint();
 
-                    panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+                    // }
 
-                    card.show(panelMessageBodyCenter, "Raw");
+                    // JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
+                    // gbc4.gridx = 0;
+                    // gbc4.gridy = jHeaderResponse;
+                    // gbc4.fill = GridBagConstraints.HORIZONTAL;
+                    // panelHeaderGridBagLayout.add(panelHeader1, gbc4);
+                    // jHeaderResponse++;
 
-                    panelMessageBodyRaw.repaint();
-                    panelMessageBodyRaw.revalidate();
+                    // if (argsArrayList.contains("--save")) {
+                    // int index = argsArrayList.indexOf("--save");
+                    // argsArrayList.remove("--save");
+                    // argsArrayList.remove(index + 1);
+                    // }
+                    // }
+                    // gbc4.gridx = 0;
+                    // gbc4.gridy = jHeaderResponse;
+                    // gbc4.weightx = 1;
+                    // gbc4.weighty = 1;
+                    // gbc4.insets = new Insets(50, 50, 50, 50);
+                    // JLabel labelHeaderResponse = new JLabel(" ");
+                    // panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+                    // panelHeaderEast.add(scrollPane2, BorderLayout.CENTER);
+
+                    // panelHeaderGridBagLayout.revalidate();
+                    // panelHeaderGridBagLayout.repaint();
+                    // panelHeaderEast.revalidate();
+                    // panelHeaderEast.repaint();
+
+                  //////////////////////////////////////////////  showHeader(label1, label3, panelHeaderEast);
+
+                    // JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3,
+                    // 3));
+                    // JTextArea raw = new JTextArea();
+                    // raw.setEditable(false);
+                    // JScrollPane scrollPane = new JScrollPane(raw);
+
+                    // raw.setPreferredSize(new Dimension(2000, 800));
+                    // scrollPane.setPreferredSize(new Dimension(499, 679));
+
+                    // BufferedInputStream in = null;
+                    // try {
+                    // in = new BufferedInputStream(new FileInputStream("GuiResponseBody.txt"));
+
+                    // raw.append(new String(in.readAllBytes()));
+                    // } catch (Exception ex) {
+                    // }
+
+                    // panelMessageBodyRaw.add(scrollPane);
+
+                    // panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+
+                    // card.show(panelMessageBodyCenter, "Raw");
+
+                    // panelMessageBodyRaw.repaint();
+                    // panelMessageBodyRaw.revalidate();
+                /////////////////////////////////////////    showRaw(card, panelMessageBodyCenter);
                 }
 
-                double duration = System.nanoTime() - startTime;
-                duration = duration / 1000000000.0;
-                DecimalFormat decimalFormat = new DecimalFormat("##.##");
-                decimalFormat.setRoundingMode(RoundingMode.DOWN);
-                String formatResult = decimalFormat.format(duration);
-                duration = Double.parseDouble(formatResult);
-                label2.setText(String.valueOf(duration) + "s");
-                label2.repaint();
-            }
+               /////////////////////////////////////////// double duration = System.nanoTime() - startTime;
+                // duration = duration / 1000000000.0;
+                // DecimalFormat decimalFormat = new DecimalFormat("##.##");
+                // decimalFormat.setRoundingMode(RoundingMode.DOWN);
+                // String formatResult = decimalFormat.format(duration);
+                // duration = Double.parseDouble(formatResult);
+                // label2.setText(String.valueOf(duration) + "s");
+                // label2.repaint();
+                ////////////////////////////////timeTake(duration, label2);
+            
         });
 
         tabbedPane2.add("Message Body", panelMessageBody);
@@ -1230,6 +1202,208 @@ public class Gui {
         mainPanel.add(panelWest, BorderLayout.WEST);
         mainPanel.add(panelEast, BorderLayout.EAST);
 
+    }
+
+    public void updateGUI(JPanel panelWest_Center,JPanel panelMessageBodyCenter,JPanel panelHeaderEast,CardLayout card,JLabel label1,JLabel label3 ,JLabel label2,long startTime) {
+        setJTree(panelWest_Center);
+        int lengthFile = 0;
+        try {
+            BufferedInputStream in2 = new BufferedInputStream(new FileInputStream("GuiError.txt"));
+            lengthFile = in2.readAllBytes().length;
+        } catch (IOException exc) {
+        }
+
+        if (lengthFile > 0) {
+            showError(card, panelMessageBodyCenter, panelHeaderEast, label1);
+
+        } else {
+            showHeader(label1, label3, panelHeaderEast);
+            showRaw(card, panelMessageBodyCenter);
+        }
+
+        double duration = System.nanoTime() - startTime;
+        timeTake(duration, label2);
+    }
+
+    public void timeTake(double duration, JLabel label2) {
+        duration = duration / 1000000000.0;
+        DecimalFormat decimalFormat = new DecimalFormat("##.##");
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        String formatResult = decimalFormat.format(duration);
+        duration = Double.parseDouble(formatResult);
+        label2.setText(String.valueOf(duration) + "s");
+        label2.repaint();
+    }
+
+    public void showHeader(JLabel label1, JLabel label3, JPanel panelHeaderEast) {
+        panelHeaderEast.removeAll();
+        JButton newButton = new JButton("Copy to Clipboard");
+        newButton.setForeground(Color.WHITE);
+        newButton.setBackground(new Color(90, 80, 160));
+        panelHeaderEast.add(newButton, BorderLayout.NORTH);
+
+        JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+        JScrollPane scrollPane2 = new JScrollPane(panelHeaderGridBagLayout);
+        panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+        String[] headerStrings = headerStringArray();
+        int jHeaderResponse = 0;
+        GridBagConstraints gbc4 = new GridBagConstraints();
+
+        for (int p = 1; p < headerStrings.length; p += 2) {
+
+            if (headerStrings[p].equals("null")) {
+                String[] nullStrings = headerStrings[p + 1].split(" ");
+
+                StringBuffer buffer = new StringBuffer();
+                for (int r = 1; r < nullStrings.length; r++) {
+                    buffer.append(nullStrings[r] + " ");
+                }
+                label1.setText(buffer.toString());
+                int codeResponse = Integer.parseInt(nullStrings[1]);
+                if (codeResponse / 100 == 2)
+                    label1.setForeground(Color.GREEN);
+                else if (codeResponse / 100 == 3)
+                    label1.setForeground(Color.BLUE);
+                else if (codeResponse / 100 == 4)
+                    label1.setForeground(Color.ORANGE);
+                else if (codeResponse / 100 == 5)
+                    label1.setForeground(Color.RED);
+                label1.repaint();
+                continue;
+            }
+            if (headerStrings[p].equals("Content-Length")) {
+                label3.setText(headerStrings[p + 1] + "B");
+                label3.repaint();
+
+            }
+
+            JPanel panelHeader1 = newHeaderResponse(p, headerStrings);
+            gbc4.gridx = 0;
+            gbc4.gridy = jHeaderResponse;
+            gbc4.fill = GridBagConstraints.HORIZONTAL;
+            panelHeaderGridBagLayout.add(panelHeader1, gbc4);
+            jHeaderResponse++;
+
+            if (argsArrayList.contains("--save")) {
+                int index = argsArrayList.indexOf("--save");
+                argsArrayList.remove("--save");
+                argsArrayList.remove(index + 1);
+            }
+        }
+        gbc4.gridx = 0;
+        gbc4.gridy = jHeaderResponse;
+        gbc4.weightx = 1;
+        gbc4.weighty = 1;
+        gbc4.insets = new Insets(50, 50, 50, 50);
+        JLabel labelHeaderResponse = new JLabel(" ");
+        panelHeaderGridBagLayout.add(labelHeaderResponse, gbc4);
+        panelHeaderEast.add(scrollPane2, BorderLayout.CENTER);
+
+        panelHeaderGridBagLayout.revalidate();
+        panelHeaderGridBagLayout.repaint();
+        panelHeaderEast.revalidate();
+        panelHeaderEast.repaint();
+
+    }
+
+    public void showRaw(CardLayout card, JPanel panelMessageBodyCenter) {
+        JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+        JTextArea raw = new JTextArea();
+        raw.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(raw);
+
+        raw.setPreferredSize(new Dimension(2000, 800));
+        scrollPane.setPreferredSize(new Dimension(499, 679));
+
+        BufferedInputStream in = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream("GuiResponseBody.txt"));
+
+            raw.append(new String(in.readAllBytes()));
+        } catch (Exception ex) {
+        }
+
+        panelMessageBodyRaw.add(scrollPane);
+
+        panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+
+        card.show(panelMessageBodyCenter, "Raw");
+
+        panelMessageBodyRaw.repaint();
+        panelMessageBodyRaw.revalidate();
+
+    }
+
+    public void showError(CardLayout card, JPanel panelMessageBodyCenter, JPanel panelHeaderEast, JLabel label1) {
+        JPanel panelMessageBodyRaw = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+        JTextArea raw = new JTextArea();
+        raw.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(raw);
+        raw.setLineWrap(true);
+
+        raw.setPreferredSize(new Dimension(2000, 800));
+        scrollPane.setPreferredSize(new Dimension(499, 679));
+        BufferedInputStream in = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream("GuiError.txt"));
+
+            raw.append(new String(in.readAllBytes()));
+        } catch (Exception ex) {
+        }
+
+        panelMessageBodyRaw.add(scrollPane);
+
+        panelMessageBodyCenter.add("Raw", panelMessageBodyRaw);
+
+        card.show(panelMessageBodyCenter, "Raw");
+
+        panelMessageBodyRaw.repaint();
+        panelMessageBodyRaw.revalidate();
+
+        panelHeaderEast.removeAll();
+        JButton newButton = new JButton("Copy to Clipboard");
+        newButton.setForeground(Color.WHITE);
+        newButton.setBackground(new Color(90, 80, 160));
+        panelHeaderEast.add(newButton, BorderLayout.NORTH);
+        JPanel panelHeaderGridBagLayout = new JPanel(new GridBagLayout());
+        panelHeaderGridBagLayout.setBackground(Color.DARK_GRAY);
+        panelHeaderEast.add(panelHeaderGridBagLayout, BorderLayout.CENTER);
+        panelHeaderGridBagLayout.revalidate();
+        panelHeaderGridBagLayout.repaint();
+        panelHeaderEast.revalidate();
+        panelHeaderEast.repaint();
+
+        label1.setText("ERROR");
+        label1.setForeground(Color.RED);
+        label1.repaint();
+
+    }
+
+    public void setJTree(JPanel panelWest_Center) {
+        if (argsArrayList.contains("--save")) {
+            DefaultMutableTreeNode requests = new DefaultMutableTreeNode("Requests");
+            JTree jt = new JTree(requests);
+            jt.setBackground(Color.DARK_GRAY);
+            try {
+                scanner(jt);
+            } catch (InterruptedException ex) {
+            }
+            JPanel panelWest_Center_Center = new JPanel(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 1;
+            gbc.weighty = 1;
+            gbc.fill = GridBagConstraints.BOTH;
+            panelWest_Center_Center.add(jt, gbc);
+            panelWest_Center.add(panelWest_Center_Center, BorderLayout.CENTER);
+            panelWest_Center_Center.repaint();
+            panelWest_Center_Center.revalidate();
+
+            jt.repaint();
+            jt.revalidate();
+        }
     }
 
     public String[] headerStringArray() {
@@ -1431,16 +1605,21 @@ public class Gui {
     }
 
     public String[] convertToArray(ArrayList<String> arrayList) {
+        for (int g = 0; g < arrayList.size(); g++) {
+            System.out.println(arrayList.get(g));
+        }
         int index = 1;
         String[] args = new String[arrayList.size() - 1];
         for (int u = 0; u < arrayList.size(); u++) {
-            if (arrayList.get(u).equals("URL")) {
-                int indexArrayList = arrayList.indexOf("URL");
-                args[0] = arrayList.get(indexArrayList + 1);
-                u++;
-            } else {
-                args[index] = arrayList.get(u);
-                index++;
+            if (arrayList.get(u) != null) {
+                if (arrayList.get(u).equals("URL")) {
+                    int indexArrayList = arrayList.indexOf("URL");
+                    args[0] = arrayList.get(indexArrayList + 1);
+                    u++;
+                } else {
+                    args[index] = arrayList.get(u);
+                    index++;
+                }
             }
         }
         return args;
@@ -1521,22 +1700,28 @@ public class Gui {
         displayDirectoryContents(currentDir, root, jt);
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
-            InstantiationException, IllegalAccessException {
-        try {
-            // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-            UIManager.getLookAndFeelDefaults().put("Tree.background", Color.RED);
-            UIManager.getLookAndFeelDefaults().put("Tree.textBackground", Color.DARK_GRAY);
+    // public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
+    //         InstantiationException, IllegalAccessException {
+    //     try {
+    //         // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+    //         UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+    //         // UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+    //         // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+    //         UIManager.getLookAndFeelDefaults().put("Tree.background", Color.RED);
+    //         UIManager.getLookAndFeelDefaults().put("Tree.textBackground", Color.DARK_GRAY);
 
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
+    //     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+    //             | UnsupportedLookAndFeelException e) {
+    //         e.printStackTrace();
+    //     }
 
-        Gui g = new Gui();
+    //     Gui g = new Gui();
 
+    // }
+
+    public static void main(String[] args){
+        try{ 
+        connectionClass.main(args);
+        }catch(Exception e){}
     }
 }
